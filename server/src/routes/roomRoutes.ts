@@ -12,6 +12,7 @@ roomRouter.get(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const result = await searchService.searchRooms(req.query as any);
+      res.setHeader('Cache-Control', 'public, max-age=10, stale-while-revalidate=30');
       res.status(200).json(result);
     } catch (err) {
       next(err);

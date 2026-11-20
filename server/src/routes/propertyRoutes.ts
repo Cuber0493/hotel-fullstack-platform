@@ -24,6 +24,7 @@ propertyRouter.get(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const properties = await propertyService.listProperties(req.query);
+      res.setHeader('Cache-Control', 'public, max-age=60, stale-while-revalidate=120');
       res.status(200).json({ properties, total: properties.length });
     } catch (err) {
       next(err);
@@ -78,6 +79,7 @@ propertyRouter.get(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const property = await propertyService.getPropertyByIdOrSlug(req.params.id);
+      res.setHeader('Cache-Control', 'public, max-age=60, stale-while-revalidate=120');
       res.status(200).json({ property });
     } catch (err) {
       next(err);

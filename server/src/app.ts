@@ -1,6 +1,7 @@
 import express, { Express } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
+import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import rateLimit from 'express-rate-limit';
 import { env } from './config/env.js';
@@ -13,13 +14,19 @@ import { bookingRouter } from './routes/bookingRoutes.js';
 import { staffRouter } from './routes/staffRoutes.js';
 import { adminRouter } from './routes/adminRoutes.js';
 import { enquiryRouter } from './routes/enquiryRoutes.js';
+import { docsRouter } from './routes/docsRoutes.js';
 import { getHealth } from './controllers/healthController.js';
 import { NotFoundError } from './errors/AppError.js';
 
 export const app: Express = express();
 
 // Security Headers
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: false, // Allow Swagger UI inline scripts & styles
+}));
+
+// Gzip / Deflate Response Compression
+app.use(compression());
 
 // CORS Configuration - Production & Vercel domain support
 const allowedOrigins = env.CORS_ORIGIN
@@ -91,6 +98,10 @@ if (env.NODE_ENV !== 'test') {
 // Health Check Endpoint (Direct & under /api)
 app.get('/api/health', getHealth);
 app.get('/health', getHealth);
+
+// Interactive OpenAPI / Swagger Documentation
+app.use('/api/docs', docsRouter);
+app.use('/docs', docsRouter);
 
 // Authentication Routes (Standard /api/auth and versioned /api/v1/auth)
 app.use('/api/auth', authRouter);
