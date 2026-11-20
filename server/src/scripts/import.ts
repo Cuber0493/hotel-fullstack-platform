@@ -12,6 +12,7 @@ const RAW_DIR = path.join(DATA_DIR, 'raw');
 const REJECTED_FILE = path.join(DATA_DIR, 'rejected.csv');
 
 export interface RejectedRecord {
+  [key: string]: unknown;
   dataset: string;
   recordId: string;
   identifier: string;
