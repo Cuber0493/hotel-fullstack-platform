@@ -10,8 +10,11 @@ export const setAccessToken = (token: string | null) => {
 export const getAccessToken = () => inMemoryToken;
 
 const getBaseUrl = () => {
-  const envUrl = (import.meta as any).env?.VITE_API_BASE_URL;
-  if (envUrl) return envUrl;
+  const envUrl = (import.meta as any).env?.VITE_API_URL || (import.meta as any).env?.VITE_API_BASE_URL;
+  if (envUrl && typeof envUrl === 'string') {
+    const trimmed = envUrl.trim().replace(/\/+$/, '');
+    return trimmed.endsWith('/api') ? trimmed : `${trimmed}/api`;
+  }
   if (typeof window !== 'undefined' && window.location && window.location.origin && window.location.origin !== 'null') {
     return `${window.location.origin}/api`;
   }

@@ -9,13 +9,24 @@ import { env } from '../config/env.js';
 
 export const authRouter = Router();
 
-const setRefreshTokenCookie = (res: Response, token: string) => {
+const isProduction = env.NODE_ENV === 'production';
+
+export const setRefreshTokenCookie = (res: Response, token: string) => {
   res.cookie('refreshToken', token, {
     httpOnly: true,
-    secure: env.NODE_ENV === 'production',
-    sameSite: 'lax',
+    secure: isProduction,
+    sameSite: isProduction ? 'none' : 'lax',
     path: '/',
     maxAge: env.JWT_REFRESH_EXPIRES_DAYS * 24 * 60 * 60 * 1000,
+  });
+};
+
+export const clearRefreshTokenCookie = (res: Response) => {
+  res.clearCookie('refreshToken', {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? 'none' : 'lax',
+    path: '/',
   });
 };
 
@@ -82,7 +93,7 @@ authRouter.post(
         req.user?.userId,
         req.ip
       );
-      res.clearCookie('refreshToken', { path: '/' });
+      clearRefreshTokenCookie(res);
       res.status(200).json(result);
     } catch (err) {
       next(err);

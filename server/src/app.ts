@@ -21,11 +21,44 @@ export const app: Express = express();
 // Security Headers
 app.use(helmet());
 
-// CORS Configuration
+// CORS Configuration - Production & Vercel domain support
+const allowedOrigins = env.CORS_ORIGIN
+  ? env.CORS_ORIGIN.split(',').map((o) => o.trim()).filter(Boolean)
+  : ['http://localhost:5173'];
+
 app.use(
   cors({
-    origin: env.CORS_ORIGIN,
+    origin: (origin, callback) => {
+      // Allow non-browser requests (Postman, curl, server-to-server health checks)
+      if (!origin) return callback(null, true);
+
+      // Check explicitly configured origins
+      if (allowedOrigins.includes(origin) || allowedOrigins.includes('*')) {
+        return callback(null, true);
+      }
+
+      // Allow Vercel preview and production domains for this platform
+      if (
+        env.NODE_ENV === 'production' &&
+        (/^https:\/\/([a-z0-9-]+)\.vercel\.app$/i.test(origin) ||
+          /^https:\/\/the-bombay-reserve.*\.vercel\.app$/i.test(origin))
+      ) {
+        return callback(null, true);
+      }
+
+      // Allow localhost on any port in development and test environments
+      if (
+        env.NODE_ENV !== 'production' &&
+        /^http:\/\/localhost:[0-9]+$/i.test(origin)
+      ) {
+        return callback(null, true);
+      }
+
+      callback(null, false);
+    },
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
   })
 );
 

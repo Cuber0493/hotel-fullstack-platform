@@ -1,0 +1,38 @@
+services:
+  - type: web
+    name: the-bombay-reserve-api
+    runtime: node
+    plan: free
+    region: oregon
+    buildCommand: npm ci && npm run prisma:generate --workspace=server && npm run build --workspace=server
+    preDeployCommand: npx prisma migrate deploy --schema=server/prisma/schema.prisma && npm run prisma:seed --workspace=server
+    startCommand: npm run start:prod --workspace=server
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 15m
+      - key: JWT_REFRESH_EXPIRES_DAYS
+        value: 7
+      - key: CORS_ORIGIN
+        sync: false
+      - key: ADMIN_EMAIL
+        value: admin@bombayreserve.com
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: ADMIN_NAME
+        value: Anya Mehta
+      - key: USD_TO_INR_RATE
+        value: 86.5
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
