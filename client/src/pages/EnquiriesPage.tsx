@@ -1,222 +1,187 @@
 import React, { useState } from 'react';
-import { apiRequest } from '../api/client';
-import { EventType } from '../types';
-import { Mail, Phone, User, Calendar, Users, MessageSquare, CheckCircle2, Sparkles } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { api, getApiErrorMessage } from '../api/client';
+import { Sparkles, Mail, User, MessageSquare, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
+
+const enquirySchema = z.object({
+  propertyId: z.string().min(1, 'Please select a preferred property'),
+  name: z.string().min(2, 'Name must be at least 2 characters'),
+  email: z.string().email('Please enter a valid email address'),
+  message: z.string().min(10, 'Message must be at least 10 characters'),
+});
+
+type EnquiryFormData = z.infer<typeof enquirySchema>;
 
 export const EnquiriesPage: React.FC = () => {
-  const [fullName, setFullName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [eventType, setEventType] = useState<EventType>('WEDDING');
-  const [tentativeDate, setTentativeDate] = useState('');
-  const [estimatedGuests, setEstimatedGuests] = useState(50);
-  const [message, setMessage] = useState('');
-
   const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [serverError, setServerError] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setErrorMsg(null);
-    setLoading(true);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<EnquiryFormData>({
+    resolver: zodResolver(enquirySchema),
+    defaultValues: {
+      propertyId: 'prop-the-grand-colaba-mansion',
+      name: '',
+      email: '',
+      message: '',
+    },
+  });
 
+  const onSubmit = async (data: EnquiryFormData) => {
+    setServerError(null);
     try {
-      await apiRequest('/enquiries', {
-        method: 'POST',
-        body: JSON.stringify({
-          fullName,
-          email,
-          phone,
-          eventType,
-          tentativeDate: tentativeDate || undefined,
-          estimatedGuests,
-          message,
-        }),
-      });
-
+      await api.post('/enquiries', data);
       setSubmitted(true);
-    } catch (err: any) {
-      setErrorMsg(err.message || 'Failed to submit enquiry');
-    } finally {
-      setLoading(false);
+      reset();
+    } catch (err) {
+      setServerError(getApiErrorMessage(err));
     }
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-16">
-      <div className="text-center max-w-2xl mx-auto mb-12">
-        <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-reserve-100 border border-reserve-200 text-reserve-800 text-[10px] uppercase tracking-widest font-bold mb-3">
-          <Sparkles className="w-3.5 h-3.5 text-reserve-700" />
-          <span>Curated Gatherings</span>
-        </div>
-        <h1 className="text-3xl sm:text-5xl font-serif font-bold text-charcoal-950">
-          Bespoke Events &amp; Celebrations
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
+      <div className="text-center space-y-3">
+        <span className="text-xs uppercase tracking-widest text-amber-700 font-semibold">
+          Bespoke Events & Celebrations
+        </span>
+        <h1 className="text-3xl sm:text-5xl font-serif font-bold text-stone-950">
+          Private Gatherings & Curated Stays
         </h1>
-        <p className="text-sm text-charcoal-600 font-light mt-3 leading-relaxed">
-          From intimate pre-wedding soirees in Colaba courtyards to private film productions and executive leadership retreats across our 14 properties.
+        <p className="text-stone-600 text-sm sm:text-base max-w-xl mx-auto">
+          From intimate heritage courtyard celebrations to executive board retreats, our
+          curators craft seamless experiences across Mumbai.
         </p>
       </div>
 
-      {submitted ? (
-        <div className="bg-white rounded-3xl p-10 border border-reserve-200 shadow-xl text-center max-w-lg mx-auto">
-          <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto mb-4 border border-emerald-300">
-            <CheckCircle2 className="w-10 h-10" />
-          </div>
-          <span className="text-xs uppercase tracking-widest text-reserve-700 font-bold">
-            Enquiry Received
-          </span>
-          <h2 className="text-2xl font-serif font-bold text-charcoal-950 mt-1 mb-3">
-            Our Concierge Will Connect Shortly
-          </h2>
-          <p className="text-xs text-charcoal-600 leading-relaxed mb-6">
-            Thank you, {fullName}. Our events curator will review your requirements and reach out at {phone} within 24 hours with venue availability and bespoke lookbooks.
-          </p>
-          <button
-            onClick={() => {
-              setSubmitted(false);
-              setMessage('');
-            }}
-            className="px-6 py-2.5 bg-reserve-900 text-white rounded-lg text-xs uppercase tracking-wider font-semibold"
-          >
-            Submit Another Enquiry
-          </button>
-        </div>
-      ) : (
-        <div className="bg-white rounded-3xl p-8 sm:p-12 border border-reserve-200 shadow-xl">
-          {errorMsg && (
-            <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-200 text-xs text-red-700">
-              {errorMsg}
+      <div className="bg-white border border-stone-200 rounded-3xl p-8 sm:p-12 shadow-sm">
+        {submitted ? (
+          <div className="text-center py-8 space-y-4">
+            <div className="w-14 h-14 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto">
+              <CheckCircle2 className="w-7 h-7" />
             </div>
-          )}
+            <h3 className="font-serif font-bold text-2xl text-stone-950">
+              Enquiry Received with Pleasure
+            </h3>
+            <p className="text-stone-600 text-sm max-w-md mx-auto">
+              Our concierge team will review your requirements and reach out within 24 hours.
+            </p>
+            <button
+              onClick={() => setSubmitted(false)}
+              className="mt-4 px-6 py-2.5 bg-stone-900 text-white text-xs uppercase tracking-wider font-semibold rounded-xl"
+            >
+              Submit Another Enquiry
+            </button>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            {serverError && (
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl flex items-center space-x-2 text-sm">
+                <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                <span>{serverError}</span>
+              </div>
+            )}
 
-          <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div>
-                <label className="block text-xs font-semibold text-charcoal-800 mb-1">
-                  Full Name *
+                <label className="block text-xs uppercase tracking-wider font-semibold text-stone-700 mb-1.5">
+                  Full Name
                 </label>
                 <div className="relative">
-                  <User className="w-4 h-4 absolute left-3 top-3 text-reserve-600" />
+                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
+                    <User className="w-4 h-4" />
+                  </div>
                   <input
                     type="text"
-                    required
-                    placeholder="e.g. Natasha Poonawalla"
-                    value={fullName}
-                    onChange={(e) => setFullName(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2.5 text-xs rounded-lg border border-reserve-300 focus:outline-none focus:ring-2 focus:ring-reserve-500"
+                    {...register('name')}
+                    placeholder="Natasha Poonawalla"
+                    className="w-full pl-10 pr-4 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-stone-900 placeholder-stone-400 text-sm focus:bg-white focus:outline-none"
                   />
                 </div>
+                {errors.name && (
+                  <p className="mt-1 text-xs text-red-600">{errors.name.message}</p>
+                )}
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-charcoal-800 mb-1">
-                  Email Address *
+                <label className="block text-xs uppercase tracking-wider font-semibold text-stone-700 mb-1.5">
+                  Email Address
                 </label>
                 <div className="relative">
-                  <Mail className="w-4 h-4 absolute left-3 top-3 text-reserve-600" />
+                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
+                    <Mail className="w-4 h-4" />
+                  </div>
                   <input
                     type="email"
-                    required
+                    {...register('email')}
                     placeholder="name@example.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2.5 text-xs rounded-lg border border-reserve-300 focus:outline-none focus:ring-2 focus:ring-reserve-500"
+                    className="w-full pl-10 pr-4 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-stone-900 placeholder-stone-400 text-sm focus:bg-white focus:outline-none"
                   />
                 </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-charcoal-800 mb-1">
-                  Phone Number *
-                </label>
-                <div className="relative">
-                  <Phone className="w-4 h-4 absolute left-3 top-3 text-reserve-600" />
-                  <input
-                    type="tel"
-                    required
-                    placeholder="+91 98200 88776"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2.5 text-xs rounded-lg border border-reserve-300 focus:outline-none focus:ring-2 focus:ring-reserve-500"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-charcoal-800 mb-1">
-                  Event Category *
-                </label>
-                <select
-                  value={eventType}
-                  onChange={(e) => setEventType(e.target.value as EventType)}
-                  className="w-full px-3 py-2.5 text-xs rounded-lg border border-reserve-300 focus:outline-none focus:ring-2 focus:ring-reserve-500 font-medium"
-                >
-                  <option value="WEDDING">Intimate Wedding / Sangeet</option>
-                  <option value="CORPORATE">Corporate Retreat / Board Summit</option>
-                  <option value="PRIVATE_DINING">Private Dining &amp; Chef Table</option>
-                  <option value="SHOOT">Film / Photography Production</option>
-                  <option value="OTHER">Other Private Celebration</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-charcoal-800 mb-1">
-                  Tentative Event Date (Optional)
-                </label>
-                <div className="relative">
-                  <Calendar className="w-4 h-4 absolute left-3 top-3 text-reserve-600" />
-                  <input
-                    type="date"
-                    value={tentativeDate}
-                    onChange={(e) => setTentativeDate(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2.5 text-xs rounded-lg border border-reserve-300 focus:outline-none focus:ring-2 focus:ring-reserve-500"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-charcoal-800 mb-1">
-                  Estimated Guest Count
-                </label>
-                <div className="relative">
-                  <Users className="w-4 h-4 absolute left-3 top-3 text-reserve-600" />
-                  <input
-                    type="number"
-                    min={5}
-                    max={200}
-                    value={estimatedGuests}
-                    onChange={(e) => setEstimatedGuests(Number(e.target.value))}
-                    className="w-full pl-9 pr-3 py-2.5 text-xs rounded-lg border border-reserve-300 focus:outline-none focus:ring-2 focus:ring-reserve-500"
-                  />
-                </div>
+                {errors.email && (
+                  <p className="mt-1 text-xs text-red-600">{errors.email.message}</p>
+                )}
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-charcoal-800 mb-1">
-                Event Description &amp; Vision *
+              <label className="block text-xs uppercase tracking-wider font-semibold text-stone-700 mb-1.5">
+                Preferred Boutique Haven
+              </label>
+              <select
+                {...register('propertyId')}
+                className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-stone-900 text-sm focus:bg-white"
+              >
+                <option value="prop-the-grand-colaba-mansion">The Grand Colaba Mansion (Colaba)</option>
+                <option value="prop-marine-drive-bayview">The Marine Drive Promenade (Marine Drive)</option>
+                <option value="prop-malabar-hill-manor">Malabar Hill Estate (Malabar Hill)</option>
+                <option value="prop-bandra-bandstand-villa">Bandra Heritage Villa (Bandra)</option>
+                <option value="prop-juhu-beach-sanctuary">Juhu Ocean Residence (Juhu)</option>
+                <option value="prop-worli-sea-face-residence">Worli Sea Face Residence (Worli)</option>
+                <option value="prop-powai-lakefront-haven">Powai Lakefront Haven (Powai)</option>
+              </select>
+              {errors.propertyId && (
+                <p className="mt-1 text-xs text-red-600">{errors.propertyId.message}</p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-xs uppercase tracking-wider font-semibold text-stone-700 mb-1.5">
+                Event Vision & Stay Requirements
               </label>
               <textarea
-                required
                 rows={4}
-                placeholder="Share your preferred property, timing, catering wishes, and guest stay needs..."
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                className="w-full p-3 text-xs rounded-lg border border-reserve-300 focus:outline-none focus:ring-2 focus:ring-reserve-500"
+                {...register('message')}
+                placeholder="Tell us about the dates, guest count, dining requirements, or bespoke setups..."
+                className="w-full p-3.5 bg-stone-50 border border-stone-200 rounded-xl text-stone-900 text-sm focus:bg-white focus:outline-none"
               />
+              {errors.message && (
+                <p className="mt-1 text-xs text-red-600">{errors.message.message}</p>
+              )}
             </div>
 
             <button
               type="submit"
-              disabled={loading}
-              className="w-full py-4 bg-reserve-900 hover:bg-charcoal-950 text-white rounded-xl text-xs uppercase tracking-wider font-semibold transition-all shadow-md disabled:opacity-50"
+              disabled={isSubmitting}
+              className="w-full py-3.5 bg-stone-900 hover:bg-black text-white text-xs uppercase tracking-widest font-semibold rounded-xl shadow-md transition-all flex items-center justify-center space-x-2 disabled:opacity-50"
             >
-              {loading ? 'Transmitting Request...' : 'Submit Bespoke Enquiry'}
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span>Dispatching to Concierge...</span>
+                </>
+              ) : (
+                <span>Submit Bespoke Enquiry</span>
+              )}
             </button>
           </form>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

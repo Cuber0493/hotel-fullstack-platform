@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { PropertyDetail, RoomAvailability, RoomType } from '../types';
-import { apiRequest } from '../api/client';
-import { BookingModal } from '../components/BookingModal';
+import { api, getApiErrorMessage } from '../api/client';
+import { PropertyDetail, RoomType } from '../types';
 import {
   MapPin,
-  Phone,
-  Mail,
-  Calendar,
-  Users,
-  CheckCircle2,
   Clock,
   Sparkles,
-  ArrowLeft,
+  Users,
   Bed,
-  Maximize2,
-  ShieldCheck,
+  CheckCircle2,
+  X,
+  ChevronLeft,
+  ChevronRight,
+  Phone,
+  Mail,
+  Loader2,
+  AlertCircle,
 } from 'lucide-react';
 
 export const PropertyDetailPage: React.FC = () => {
@@ -24,412 +24,350 @@ export const PropertyDetailPage: React.FC = () => {
 
   const [property, setProperty] = useState<PropertyDetail | null>(null);
   const [loading, setLoading] = useState(true);
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  // Availability query
-  const [checkInDate, setCheckInDate] = useState(() => {
-    const d = new Date();
-    d.setDate(d.getDate() + 1);
-    return d.toISOString().split('T')[0];
-  });
-  const [checkOutDate, setCheckOutDate] = useState(() => {
-    const d = new Date();
-    d.setDate(d.getDate() + 3);
-    return d.toISOString().split('T')[0];
-  });
-  const [guests, setGuests] = useState(2);
-  const [availabilities, setAvailabilities] = useState<RoomAvailability[]>([]);
-  const [checkingAvailability, setCheckingAvailability] = useState(false);
-
-  // Booking Modal State
-  const [selectedRoomType, setSelectedRoomType] = useState<RoomType | null>(null);
-  const [bookingModalOpen, setBookingModalOpen] = useState(false);
+  // Gallery Modal state
+  const [galleryOpen, setGalleryOpen] = useState(false);
+  const [activePhotoIdx, setActivePhotoIdx] = useState(0);
 
   useEffect(() => {
     const fetchProperty = async () => {
       setLoading(true);
+      setError(null);
       try {
-        const res = await apiRequest<{ property: PropertyDetail }>(`/properties/${slug}`);
-        setProperty(res.property);
-      } catch (err: any) {
-        setErrorMsg(err.message || 'Property not found');
+        const res = await api.get<{ property: PropertyDetail }>(`/properties/${slug}`);
+        setProperty(res.data.property);
+      } catch (err) {
+        setError(getApiErrorMessage(err));
       } finally {
         setLoading(false);
       }
     };
 
-    fetchProperty();
+    if (slug) {
+      fetchProperty();
+    }
   }, [slug]);
-
-  const handleCheckAvailability = async (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
-    if (!slug) return;
-
-    setCheckingAvailability(true);
-    try {
-      const res = await apiRequest<{ roomTypes: RoomAvailability[] }>(
-        `/properties/${slug}/availability?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&guests=${guests}`
-      );
-      setAvailabilities(res.roomTypes);
-    } catch (err) {
-      console.error('Availability check failed:', err);
-    } finally {
-      setCheckingAvailability(false);
-    }
-  };
-
-  useEffect(() => {
-    if (property) {
-      handleCheckAvailability();
-    }
-  }, [property]);
 
   if (loading) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-20 text-center">
-        <div className="w-12 h-12 rounded-full border-4 border-reserve-300 border-t-reserve-800 animate-spin mx-auto mb-4" />
-        <p className="text-xs uppercase tracking-widest text-reserve-700">Loading sanctuary details...</p>
+      <div className="min-h-[70vh] flex flex-col items-center justify-center space-y-4">
+        <Loader2 className="w-8 h-8 text-amber-600 animate-spin" />
+        <p className="text-stone-500 font-serif tracking-widest text-sm uppercase">
+          Curating Boutique Haven Details...
+        </p>
       </div>
     );
   }
 
-  if (errorMsg || !property) {
+  if (error || !property) {
     return (
-      <div className="max-w-3xl mx-auto px-4 py-20 text-center">
-        <h2 className="text-2xl font-serif font-bold text-charcoal-900 mb-2">Sanctuary Not Found</h2>
-        <p className="text-xs text-charcoal-600 mb-6">{errorMsg || 'The requested property does not exist.'}</p>
+      <div className="max-w-xl mx-auto my-16 p-8 bg-white border border-stone-200 rounded-2xl shadow-sm text-center space-y-4">
+        <div className="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto">
+          <AlertCircle className="w-6 h-6" />
+        </div>
+        <h2 className="text-2xl font-serif font-bold text-stone-900">
+          Property Not Found
+        </h2>
+        <p className="text-stone-600 text-sm">
+          {error || `Unable to locate property '${slug}'.`}
+        </p>
         <button
           onClick={() => navigate('/properties')}
-          className="px-6 py-2.5 bg-reserve-900 text-white text-xs uppercase tracking-wider font-semibold rounded-lg"
+          className="px-5 py-2.5 bg-stone-900 text-white text-xs uppercase tracking-wider font-semibold rounded-xl"
         >
-          Return to Properties
+          Return to All Properties
         </button>
       </div>
     );
   }
 
-  return (
-    <div className="pb-24">
-      {/* Top Banner Navigation */}
-      <div className="bg-reserve-100/60 border-b border-reserve-200 py-3">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between text-xs text-charcoal-700">
-          <button
-            onClick={() => navigate('/properties')}
-            className="flex items-center space-x-1 hover:text-reserve-900 font-medium"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>Back to All 14 Properties</span>
-          </button>
-          <span className="hidden sm:inline-block font-semibold text-reserve-800">
-            {property.neighborhood}
-          </span>
-        </div>
-      </div>
+  const allImages = [
+    property.heroImage,
+    ...(property.galleryImages || []),
+  ].filter(Boolean);
 
-      {/* Property Title & Hero Gallery */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-10">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8">
+  return (
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
+      {/* Hero & Photo Gallery Showcase */}
+      <section className="space-y-4">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
-            <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-reserve-100 border border-reserve-200 text-reserve-800 text-[10px] uppercase tracking-widest font-bold mb-3">
-              <MapPin className="w-3 h-3 text-reserve-700" />
-              <span>{property.neighborhood}</span>
-            </div>
-            <h1 className="text-3xl sm:text-5xl font-serif font-bold text-charcoal-950">
+            <span className="text-xs uppercase tracking-widest text-amber-700 font-semibold">
+              {property.neighborhood}, Mumbai
+            </span>
+            <h1 className="text-3xl sm:text-5xl font-serif font-bold text-stone-950 mt-1">
               {property.name}
             </h1>
-            <p className="text-xs text-charcoal-600 mt-2 flex items-center space-x-1.5">
+            <p className="flex items-center space-x-1.5 text-stone-600 text-sm mt-2">
+              <MapPin className="w-4 h-4 text-stone-400" />
               <span>{property.address}</span>
             </p>
           </div>
 
-          <div className="mt-4 md:mt-0 flex items-center space-x-4 text-xs text-charcoal-700">
-            <div className="flex items-center space-x-1.5">
-              <Clock className="w-4 h-4 text-reserve-700" />
-              <span>Check-in: {property.checkInTime}</span>
-            </div>
-            <div className="flex items-center space-x-1.5">
-              <Clock className="w-4 h-4 text-reserve-700" />
-              <span>Check-out: {property.checkOutTime}</span>
-            </div>
-          </div>
+          <button
+            onClick={() => {
+              setActivePhotoIdx(0);
+              setGalleryOpen(true);
+            }}
+            className="px-5 py-2.5 bg-white border border-stone-300 text-stone-800 hover:bg-stone-50 text-xs uppercase tracking-wider font-semibold rounded-xl shadow-sm transition-all"
+          >
+            View Gallery ({allImages.length} Photos)
+          </button>
         </div>
 
-        {/* Photography Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 rounded-3xl overflow-hidden shadow-lg h-[460px]">
-          <div className="md:col-span-2 h-full">
+        {/* Mosaic Image Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 h-[420px] rounded-3xl overflow-hidden">
+          <div
+            onClick={() => {
+              setActivePhotoIdx(0);
+              setGalleryOpen(true);
+            }}
+            className="md:col-span-2 h-full cursor-pointer relative group overflow-hidden"
+          >
             <img
-              src={property.heroImage}
+              src={allImages[0]}
               alt={property.name}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             />
+            <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors" />
           </div>
-          <div className="hidden md:grid grid-rows-2 gap-4 h-full">
-            <img
-              src={property.galleryImages[0] || property.heroImage}
-              alt={`${property.name} gallery 1`}
-              className="w-full h-full object-cover"
-            />
-            <img
-              src={property.galleryImages[1] || property.heroImage}
-              alt={`${property.name} gallery 2`}
-              className="w-full h-full object-cover"
-            />
+
+          <div className="hidden md:grid col-span-2 grid-cols-2 gap-4 h-full">
+            {allImages.slice(1, 5).map((img, idx) => (
+              <div
+                key={idx}
+                onClick={() => {
+                  setActivePhotoIdx(idx + 1);
+                  setGalleryOpen(true);
+                }}
+                className="h-full cursor-pointer relative group overflow-hidden rounded-xl"
+              >
+                <img
+                  src={img}
+                  alt={`${property.name} photo ${idx + 2}`}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Property Details & Booking Matrix */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-3 gap-12">
-        {/* Left Column: Description & Amenities */}
-        <div className="lg:col-span-2 space-y-10">
+      {/* Property Details & Amenities */}
+      <section className="grid grid-cols-1 lg:grid-cols-3 gap-12 border-t border-stone-200 pt-10">
+        <div className="lg:col-span-2 space-y-8">
           <div>
-            <h3 className="text-xs uppercase tracking-widest text-reserve-700 font-bold mb-3">
-              The Architecture & Provenance
-            </h3>
-            <p className="text-sm text-charcoal-800 leading-relaxed font-light whitespace-pre-line">
+            <h2 className="text-2xl font-serif font-bold text-stone-950 mb-3">
+              The Experience
+            </h2>
+            <p className="text-stone-700 leading-relaxed text-sm sm:text-base">
               {property.description}
             </p>
           </div>
 
+          {/* Amenities */}
           <div>
-            <h3 className="text-xs uppercase tracking-widest text-reserve-700 font-bold mb-4">
-              Property Amenities & Privileges
+            <h3 className="text-lg font-serif font-bold text-stone-950 mb-4">
+              Bespoke Amenities & Services
             </h3>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              {property.amenities.map((amenity) => (
+              {property.amenities.map((item, idx) => (
                 <div
-                  key={amenity}
-                  className="flex items-center space-x-2.5 p-3 rounded-xl bg-reserve-50 border border-reserve-200 text-xs text-charcoal-800"
+                  key={idx}
+                  className="flex items-center space-x-2 text-xs font-medium text-stone-800 bg-stone-50 border border-stone-200/80 p-3 rounded-xl"
                 >
-                  <Sparkles className="w-4 h-4 text-reserve-700 shrink-0" />
-                  <span className="font-medium">{amenity}</span>
+                  <Sparkles className="w-3.5 h-3.5 text-amber-600 flex-shrink-0" />
+                  <span>{item}</span>
                 </div>
               ))}
             </div>
           </div>
-
-          {/* Room Selection Grid */}
-          <div className="pt-6 border-t border-reserve-200">
-            <div className="flex justify-between items-center mb-6">
-              <div>
-                <h3 className="text-xs uppercase tracking-widest text-reserve-700 font-bold">
-                  Boutique Accommodations
-                </h3>
-                <h4 className="text-2xl font-serif font-bold text-charcoal-950 mt-1">
-                  Available Rooms & Suites
-                </h4>
-              </div>
-            </div>
-
-            <div className="space-y-6">
-              {(availabilities.length > 0 ? availabilities : property.roomTypes.map((rt) => ({
-                roomType: rt,
-                totalInventory: rt.totalInventory,
-                availableInventory: rt.totalInventory,
-                isAvailable: true,
-                totalPrice: rt.basePrice,
-                nights: 1,
-              }))).map((item) => {
-                const rt = item.roomType;
-                return (
-                  <div
-                    key={rt.id}
-                    className="p-6 rounded-2xl bg-white border border-reserve-200 shadow-sm flex flex-col md:flex-row justify-between gap-6 hover:border-reserve-400 transition-all"
-                  >
-                    <div className="md:w-1/3 h-48 rounded-xl overflow-hidden shrink-0">
-                      <img
-                        src={rt.images[0] || property.heroImage}
-                        alt={rt.name}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-
-                    <div className="flex-1 flex flex-col justify-between">
-                      <div>
-                        <div className="flex items-center justify-between">
-                          <h4 className="font-serif text-xl font-bold text-charcoal-950">
-                            {rt.name}
-                          </h4>
-                          <span
-                            className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                              item.isAvailable
-                                ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
-                                : 'bg-rose-50 text-rose-800 border border-rose-200'
-                            }`}
-                          >
-                            {item.isAvailable
-                              ? `${item.availableInventory} Left`
-                              : 'Sold Out'}
-                          </span>
-                        </div>
-
-                        <p className="text-xs text-charcoal-600 font-light mt-1.5 leading-relaxed">
-                          {rt.description}
-                        </p>
-
-                        <div className="flex flex-wrap gap-4 text-xs text-charcoal-700 mt-4">
-                          <span className="flex items-center space-x-1">
-                            <Bed className="w-3.5 h-3.5 text-reserve-700" />
-                            <span>{rt.bedType}</span>
-                          </span>
-                          <span className="flex items-center space-x-1">
-                            <Maximize2 className="w-3.5 h-3.5 text-reserve-700" />
-                            <span>{rt.roomSizeSqFt} sq. ft.</span>
-                          </span>
-                          <span className="flex items-center space-x-1">
-                            <Users className="w-3.5 h-3.5 text-reserve-700" />
-                            <span>Max {rt.maxGuests} Guests</span>
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="mt-6 pt-4 border-t border-reserve-100 flex items-center justify-between">
-                        <div>
-                          <div className="text-base font-serif font-bold text-charcoal-950">
-                            &#8377;{rt.basePrice.toLocaleString('en-IN')}{' '}
-                            <span className="text-xs font-sans font-normal text-charcoal-600">
-                              / night
-                            </span>
-                          </div>
-                          {item.nights > 1 && (
-                            <div className="text-[11px] text-reserve-800 font-medium">
-                              Total for {item.nights} nights: &#8377;
-                              {item.totalPrice.toLocaleString('en-IN')} + taxes
-                            </div>
-                          )}
-                        </div>
-
-                        <button
-                          disabled={!item.isAvailable}
-                          onClick={() => {
-                            setSelectedRoomType(rt);
-                            setBookingModalOpen(true);
-                          }}
-                          className="px-6 py-2.5 bg-reserve-900 hover:bg-charcoal-950 text-white rounded-lg text-xs uppercase tracking-wider font-semibold transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-sm"
-                        >
-                          {item.isAvailable ? 'Reserve Suite' : 'Unavailable'}
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
         </div>
 
-        {/* Right Column: Date Selection & Concierge Widget */}
-        <div className="space-y-6">
-          <div className="sticky top-28 bg-white p-6 rounded-2xl border border-reserve-200 shadow-md">
-            <h3 className="font-serif text-lg font-bold text-charcoal-950 mb-1">
-              Check Sanctuary Dates
-            </h3>
-            <p className="text-xs text-charcoal-600 mb-5">
-              Select stay dates to view real-time inventory and pricing.
-            </p>
+        {/* Contact & Policy Card */}
+        <aside className="bg-stone-50 border border-stone-200 p-6 rounded-3xl h-fit space-y-6">
+          <h3 className="font-serif font-bold text-stone-900 text-lg border-b border-stone-200 pb-3">
+            Concierge & Policies
+          </h3>
 
-            <form onSubmit={handleCheckAvailability} className="space-y-4">
+          <div className="space-y-4 text-xs text-stone-700">
+            <div className="flex items-start space-x-2.5">
+              <Clock className="w-4 h-4 text-amber-700 flex-shrink-0 mt-0.5" />
               <div>
-                <label className="block text-[11px] uppercase font-bold text-charcoal-700 mb-1">
-                  Check-in Date
-                </label>
-                <div className="relative">
-                  <Calendar className="w-4 h-4 absolute left-3 top-3 text-reserve-600" />
-                  <input
-                    type="date"
-                    required
-                    value={checkInDate}
-                    onChange={(e) => setCheckInDate(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2 text-xs rounded-lg border border-reserve-300 focus:outline-none focus:ring-2 focus:ring-reserve-500"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-[11px] uppercase font-bold text-charcoal-700 mb-1">
-                  Check-out Date
-                </label>
-                <div className="relative">
-                  <Calendar className="w-4 h-4 absolute left-3 top-3 text-reserve-600" />
-                  <input
-                    type="date"
-                    required
-                    value={checkOutDate}
-                    onChange={(e) => setCheckOutDate(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2 text-xs rounded-lg border border-reserve-300 focus:outline-none focus:ring-2 focus:ring-reserve-500"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-[11px] uppercase font-bold text-charcoal-700 mb-1">
-                  Total Guests
-                </label>
-                <div className="relative">
-                  <Users className="w-4 h-4 absolute left-3 top-3 text-reserve-600" />
-                  <select
-                    value={guests}
-                    onChange={(e) => setGuests(Number(e.target.value))}
-                    className="w-full pl-9 pr-3 py-2 text-xs rounded-lg border border-reserve-300 focus:outline-none focus:ring-2 focus:ring-reserve-500 font-medium"
-                  >
-                    <option value={1}>1 Guest</option>
-                    <option value={2}>2 Guests</option>
-                    <option value={3}>3 Guests</option>
-                    <option value={4}>4 Guests</option>
-                  </select>
-                </div>
-              </div>
-
-              <button
-                type="submit"
-                disabled={checkingAvailability}
-                className="w-full py-3 bg-reserve-900 hover:bg-charcoal-950 text-white rounded-lg text-xs uppercase tracking-wider font-semibold transition-all disabled:opacity-50 shadow"
-              >
-                {checkingAvailability ? 'Updating Rates...' : 'Update Availability'}
-              </button>
-            </form>
-
-            <div className="mt-6 pt-6 border-t border-reserve-200 space-y-3 text-xs text-charcoal-600">
-              <div className="flex items-center space-x-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                <span>Complimentary Artisanal Breakfast Included</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                <span>Free Cancellation up to 48 hours prior</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                <span>Best Rate Guarantee Direct from Hotel</span>
+                <p className="font-semibold text-stone-900">Check-In / Check-Out</p>
+                <p>Check-In from {property.checkInTime || '14:00'}</p>
+                <p>Check-Out until {property.checkOutTime || '11:00'}</p>
               </div>
             </div>
 
-            <div className="mt-6 p-4 rounded-xl bg-reserve-50 border border-reserve-200">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-reserve-800 block mb-1">
-                Direct Hotel Concierge
-              </span>
-              <p className="text-xs text-charcoal-800 font-semibold">{property.contactPhone}</p>
-              <p className="text-xs text-charcoal-600">{property.contactEmail}</p>
+            <div className="flex items-start space-x-2.5">
+              <Phone className="w-4 h-4 text-amber-700 flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="font-semibold text-stone-900">Direct Concierge</p>
+                <p>{property.contactPhone || '+91 22 6900 1100'}</p>
+              </div>
+            </div>
+
+            <div className="flex items-start space-x-2.5">
+              <Mail className="w-4 h-4 text-amber-700 flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="font-semibold text-stone-900">Concierge Desk</p>
+                <p>{property.contactEmail || 'concierge@bombayreserve.com'}</p>
+              </div>
             </div>
           </div>
+
+          <button
+            onClick={() => {
+              const el = document.getElementById('room-selection');
+              el?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="w-full py-3 bg-stone-900 hover:bg-black text-white text-xs uppercase tracking-widest font-semibold rounded-xl shadow-sm transition-all"
+          >
+            Select Room Category
+          </button>
+        </aside>
+      </section>
+
+      {/* Available Room Types */}
+      <section id="room-selection" className="space-y-6 border-t border-stone-200 pt-10">
+        <div>
+          <h2 className="text-3xl font-serif font-bold text-stone-950">
+            Select Your Suite
+          </h2>
+          <p className="text-stone-600 text-sm mt-1">
+            Tailored configurations and suites crafted for discerning travelers
+          </p>
+        </div>
+
+        <div className="space-y-6">
+          {property.roomTypes.map((rt) => {
+            const suiteCover =
+              rt.images?.[0] ||
+              property.heroImage ||
+              'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1200&q=80';
+
+            return (
+              <div
+                key={rt.id}
+                className="bg-white border border-stone-200 rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-all grid grid-cols-1 md:grid-cols-3 gap-6"
+              >
+                <div className="relative h-64 md:h-auto overflow-hidden">
+                  <img
+                    src={suiteCover}
+                    alt={rt.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+
+                <div className="p-6 md:p-8 md:col-span-2 flex flex-col justify-between space-y-6">
+                  <div className="space-y-4">
+                    <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
+                      <h3 className="font-serif text-2xl font-bold text-stone-950">
+                        {rt.name}
+                      </h3>
+                      <div className="text-right">
+                        <span className="text-2xl font-serif font-bold text-stone-950">
+                          ₹{rt.basePrice.toLocaleString('en-IN')}
+                        </span>
+                        <span className="text-xs text-stone-500"> / night</span>
+                      </div>
+                    </div>
+
+                    <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
+                      {rt.description}
+                    </p>
+
+                    <div className="flex flex-wrap items-center gap-4 text-xs text-stone-700 pt-2 border-t border-stone-100">
+                      <div className="flex items-center space-x-1.5">
+                        <Users className="w-4 h-4 text-amber-700" />
+                        <span>Up to {rt.maxGuests} Guests</span>
+                      </div>
+                      <div className="flex items-center space-x-1.5">
+                        <Bed className="w-4 h-4 text-amber-700" />
+                        <span>
+                          {rt.bedCount} {rt.bedType} Bed(s)
+                        </span>
+                      </div>
+                      {rt.roomSizeSqFt && (
+                        <span>{rt.roomSizeSqFt} sq. ft.</span>
+                      )}
+                    </div>
+
+                    {rt.amenities?.length > 0 && (
+                      <div className="flex flex-wrap gap-2 pt-1">
+                        {rt.amenities.map((item, idx) => (
+                          <span
+                            key={idx}
+                            className="bg-stone-100 text-stone-800 text-[11px] px-2.5 py-1 rounded-md"
+                          >
+                            {item}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex items-center justify-end pt-4 border-t border-stone-100">
+                    <button
+                      onClick={() => {
+                        navigate(
+                          `/book?propertyId=${property.id}&roomTypeId=${rt.id}`
+                        );
+                      }}
+                      className="px-6 py-2.5 bg-stone-900 hover:bg-black text-white text-xs uppercase tracking-widest font-semibold rounded-xl shadow-sm transition-all"
+                    >
+                      Reserve This Suite
+                    </button>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </section>
 
-      {/* Booking Checkout Modal */}
-      {selectedRoomType && (
-        <BookingModal
-          property={property}
-          roomType={selectedRoomType}
-          checkInDate={checkInDate}
-          checkOutDate={checkOutDate}
-          guests={guests}
-          isOpen={bookingModalOpen}
-          onClose={() => {
-            setBookingModalOpen(false);
-            setSelectedRoomType(null);
-            handleCheckAvailability();
-          }}
-        />
+      {/* Gallery Lightbox Modal */}
+      {galleryOpen && (
+        <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-md flex items-center justify-center p-4">
+          <button
+            onClick={() => setGalleryOpen(false)}
+            className="absolute top-6 right-6 p-2 rounded-full text-white/70 hover:text-white bg-white/10 hover:bg-white/20 transition-all"
+          >
+            <X className="w-6 h-6" />
+          </button>
+
+          <div className="relative max-w-5xl w-full flex items-center justify-center">
+            <button
+              onClick={() =>
+                setActivePhotoIdx((prev) => (prev > 0 ? prev - 1 : allImages.length - 1))
+              }
+              className="absolute left-2 p-3 rounded-full text-white/80 hover:text-white bg-black/50 hover:bg-black/70 transition-all"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+
+            <img
+              src={allImages[activePhotoIdx]}
+              alt={`Photo ${activePhotoIdx + 1}`}
+              className="max-h-[80vh] max-w-full object-contain rounded-2xl"
+            />
+
+            <button
+              onClick={() =>
+                setActivePhotoIdx((prev) => (prev < allImages.length - 1 ? prev + 1 : 0))
+              }
+              className="absolute right-2 p-3 rounded-full text-white/80 hover:text-white bg-black/50 hover:bg-black/70 transition-all"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
+          </div>
+
+          <div className="absolute bottom-6 text-white/70 text-xs tracking-widest uppercase font-semibold">
+            Photo {activePhotoIdx + 1} of {allImages.length}
+          </div>
+        </div>
       )}
     </div>
   );

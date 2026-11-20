@@ -1,97 +1,118 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { User } from '../types';
-import { apiRequest } from '../api/client';
+import { api, setAccessToken, getAccessToken } from '../api/client';
 
 interface AuthContextType {
   user: User | null;
   token: string | null;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<User>;
-  register: (email: string, password: string, fullName: string, phone?: string) => Promise<User>;
-  logout: () => void;
+  register: (email: string, password: string, name: string, phone?: string) => Promise<User>;
+  logout: () => Promise<void>;
   isStaff: boolean;
   isAdmin: boolean;
+  refreshUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(localStorage.getItem('tbr_token'));
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  // Silent session restore on app launch using httpOnly refresh token cookie
   useEffect(() => {
-    const fetchUser = async () => {
-      const storedToken = localStorage.getItem('tbr_token');
-      if (!storedToken) {
-        setIsLoading(false);
-        return;
-      }
+    let isMounted = true;
 
+    const restoreSession = async () => {
       try {
-        const res = await apiRequest<{ user: User }>('/auth/me');
-        setUser(res.user);
-      } catch (err) {
-        localStorage.removeItem('tbr_token');
-        setToken(null);
-        setUser(null);
+        const refreshRes = await api.post('/auth/refresh');
+        if (!isMounted) return;
+
+        const newAccessToken = refreshRes.data.accessToken;
+        setAccessToken(newAccessToken);
+
+        if (refreshRes.data.user) {
+          setUser(refreshRes.data.user);
+        } else {
+          const meRes = await api.get('/auth/me');
+          if (isMounted) setUser(meRes.data.user);
+        }
+      } catch {
+        // Unauthenticated visitor: in-memory token stays null, user stays null
+        if (isMounted) {
+          setAccessToken(null);
+          setUser(null);
+        }
       } finally {
-        setIsLoading(false);
+        if (isMounted) setIsLoading(false);
       }
     };
 
-    fetchUser();
+    restoreSession();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const refreshUser = useCallback(async () => {
+    try {
+      const res = await api.get('/auth/me');
+      setUser(res.data.user);
+    } catch {
+      setUser(null);
+      setAccessToken(null);
+    }
   }, []);
 
   const login = async (email: string, password: string): Promise<User> => {
-    const res = await apiRequest<{ user: User; token: string }>('/auth/login', {
-      method: 'POST',
-      body: JSON.stringify({ email, password }),
-    });
-
-    localStorage.setItem('tbr_token', res.token);
-    setToken(res.token);
-    setUser(res.user);
-    return res.user;
+    const res = await api.post('/auth/login', { email, password });
+    const { accessToken, user: loggedInUser } = res.data;
+    setAccessToken(accessToken);
+    setUser(loggedInUser);
+    return loggedInUser;
   };
 
   const register = async (
     email: string,
     password: string,
-    fullName: string,
+    name: string,
     phone?: string
   ): Promise<User> => {
-    const res = await apiRequest<{ user: User; token: string }>('/auth/register', {
-      method: 'POST',
-      body: JSON.stringify({ email, password, fullName, phone }),
-    });
-
-    localStorage.setItem('tbr_token', res.token);
-    setToken(res.token);
-    setUser(res.user);
-    return res.user;
+    const res = await api.post('/auth/register', { email, password, name, phone });
+    const { accessToken, user: registeredUser } = res.data;
+    setAccessToken(accessToken);
+    setUser(registeredUser);
+    return registeredUser;
   };
 
-  const logout = () => {
-    localStorage.removeItem('tbr_token');
-    setToken(null);
-    setUser(null);
+  const logout = async (): Promise<void> => {
+    try {
+      await api.post('/auth/logout');
+    } catch {
+      // Ignore logout network errors
+    } finally {
+      setAccessToken(null);
+      setUser(null);
+    }
   };
 
-  const isStaff = user?.role === 'STAFF' || user?.role === 'ADMIN';
   const isAdmin = user?.role === 'ADMIN';
+  const isStaff = user?.role === 'ADMIN';
 
   return (
     <AuthContext.Provider
       value={{
         user,
-        token,
+        token: getAccessToken(),
         isLoading,
         login,
         register,
         logout,
         isStaff,
         isAdmin,
+        refreshUser,
       }}
     >
       {children}

@@ -1,15 +1,23 @@
-export type Role = 'GUEST' | 'STAFF' | 'ADMIN';
+export type Role = 'GUEST' | 'ADMIN';
 export type BookingStatus = 'PENDING' | 'CONFIRMED' | 'CHECKED_IN' | 'CHECKED_OUT' | 'CANCELLED';
 export type RoomStatus = 'AVAILABLE' | 'OCCUPIED' | 'MAINTENANCE';
 export type EnquiryStatus = 'NEW' | 'CONTACTED' | 'QUOTED' | 'CLOSED';
-export type EventType = 'WEDDING' | 'CORPORATE' | 'PRIVATE_DINING' | 'SHOOT' | 'OTHER';
 
 export interface User {
   id: string;
   email: string;
-  fullName: string;
+  name: string;
+  fullName?: string;
   phone?: string | null;
   role: Role;
+}
+
+export interface RoomEntity {
+  id: string;
+  roomTypeId: string;
+  roomNumber: string;
+  floor: string;
+  status: RoomStatus;
 }
 
 export interface RoomType {
@@ -26,6 +34,7 @@ export interface RoomType {
   amenities: string[];
   images: string[];
   totalInventory: number;
+  rooms?: RoomEntity[];
 }
 
 export interface PropertySummary {
@@ -50,13 +59,41 @@ export interface PropertyDetail extends PropertySummary {
   roomTypes: RoomType[];
 }
 
-export interface RoomAvailability {
-  roomType: RoomType;
-  totalInventory: number;
-  availableInventory: number;
-  isAvailable: boolean;
-  totalPrice: number;
-  nights: number;
+export interface RoomSearchResultItem {
+  id: string;
+  roomTypeId: string;
+  propertyId: string;
+  propertyName: string;
+  propertySlug: string;
+  neighborhood: string;
+  roomTypeName: string;
+  roomTypeSlug: string;
+  description: string;
+  baseRateInr: number;
+  capacity: number;
+  amenities: string[];
+  images: string[];
+  availableRoomsCount: number;
+  availableRoomNumbers: string[];
+}
+
+export interface RoomSearchResponse {
+  rooms: RoomSearchResultItem[];
+  pagination: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  };
+}
+
+export interface BookingItem {
+  id: string;
+  bookingId: string;
+  roomTypeId: string;
+  roomId?: string | null;
+  nightPrice: number;
+  roomType?: RoomType;
 }
 
 export interface Booking {
@@ -73,66 +110,75 @@ export interface Booking {
   status: BookingStatus;
   specialRequests?: string | null;
   cancellationReason?: string | null;
-  items: {
-    id: string;
-    bookingId: string;
-    roomTypeId: string;
-    roomId?: string | null;
-    nightPrice: number;
-    roomType?: RoomType;
-  }[];
+  items: BookingItem[];
   createdAt: string;
+  updatedAt?: string;
 }
 
 export interface Enquiry {
   id: string;
-  propertyId?: string | null;
-  fullName: string;
+  userId?: string | null;
+  propertyId: string;
+  name: string;
   email: string;
-  phone: string;
-  eventType: EventType;
-  tentativeDate?: string | null;
-  estimatedGuests?: number | null;
   message: string;
   status: EnquiryStatus;
   internalNotes?: string | null;
   createdAt: string;
+  updatedAt?: string;
 }
 
-export interface StaffDashboardData {
-  metrics: {
-    todayCheckInsCount: number;
-    todayCheckOutsCount: number;
-    currentInHouseCount: number;
-    totalRooms: number;
-    availableRooms: number;
-    occupancyRate: number;
-    pendingEnquiriesCount: number;
-  };
-  todayArrivals: Booking[];
-  todayDepartures: Booking[];
-  recentBookings: Booking[];
+export interface PropertyMetricItem {
+  propertyId: string;
+  propertyName: string;
+  propertySlug: string;
+  totalRooms: number;
+  roomNightsAvailable: number;
+  roomNightsSold: number;
+  roomRevenueInr: number;
+  occupancyRate: number;
+  adr: number;
+  revpar: number;
 }
 
-export interface OccupancyGridData {
-  dates: string[];
-  grid: {
-    propertyId: string;
-    propertyName: string;
-    propertySlug: string;
-    roomTypes: {
-      roomTypeId: string;
-      roomTypeName: string;
-      basePrice: number;
-      totalInventory: number;
-      dates: {
-        date: string;
-        total: number;
-        booked: number;
-        available: number;
-      }[];
-    }[];
-  }[];
+export interface MetricSummary {
+  totalRooms: number;
+  roomNightsAvailable: number;
+  roomNightsSold: number;
+  roomRevenueInr: number;
+  occupancyRate: number;
+  adr: number;
+  revpar: number;
+}
+
+export interface DailyTrendItem {
+  date: string;
+  roomNightsAvailable: number;
+  roomNightsSold: number;
+  roomRevenueInr: number;
+  occupancyRate: number;
+  adr: number;
+  revpar: number;
+}
+
+export interface MonthlyTrendItem {
+  month: string;
+  roomNightsAvailable: number;
+  roomNightsSold: number;
+  roomRevenueInr: number;
+  occupancyRate: number;
+  adr: number;
+  revpar: number;
+}
+
+export interface DashboardMetricsResponse {
+  from: string;
+  to: string;
+  days: number;
+  overall: MetricSummary;
+  properties: PropertyMetricItem[];
+  dailyTrends: DailyTrendItem[];
+  monthlyTrends: MonthlyTrendItem[];
 }
 
 export interface ApiError {
