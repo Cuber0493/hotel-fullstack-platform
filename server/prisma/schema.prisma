@@ -1,0 +1,178 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  GUEST
+  STAFF
+  ADMIN
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CHECKED_IN
+  CHECKED_OUT
+  CANCELLED
+}
+
+enum RoomStatus {
+  AVAILABLE
+  OCCUPIED
+  MAINTENANCE
+}
+
+enum EnquiryStatus {
+  NEW
+  CONTACTED
+  QUOTED
+  CLOSED
+}
+
+enum EventType {
+  WEDDING
+  CORPORATE
+  PRIVATE_DINING
+  SHOOT
+  OTHER
+}
+
+model User {
+  id           String     @id @default(uuid())
+  email        String     @unique
+  passwordHash String
+  fullName     String
+  phone        String?
+  role         Role       @default(GUEST)
+  bookings     Booking[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@map("users")
+}
+
+model Property {
+  id            String      @id @default(uuid())
+  slug          String      @unique
+  name          String
+  neighborhood  String
+  address       String
+  description   String      @db.Text
+  heroImage     String
+  galleryImages String[]
+  amenities     String[]
+  checkInTime   String      @default("14:00")
+  checkOutTime  String      @default("11:00")
+  contactPhone  String      @default("+91 22 6900 1400")
+  contactEmail  String      @default("concierge@bombayreserve.com")
+  roomTypes     RoomType[]
+  enquiries     Enquiry[]
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([neighborhood])
+  @@map("properties")
+}
+
+model RoomType {
+  id             String        @id @default(uuid())
+  propertyId     String
+  property       Property      @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  slug           String
+  name           String
+  description    String        @db.Text
+  basePrice      Decimal       @db.Decimal(10, 2)
+  maxGuests      Int           @default(2)
+  bedCount       Int           @default(1)
+  bedType        String        @default("King Bed")
+  roomSizeSqFt   Int           @default(380)
+  amenities      String[]
+  images         String[]
+  totalInventory Int           @default(4)
+  rooms          Room[]
+  bookingItems   BookingItem[]
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@unique([propertyId, slug])
+  @@map("room_types")
+}
+
+model Room {
+  id           String        @id @default(uuid())
+  roomTypeId   String
+  roomType     RoomType      @relation(fields: [roomTypeId], references: [id], onDelete: Cascade)
+  roomNumber   String
+  floor        String
+  status       RoomStatus    @default(AVAILABLE)
+  bookingItems BookingItem[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@unique([roomTypeId, roomNumber])
+  @@map("rooms")
+}
+
+model Booking {
+  id                 String        @id @default(uuid())
+  bookingCode        String        @unique
+  userId             String?
+  user               User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+  guestName          String
+  guestEmail         String
+  guestPhone         String
+  checkInDate        DateTime      @db.Date
+  checkOutDate       DateTime      @db.Date
+  totalGuests        Int           @default(1)
+  totalAmount        Decimal       @db.Decimal(10, 2)
+  status             BookingStatus @default(CONFIRMED)
+  specialRequests    String?       @db.Text
+  cancellationReason String?       @db.Text
+  items              BookingItem[]
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+
+  @@index([guestEmail])
+  @@index([bookingCode])
+  @@index([checkInDate, checkOutDate])
+  @@map("bookings")
+}
+
+model BookingItem {
+  id         String   @id @default(uuid())
+  bookingId  String
+  booking    Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  roomTypeId String
+  roomType   RoomType @relation(fields: [roomTypeId], references: [id], onDelete: Restrict)
+  roomId     String?
+  room       Room?    @relation(fields: [roomId], references: [id], onDelete: SetNull)
+  nightPrice Decimal  @db.Decimal(10, 2)
+  createdAt  DateTime @default(now())
+
+  @@map("booking_items")
+}
+
+model Enquiry {
+  id              String        @id @default(uuid())
+  propertyId      String?
+  property        Property?     @relation(fields: [propertyId], references: [id], onDelete: SetNull)
+  fullName        String
+  email           String
+  phone           String
+  eventType       EventType     @default(OTHER)
+  tentativeDate   DateTime?     @db.Date
+  estimatedGuests Int?
+  message         String        @db.Text
+  status          EnquiryStatus @default(NEW)
+  internalNotes   String?       @db.Text
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@index([status])
+  @@map("enquiries")
+}
