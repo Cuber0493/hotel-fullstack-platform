@@ -116,6 +116,12 @@ export const roomSearchQuerySchema = z.object({
   limit: z.coerce.number().min(1).max(50).default(10),
 });
 
+export const adminMetricsQuerySchema = z.object({
+  propertyId: z.string().optional(),
+  from: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'from must be in YYYY-MM-DD format').optional(),
+  to: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'to must be in YYYY-MM-DD format').optional(),
+});
+
 export type PropertyQuery = z.infer<typeof propertyQuerySchema>;
 export type AvailabilityQuery = z.infer<typeof availabilityQuerySchema>;
 export type CreateBookingInput = z.infer<typeof createBookingSchema>;
@@ -126,3 +132,4 @@ export type CreatePropertyInput = z.infer<typeof createPropertySchema>;
 export type UpdatePropertyInput = z.infer<typeof updatePropertySchema>;
 export type CreateRoomInput = z.infer<typeof createRoomSchema>;
 export type RoomSearchQuery = z.infer<typeof roomSearchQuerySchema>;
+export type AdminMetricsQuery = z.infer<typeof adminMetricsQuerySchema>;

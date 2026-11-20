@@ -140,6 +140,7 @@ model Booking {
 
   @@index([roomId])
   @@index([checkIn, checkOut])
+  @@index([status, checkIn, checkOut])
   @@index([status])
   @@index([userId])
   @@map("bookings")

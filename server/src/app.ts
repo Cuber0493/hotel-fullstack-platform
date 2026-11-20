@@ -11,6 +11,7 @@ import { propertyRouter } from './routes/propertyRoutes.js';
 import { roomRouter } from './routes/roomRoutes.js';
 import { bookingRouter } from './routes/bookingRoutes.js';
 import { staffRouter } from './routes/staffRoutes.js';
+import { adminRouter } from './routes/adminRoutes.js';
 import { enquiryRouter } from './routes/enquiryRoutes.js';
 import { getHealth } from './controllers/healthController.js';
 import { NotFoundError } from './errors/AppError.js';
@@ -74,6 +75,9 @@ app.use('/api/v1/bookings', bookingRouter);
 
 app.use('/api/staff', staffRouter);
 app.use('/api/v1/staff', staffRouter);
+
+app.use('/api/admin', adminRouter);
+app.use('/api/v1/admin', adminRouter);
 
 app.use('/api/enquiries', enquiryRouter);
 app.use('/api/v1/enquiries', enquiryRouter);
