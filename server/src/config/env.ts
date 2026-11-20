@@ -11,6 +11,9 @@ const envSchema = z.object({
   JWT_EXPIRES_IN: z.string().default('15m'),
   JWT_REFRESH_EXPIRES_DAYS: z.coerce.number().default(7),
   USD_TO_INR_RATE: z.coerce.number().default(86.5),
+  ADMIN_EMAIL: z.string().email().default('admin@bombayreserve.com'),
+  ADMIN_PASSWORD: z.string().min(8).default('Password@123'),
+  ADMIN_NAME: z.string().default('Anya Mehta'),
   CORS_ORIGIN: z.string().default('http://localhost:5173'),
   LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace']).default('info'),
 });

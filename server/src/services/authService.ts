@@ -82,7 +82,7 @@ export class AuthService {
       name: displayName,
       fullName: displayName,
       phone: input.phone || null,
-      role: input.role || Role.GUEST,
+      role: Role.GUEST, // Public registration strictly creates GUEST users only
       createdAt: new Date(),
       updatedAt: new Date(),
     };

@@ -32,7 +32,10 @@ export const authenticate = (req: Request, _res: Response, next: NextFunction) =
     const decoded = jwt.verify(token, env.JWT_SECRET) as AuthUserPayload;
     req.user = decoded;
     next();
-  } catch (err) {
+  } catch (err: any) {
+    if (err?.name === 'TokenExpiredError') {
+      return next(new UnauthorizedError('Token has expired'));
+    }
     next(new UnauthorizedError('Invalid or expired authentication token'));
   }
 };
@@ -53,7 +56,21 @@ export const optionalAuthenticate = (req: Request, _res: Response, next: NextFun
   next();
 };
 
-export const requireRoles = (...allowedRoles: Role[]) => {
+export const requireRole = (role: Role | string) => {
+  return (req: Request, _res: Response, next: NextFunction) => {
+    if (!req.user) {
+      return next(new UnauthorizedError('Authentication required'));
+    }
+
+    if (req.user.role !== role) {
+      return next(new ForbiddenError(`Access requires ${role} role`));
+    }
+
+    next();
+  };
+};
+
+export const requireRoles = (...allowedRoles: (Role | string)[]) => {
   return (req: Request, _res: Response, next: NextFunction) => {
     if (!req.user) {
       return next(new UnauthorizedError('Authentication required'));

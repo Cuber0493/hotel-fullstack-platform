@@ -1,6 +1,7 @@
 import express, { Express } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
 import rateLimit from 'express-rate-limit';
 import { env } from './config/env.js';
 import { httpLogger } from './lib/logger.js';
@@ -28,6 +29,7 @@ app.use(
 
 // Body Parsing Middleware
 app.use(express.json({ limit: '1mb' }));
+app.use(cookieParser());
 
 // Global Rate Limiter (skip in test environment)
 if (env.NODE_ENV !== 'test') {
@@ -55,11 +57,21 @@ if (env.NODE_ENV !== 'test') {
 app.get('/api/health', getHealth);
 app.get('/health', getHealth);
 
-// Versioned API Routes
+// Authentication Routes (Standard /api/auth and versioned /api/v1/auth)
+app.use('/api/auth', authRouter);
 app.use('/api/v1/auth', authRouter);
+
+// Domain Routes (Mounted under /api and /api/v1)
+app.use('/api/properties', propertyRouter);
 app.use('/api/v1/properties', propertyRouter);
+
+app.use('/api/bookings', bookingRouter);
 app.use('/api/v1/bookings', bookingRouter);
+
+app.use('/api/staff', staffRouter);
 app.use('/api/v1/staff', staffRouter);
+
+app.use('/api/enquiries', enquiryRouter);
 app.use('/api/v1/enquiries', enquiryRouter);
 
 // Catch-All 404 Route
