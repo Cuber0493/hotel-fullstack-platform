@@ -2,6 +2,7 @@
   "name": "hotel-fullstack-platform",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "description": "Hotel Full-Stack Platform: Booking & enquiry platform for The Bombay Reserve boutique hotel group",
   "workspaces": [
     "server",
@@ -12,7 +13,9 @@
     "dev:client": "npm run dev --workspace=client",
     "build": "npm run build --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
-    "lint": "npm run lint --workspaces --if-present",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "typecheck": "npm run typecheck --workspaces --if-present"
   },
   "keywords": [
@@ -27,5 +30,9 @@
     "zod"
   ],
   "author": "The Bombay Reserve Engineering Team",
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "eslint": "^10.15.0",
+    "prettier": "^3.10.1"
+  }
 }
