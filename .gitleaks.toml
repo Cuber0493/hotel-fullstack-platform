@@ -1,0 +1,28 @@
+title = "Gitleaks Configuration for The Bombay Reserve Hotel Platform"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Global allowlist for mock/test credentials and documentation placeholders"
+paths = [
+  '''(?i)test''',
+  '''(?i)spec''',
+  '''package-lock\.json''',
+  '''server/prisma/seed\.ts''',
+  '''server/src/scripts/generateRawData\.ts'''
+]
+stopwords = [
+  "Password@123",
+  "AdminSecret#2026",
+  "GuestSecret#2026",
+  "dev_super_secret_jwt_key_for_testing_purposes_only_32_bytes"
+]
+regexes = [
+  '''Password@123''',
+  '''AdminSecret#2026''',
+  '''GuestSecret#2026''',
+  '''dev_super_secret_jwt_key_for_testing_purposes_only_32_bytes''',
+  '''123456789012345''',
+  '''abcdefghijklmnopqrstuvwxyz12345'''
+]

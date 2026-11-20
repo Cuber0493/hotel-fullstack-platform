@@ -66,7 +66,7 @@ export const LoginPage: React.FC = () => {
           </div>
         )}
 
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)} noValidate>
           <div className="space-y-4">
             <div>
               <label className="block text-xs uppercase tracking-wider font-semibold text-stone-700 mb-1.5">

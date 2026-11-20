@@ -212,7 +212,7 @@ export const BookingFlowPage: React.FC = () => {
         </div>
       )}
 
-      <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <form onSubmit={handleSubmit(onSubmit)} noValidate className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left Form: Stay details & Guest Information */}
         <div className="lg:col-span-2 space-y-6">
           {/* Stay Dates Box */}

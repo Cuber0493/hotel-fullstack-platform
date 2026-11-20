@@ -2,37 +2,88 @@ name: CI Pipeline
 
 on:
   push:
-    branches: [main, master]
+    branches: [ main, master ]
   pull_request:
-    branches: [main, master]
+    branches: [ main, master ]
 
 jobs:
-  validate-and-test:
+  test-and-build:
+    name: Test with Postgres, Secret Scan & Build
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
 
-      - name: Setup Node.js
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgrespassword
+          POSTGRES_DB: the_bombay_reserve_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      NODE_ENV: test
+      DATABASE_URL: "postgresql://postgres:postgrespassword@localhost:5432/the_bombay_reserve_test?schema=public"
+      JWT_SECRET: "ci_pipeline_super_secret_jwt_key_at_least_32_chars_long"
+      PORT: 5000
+      CLOUDINARY_CLOUD_NAME: "mock_cloud"
+      CLOUDINARY_API_KEY: "123456789012345"
+      CLOUDINARY_API_SECRET: "abcdefghijklmnopqrstuvwxyz12345"
+      CORS_ORIGIN: "http://localhost:5173"
+
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Gitleaks Secret Scanner
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          config-path: .gitleaks.toml
+
+      - name: Setup Node.js 20
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
 
       - name: Install Monorepo Dependencies
-        run: npm ci || npm install
+        run: npm ci
 
-      - name: Typecheck Server
-        run: npm run typecheck --workspace=server
+      - name: Typecheck Workspaces
+        run: npm run typecheck
 
-      - name: Typecheck Client
-        run: npm run typecheck --workspace=client
+      - name: Generate Prisma Client
+        run: npx --workspace=server prisma generate
 
-      - name: Run Server Tests
-        run: npm run test --workspace=server
+      - name: Deploy Database Migrations
+        run: npx --workspace=server prisma migrate deploy
 
-      - name: Run Client Tests
-        run: npm run test --workspace=client
+      - name: Seed Test Database
+        run: npm run prisma:seed --workspace=server
 
-      - name: Build All Workspaces
+      - name: Run Server Unit & Integration Tests with Coverage
+        run: npm run test:coverage --workspace=server
+
+      - name: Run Client Vitest & Testing Library Tests with Coverage
+        run: npm run test:coverage --workspace=client
+
+      - name: Build Monorepo (Server & Client)
         run: npm run build
+
+      - name: Upload Test Coverage Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-reports
+          path: |
+            server/coverage/
+            client/coverage/
