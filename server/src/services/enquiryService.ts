@@ -9,13 +9,10 @@ export class EnquiryService {
   async createEnquiry(input: CreateEnquiryInput): Promise<EnquiryEntity> {
     const enquiry: EnquiryEntity = {
       id: `enq-${randomUUID()}`,
-      propertyId: input.propertyId || null,
-      fullName: input.fullName,
+      userId: input.userId || null,
+      propertyId: input.propertyId,
+      name: input.name,
       email: input.email,
-      phone: input.phone,
-      eventType: input.eventType,
-      tentativeDate: input.tentativeDate ? new Date(input.tentativeDate) : null,
-      estimatedGuests: input.estimatedGuests || null,
       message: input.message,
       status: EnquiryStatus.NEW,
       internalNotes: null,
@@ -28,7 +25,6 @@ export class EnquiryService {
     logEnquiryEvent('created', {
       enquiryId: enquiry.id,
       propertyId: enquiry.propertyId,
-      eventType: enquiry.eventType,
       email: enquiry.email,
     });
 

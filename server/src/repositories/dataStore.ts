@@ -1,5 +1,5 @@
-import { Role, BookingStatus, RoomStatus, EnquiryStatus, EventType } from '@prisma/client';
-export { Role, BookingStatus, RoomStatus, EnquiryStatus, EventType };
+import { Role, BookingStatus, RoomStatus, EnquiryStatus } from '@prisma/client';
+export { Role, BookingStatus, RoomStatus, EnquiryStatus };
 import bcrypt from 'bcryptjs';
 import { MUMBAI_PROPERTIES } from '../data/seedData.js';
 
@@ -90,13 +90,10 @@ export interface BookingEntity {
 
 export interface EnquiryEntity {
   id: string;
-  propertyId?: string | null;
-  fullName: string;
+  userId?: string | null;
+  propertyId: string;
+  name: string;
   email: string;
-  phone: string;
-  eventType: EventType;
-  tentativeDate?: Date | null;
-  estimatedGuests?: number | null;
   message: string;
   status: EnquiryStatus;
   internalNotes?: string | null;
@@ -144,7 +141,7 @@ class DataStore {
         passwordHash: defaultHash,
         fullName: "Rohan D'Souza",
         phone: '+91 98200 11002',
-        role: Role.STAFF,
+        role: Role.ADMIN,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -296,12 +293,9 @@ class DataStore {
       {
         id: 'enq-1',
         propertyId: colaba.id,
-        fullName: 'Natasha Poonawalla',
+        userId: 'usr-guest-1',
+        name: 'Natasha Poonawalla',
         email: 'natasha.p@example.com',
-        phone: '+91 99200 88776',
-        eventType: EventType.WEDDING,
-        tentativeDate: new Date(today.getTime() + 60 * 24 * 60 * 60 * 1000),
-        estimatedGuests: 65,
         message: 'Looking to book the heritage courtyard and 10 suites for an intimate 2-day pre-wedding celebration.',
         status: EnquiryStatus.NEW,
         internalNotes: null,
@@ -311,12 +305,9 @@ class DataStore {
       {
         id: 'enq-2',
         propertyId: marineDrive.id,
-        fullName: 'Karan Mehra',
+        userId: null,
+        name: 'Karan Mehra',
         email: 'karan@investmumbai.com',
-        phone: '+91 98700 33221',
-        eventType: EventType.CORPORATE,
-        tentativeDate: new Date(today.getTime() + 20 * 24 * 60 * 60 * 1000),
-        estimatedGuests: 25,
         message: 'Annual venture partner dinner and sunset cocktails on the private rooftop lounge.',
         status: EnquiryStatus.CONTACTED,
         internalNotes: 'Initial quote sent for ₹1,85,000 including bespoke cocktail catering.',

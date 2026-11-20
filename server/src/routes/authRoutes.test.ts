@@ -70,7 +70,7 @@ describe('Authentication & User Lifecycle Endpoints', () => {
       expect(res.status).toBe(200);
       expect(res.body.token).toBeDefined();
       expect(res.body.user.email).toBe('staff@bombayreserve.com');
-      expect(res.body.user.role).toBe('STAFF');
+      expect(res.body.user.role).toBe('ADMIN');
       expect(res.body.user.passwordHash).toBeUndefined();
     });
 

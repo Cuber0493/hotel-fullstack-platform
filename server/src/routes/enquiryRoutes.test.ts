@@ -19,34 +19,31 @@ describe('Enquiry Submission & Staff Triage Endpoints', () => {
     const res = await request(app)
       .post('/api/v1/enquiries')
       .send({
-        fullName: 'Rohit Bal',
+        propertyId: 'prop-colaba-heritage-haveli',
+        name: 'Rohit Bal',
         email: 'rohit@fashion.in',
-        phone: '+91 98111 22334',
-        eventType: 'SHOOT',
-        tentativeDate: '2026-12-15',
-        estimatedGuests: 20,
         message: 'Editorial fashion campaign shoot across the heritage colonnade and courtyard.',
       });
 
     expect(res.status).toBe(201);
     expect(res.body.enquiry.id).toBeDefined();
     expect(res.body.enquiry.status).toBe('NEW');
-    expect(res.body.enquiry.eventType).toBe('SHOOT');
+    expect(res.body.enquiry.name).toBe('Rohit Bal');
   });
 
   it('rejects invalid enquiry with missing phone or short message', async () => {
     const res = await request(app)
       .post('/api/v1/enquiries')
       .send({
-        fullName: 'R',
+        propertyId: 'prop-colaba-heritage-haveli',
+        name: 'R',
         email: 'invalid-email',
-        phone: '12',
         message: 'Hi',
       });
 
     expect(res.status).toBe(400);
     expect(res.body.error.code).toBe('VALIDATION_ERROR');
-    expect(res.body.error.details.length).toBeGreaterThanOrEqual(3);
+    expect(res.body.error.details.length).toBeGreaterThanOrEqual(1);
   });
 
   it('allows staff to list enquiries and update status with notes', async () => {

@@ -12,8 +12,8 @@ import { Role } from '@prisma/client';
 
 export const staffRouter = Router();
 
-// All staff endpoints require authentication with STAFF or ADMIN role
-staffRouter.use(authenticate, requireRoles(Role.STAFF, Role.ADMIN));
+// All staff endpoints require authentication with ADMIN role
+staffRouter.use(authenticate, requireRoles(Role.ADMIN));
 
 staffRouter.get(
   '/dashboard',
