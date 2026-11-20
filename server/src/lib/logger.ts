@@ -24,7 +24,7 @@ export const httpLogger = pinoHttp({
 
 // Structured Event Loggers as specified in standing rules
 export const logAuthEvent = (
-  event: 'login' | 'logout' | 'register' | 'failed',
+  event: 'login' | 'logout' | 'register' | 'refresh' | 'failed',
   details: { userId?: string; email?: string; role?: string; ip?: string; reason?: string }
 ) => {
   logger.info({ event: `auth.${event}`, ...details }, `Auth Event: ${event.toUpperCase()}`);

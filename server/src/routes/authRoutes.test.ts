@@ -9,7 +9,7 @@ describe('Authentication & User Lifecycle Endpoints', () => {
   });
 
   describe('POST /api/v1/auth/register', () => {
-    it('successfully registers a new guest and returns sanitized user with JWT', async () => {
+    it('successfully registers a new guest and returns sanitized user with JWT access & refresh tokens', async () => {
       const res = await request(app)
         .post('/api/v1/auth/register')
         .send({
@@ -20,7 +20,9 @@ describe('Authentication & User Lifecycle Endpoints', () => {
         });
 
       expect(res.status).toBe(201);
-      expect(res.body.token).toBeDefined();
+      expect(res.body.accessToken).toBeDefined();
+      expect(res.body.refreshToken).toBeDefined();
+      expect(res.body.token).toBeDefined(); // backward compatibility
       expect(res.body.user.email).toBe('newguest@example.com');
       expect(res.body.user.fullName).toBe('Kavita Kapoor');
       expect(res.body.user.role).toBe('GUEST');
@@ -59,7 +61,7 @@ describe('Authentication & User Lifecycle Endpoints', () => {
   });
 
   describe('POST /api/v1/auth/login', () => {
-    it('successfully authenticates existing user and returns JWT', async () => {
+    it('successfully authenticates existing user and returns JWT token pair', async () => {
       const res = await request(app)
         .post('/api/v1/auth/login')
         .send({
@@ -68,6 +70,8 @@ describe('Authentication & User Lifecycle Endpoints', () => {
         });
 
       expect(res.status).toBe(200);
+      expect(res.body.accessToken).toBeDefined();
+      expect(res.body.refreshToken).toBeDefined();
       expect(res.body.token).toBeDefined();
       expect(res.body.user.email).toBe('staff@bombayreserve.com');
       expect(res.body.user.role).toBe('ADMIN');
@@ -100,6 +104,92 @@ describe('Authentication & User Lifecycle Endpoints', () => {
     });
   });
 
+  describe('POST /api/v1/auth/refresh (Token Rotation)', () => {
+    it('rotates refresh token: revokes old token and issues new access & refresh token pair', async () => {
+      // 1. Login to get initial tokens
+      const loginRes = await request(app)
+        .post('/api/v1/auth/login')
+        .send({
+          email: 'guest@example.com',
+          password: 'Password@123',
+        });
+
+      expect(loginRes.status).toBe(200);
+      const initialRefreshToken = loginRes.body.refreshToken;
+      const initialAccessToken = loginRes.body.accessToken;
+
+      // 2. Perform refresh
+      const refreshRes = await request(app)
+        .post('/api/v1/auth/refresh')
+        .send({ refreshToken: initialRefreshToken });
+
+      expect(refreshRes.status).toBe(200);
+      expect(refreshRes.body.accessToken).toBeDefined();
+      expect(refreshRes.body.refreshToken).toBeDefined();
+      expect(refreshRes.body.refreshToken).not.toBe(initialRefreshToken);
+      expect(refreshRes.body.user.email).toBe('guest@example.com');
+
+      // 3. New access token works for authenticated route
+      const meRes = await request(app)
+        .get('/api/v1/auth/me')
+        .set('Authorization', `Bearer ${refreshRes.body.accessToken}`);
+      expect(meRes.status).toBe(200);
+
+      // 4. Old refresh token cannot be reused (reuse detection)
+      const reuseRes = await request(app)
+        .post('/api/v1/auth/refresh')
+        .send({ refreshToken: initialRefreshToken });
+
+      expect(reuseRes.status).toBe(401);
+      expect(reuseRes.body.error.code).toBe('UNAUTHORIZED');
+    });
+
+    it('rejects invalid or malformed refresh token with 401 Unauthorized', async () => {
+      const res = await request(app)
+        .post('/api/v1/auth/refresh')
+        .send({ refreshToken: 'completely-invalid-refresh-token' });
+
+      expect(res.status).toBe(401);
+      expect(res.body.error.code).toBe('UNAUTHORIZED');
+    });
+
+    it('rejects empty refresh token with 400 Validation Error', async () => {
+      const res = await request(app)
+        .post('/api/v1/auth/refresh')
+        .send({ refreshToken: '' });
+
+      expect(res.status).toBe(400);
+      expect(res.body.error.code).toBe('VALIDATION_ERROR');
+    });
+  });
+
+  describe('POST /api/v1/auth/logout', () => {
+    it('successfully revokes active refresh token and prevents future refresh', async () => {
+      const loginRes = await request(app)
+        .post('/api/v1/auth/login')
+        .send({
+          email: 'guest@example.com',
+          password: 'Password@123',
+        });
+
+      const refreshToken = loginRes.body.refreshToken;
+
+      const logoutRes = await request(app)
+        .post('/api/v1/auth/logout')
+        .send({ refreshToken });
+
+      expect(logoutRes.status).toBe(200);
+      expect(logoutRes.body.message).toContain('logged out');
+
+      // Attempting to refresh with the logged-out token should fail
+      const refreshRes = await request(app)
+        .post('/api/v1/auth/refresh')
+        .send({ refreshToken });
+
+      expect(refreshRes.status).toBe(401);
+    });
+  });
+
   describe('GET /api/v1/auth/me', () => {
     it('returns current user profile when valid Bearer token provided', async () => {
       const loginRes = await request(app)
@@ -109,7 +199,7 @@ describe('Authentication & User Lifecycle Endpoints', () => {
           password: 'Password@123',
         });
 
-      const token = loginRes.body.token;
+      const token = loginRes.body.accessToken || loginRes.body.token;
 
       const meRes = await request(app)
         .get('/api/v1/auth/me')

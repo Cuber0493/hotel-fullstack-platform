@@ -1,8 +1,13 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { authService } from '../services/authService.js';
 import { validateBody } from '../middleware/validate.js';
-import { authenticate } from '../middleware/auth.js';
-import { registerSchema, loginSchema } from '../schemas/authSchemas.js';
+import { authenticate, optionalAuthenticate } from '../middleware/auth.js';
+import {
+  registerSchema,
+  loginSchema,
+  refreshTokenSchema,
+  logoutSchema,
+} from '../schemas/authSchemas.js';
 
 export const authRouter = Router();
 
@@ -25,6 +30,37 @@ authRouter.post(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const result = await authService.login(req.body, req.ip);
+      res.status(200).json(result);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+authRouter.post(
+  '/refresh',
+  validateBody(refreshTokenSchema),
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const result = await authService.refresh(req.body.refreshToken, req.ip);
+      res.status(200).json(result);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+authRouter.post(
+  '/logout',
+  optionalAuthenticate,
+  validateBody(logoutSchema),
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const result = await authService.logout(
+        req.body?.refreshToken,
+        req.user?.userId,
+        req.ip
+      );
       res.status(200).json(result);
     } catch (err) {
       next(err);

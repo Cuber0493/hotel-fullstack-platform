@@ -7,7 +7,8 @@ import { Role } from '@prisma/client';
 export interface AuthUserPayload {
   userId: string;
   email: string;
-  fullName: string;
+  name?: string;
+  fullName?: string;
   role: Role;
 }
 

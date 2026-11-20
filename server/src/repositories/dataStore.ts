@@ -7,11 +7,21 @@ export interface UserEntity {
   id: string;
   email: string;
   passwordHash: string;
-  fullName: string;
+  name: string;
+  fullName?: string;
   phone?: string | null;
   role: Role;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface RefreshTokenEntity {
+  id: string;
+  userId: string;
+  tokenHash: string;
+  expiresAt: Date;
+  revokedAt?: Date | null;
+  createdAt: Date;
 }
 
 export interface RoomEntity {
@@ -107,6 +117,7 @@ export interface EnquiryEntity {
  */
 class DataStore {
   public users: UserEntity[] = [];
+  public refreshTokens: RefreshTokenEntity[] = [];
   public properties: PropertyEntity[] = [];
   public bookings: BookingEntity[] = [];
   public enquiries: EnquiryEntity[] = [];
@@ -118,6 +129,7 @@ class DataStore {
 
   public seed() {
     this.users = [];
+    this.refreshTokens = [];
     this.properties = [];
     this.bookings = [];
     this.enquiries = [];
@@ -129,6 +141,7 @@ class DataStore {
         id: 'usr-admin-1',
         email: 'admin@bombayreserve.com',
         passwordHash: defaultHash,
+        name: 'Anya Mehta',
         fullName: 'Anya Mehta',
         phone: '+91 98200 11001',
         role: Role.ADMIN,
@@ -139,6 +152,7 @@ class DataStore {
         id: 'usr-staff-1',
         email: 'staff@bombayreserve.com',
         passwordHash: defaultHash,
+        name: "Rohan D'Souza",
         fullName: "Rohan D'Souza",
         phone: '+91 98200 11002',
         role: Role.ADMIN,
@@ -149,6 +163,7 @@ class DataStore {
         id: 'usr-guest-1',
         email: 'guest@example.com',
         passwordHash: defaultHash,
+        name: 'Priya Sharma',
         fullName: 'Priya Sharma',
         phone: '+91 98200 11003',
         role: Role.GUEST,
