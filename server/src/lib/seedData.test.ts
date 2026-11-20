@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { MUMBAI_PROPERTIES } from '../../prisma/seedData.js';
+import { MUMBAI_PROPERTIES } from '../data/seedData.js';
 
 describe('Seed Data Integrity', () => {
   it('contains exactly 14 unique boutique hotel properties in Mumbai', () => {

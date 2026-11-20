@@ -1,6 +1,6 @@
 import { PrismaClient, Role, BookingStatus, RoomStatus, EnquiryStatus, EventType } from '@prisma/client';
 import bcrypt from 'bcryptjs';
-import { MUMBAI_PROPERTIES } from './seedData.js';
+import { MUMBAI_PROPERTIES } from '../src/data/seedData.js';
 
 const prisma = new PrismaClient();
 
