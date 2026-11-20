@@ -1,0 +1,85 @@
+id,propertyId,roomType,roomNumber,status,baseRate
+room-colaba-colonial-101,prop-colaba-colonial,Heritage Grand Ste,101,AVAILABLE,8500
+room-colaba-colonial-102,prop-colaba-colonial,Heritage Grand Suite,102,AVAILABLE,8500
+room-colaba-colonial-201,prop-colaba-colonial,Victorian DLX,201,AVAILABLE,13500
+room-colaba-colonial-202,prop-colaba-colonial,Victorian Deluxe,202,AVAILABLE,13500
+room-colaba-colonial-301,prop-colaba-colonial,DLX King,301,AVAILABLE,18500
+room-colaba-colonial-302,prop-colaba-colonial,King Deluxe Room,302,AVAILABLE,18500
+room-marine-drive-bayview-101,prop-marine-drive-bayview,Queens Necklace Suite,101,AVAILABLE,8500
+room-marine-drive-bayview-102,prop-marine-drive-bayview,Bay View Suite,102,AVAILABLE,8500
+room-marine-drive-bayview-201,prop-marine-drive-bayview,Sea Breeze Rm,201,AVAILABLE,13500
+room-marine-drive-bayview-202,prop-marine-drive-bayview,Sea Breeze Room,202,AVAILABLE,13500
+room-marine-drive-bayview-301,prop-marine-drive-bayview,STD Queen,301,AVAILABLE,18500
+room-marine-drive-bayview-302,prop-marine-drive-bayview,Classic Queen,302,AVAILABLE,18500
+room-kala-ghoda-art-house-101,prop-kala-ghoda-art-house,Artist Studio Ste,101,AVAILABLE,8500
+room-kala-ghoda-art-house-102,prop-kala-ghoda-art-house,Artist Studio Suite,102,AVAILABLE,8500
+room-kala-ghoda-art-house-201,prop-kala-ghoda-art-house,Gallery Loft,201,AVAILABLE,13500
+room-kala-ghoda-art-house-202,prop-kala-ghoda-art-house,Gallery Loft,202,AVAILABLE,13500
+room-kala-ghoda-art-house-301,prop-kala-ghoda-art-house,Exec Ste,301,AVAILABLE,18500
+room-kala-ghoda-art-house-302,prop-kala-ghoda-art-house,Exec Suite,302,AVAILABLE,18500
+room-malabar-verandah-101,prop-malabar-verandah,Garden Pavilion,101,AVAILABLE,8500
+room-malabar-verandah-102,prop-malabar-verandah,Garden Pavilion,102,AVAILABLE,8500
+room-malabar-verandah-201,prop-malabar-verandah,Malabar Verandah Suite,201,AVAILABLE,13500
+room-malabar-verandah-202,prop-malabar-verandah,Malabar Verandah Suite,202,AVAILABLE,13500
+room-malabar-verandah-301,prop-malabar-verandah,DLX King,301,AVAILABLE,18500
+room-malabar-verandah-302,prop-malabar-verandah,King Deluxe Room,302,AVAILABLE,18500
+room-bandra-bohemian-villa-101,prop-bandra-bohemian-villa,Pali Hill Loft,101,AVAILABLE,8500
+room-bandra-bohemian-villa-102,prop-bandra-bohemian-villa,Pali Hill Loft,102,AVAILABLE,8500
+room-bandra-bohemian-villa-201,prop-bandra-bohemian-villa,Portuguese Courtyard Room,201,AVAILABLE,13500
+room-bandra-bohemian-villa-202,prop-bandra-bohemian-villa,Portuguese Courtyard Room,202,AVAILABLE,13500
+room-bandra-bohemian-villa-301,prop-bandra-bohemian-villa,STD Queen,301,AVAILABLE,18500
+room-bandra-bohemian-villa-302,prop-bandra-bohemian-villa,Classic Queen,302,AVAILABLE,18500
+room-bandstand-ocean-mist-101,prop-bandstand-ocean-mist,Horizon Penthouse,101,AVAILABLE,8500
+room-bandstand-ocean-mist-102,prop-bandstand-ocean-mist,Horizon Penthouse,102,AVAILABLE,8500
+room-bandstand-ocean-mist-201,prop-bandstand-ocean-mist,Coastal Premier Room,201,AVAILABLE,13500
+room-bandstand-ocean-mist-202,prop-bandstand-ocean-mist,Coastal Premier Room,202,AVAILABLE,13500
+room-bandstand-ocean-mist-301,prop-bandstand-ocean-mist,Exec Ste,301,AVAILABLE,18500
+room-bandstand-ocean-mist-302,prop-bandstand-ocean-mist,Exec Suite,302,AVAILABLE,18500
+room-juhu-palms-retreat-101,prop-juhu-palms-retreat,Sunset Beach Suite,101,AVAILABLE,8500
+room-juhu-palms-retreat-102,prop-juhu-palms-retreat,Sunset Beach Suite,102,AVAILABLE,8500
+room-juhu-palms-retreat-201,prop-juhu-palms-retreat,Palm Terrace Deluxe,201,AVAILABLE,13500
+room-juhu-palms-retreat-202,prop-juhu-palms-retreat,Palm Terrace Deluxe,202,AVAILABLE,13500
+room-juhu-palms-retreat-301,prop-juhu-palms-retreat,DLX King,301,AVAILABLE,18500
+room-juhu-palms-retreat-302,prop-juhu-palms-retreat,King Deluxe Room,302,AVAILABLE,18500
+room-versova-coastal-sanctuary-101,prop-versova-coastal-sanctuary,Fishermans Loft,101,AVAILABLE,8500
+room-versova-coastal-sanctuary-102,prop-versova-coastal-sanctuary,Fisherman's Loft,102,AVAILABLE,8500
+room-versova-coastal-sanctuary-201,prop-versova-coastal-sanctuary,Driftwood Studio,201,AVAILABLE,13500
+room-versova-coastal-sanctuary-202,prop-versova-coastal-sanctuary,Driftwood Studio,202,AVAILABLE,13500
+room-versova-coastal-sanctuary-301,prop-versova-coastal-sanctuary,STD Queen,301,AVAILABLE,18500
+room-versova-coastal-sanctuary-302,prop-versova-coastal-sanctuary,Classic Queen,302,AVAILABLE,18500
+room-worli-seaface-glasshouse-101,prop-worli-seaface-glasshouse,Sea Link Vista Suite,101,AVAILABLE,8500
+room-worli-seaface-glasshouse-102,prop-worli-seaface-glasshouse,Sea Link Vista Suite,102,AVAILABLE,8500
+room-worli-seaface-glasshouse-201,prop-worli-seaface-glasshouse,Executive Skylight,201,AVAILABLE,13500
+room-worli-seaface-glasshouse-202,prop-worli-seaface-glasshouse,Executive Skylight,202,AVAILABLE,13500
+room-worli-seaface-glasshouse-301,prop-worli-seaface-glasshouse,Pres Suite,301,AVAILABLE,18500
+room-worli-seaface-glasshouse-302,prop-worli-seaface-glasshouse,Royal Presidential Suite,302,AVAILABLE,18500
+room-powai-lake-pavilions-101,prop-powai-lake-pavilions,Lakeview Oasis,101,AVAILABLE,8500
+room-powai-lake-pavilions-102,prop-powai-lake-pavilions,Lakeview Oasis,102,AVAILABLE,8500
+room-powai-lake-pavilions-201,prop-powai-lake-pavilions,Forestview Studio,201,AVAILABLE,13500
+room-powai-lake-pavilions-202,prop-powai-lake-pavilions,Forestview Studio,202,AVAILABLE,13500
+room-powai-lake-pavilions-301,prop-powai-lake-pavilions,Exec Ste,301,AVAILABLE,18500
+room-powai-lake-pavilions-302,prop-powai-lake-pavilions,Exec Suite,302,AVAILABLE,18500
+room-bkc-executive-boutique-101,prop-bkc-executive-boutique,Executive Corner Suite,101,AVAILABLE,8500
+room-bkc-executive-boutique-102,prop-bkc-executive-boutique,Executive Corner Suite,102,AVAILABLE,8500
+room-bkc-executive-boutique-201,prop-bkc-executive-boutique,Minimalist Pod Deluxe,201,AVAILABLE,13500
+room-bkc-executive-boutique-202,prop-bkc-executive-boutique,Minimalist Pod Deluxe,202,AVAILABLE,13500
+room-bkc-executive-boutique-301,prop-bkc-executive-boutique,DLX King,301,AVAILABLE,18500
+room-bkc-executive-boutique-302,prop-bkc-executive-boutique,King Deluxe Room,302,AVAILABLE,18500
+room-fort-heritage-chambers-101,prop-fort-heritage-chambers,Governors Suite,101,AVAILABLE,8500
+room-fort-heritage-chambers-102,prop-fort-heritage-chambers,Governor's Suite,102,AVAILABLE,8500
+room-fort-heritage-chambers-201,prop-fort-heritage-chambers,Vault Room,201,AVAILABLE,13500
+room-fort-heritage-chambers-202,prop-fort-heritage-chambers,Vault Room,202,AVAILABLE,13500
+room-fort-heritage-chambers-301,prop-fort-heritage-chambers,STD Queen,301,AVAILABLE,18500
+room-fort-heritage-chambers-302,prop-fort-heritage-chambers,Classic Queen,302,AVAILABLE,18500
+room-dadar-parsi-haven-101,prop-dadar-parsi-haven,Heritage Balcony Room,101,AVAILABLE,8500
+room-dadar-parsi-haven-102,prop-dadar-parsi-haven,Heritage Balcony Room,102,AVAILABLE,8500
+room-dadar-parsi-haven-201,prop-dadar-parsi-haven,Deco Garden Suite,201,AVAILABLE,13500
+room-dadar-parsi-haven-202,prop-dadar-parsi-haven,Deco Garden Suite,202,AVAILABLE,13500
+room-dadar-parsi-haven-301,prop-dadar-parsi-haven,DLX King,301,AVAILABLE,18500
+room-dadar-parsi-haven-302,prop-dadar-parsi-haven,King Deluxe Room,302,AVAILABLE,18500
+room-girgaon-sunset-mansion-101,prop-girgaon-sunset-mansion,Sunset Promenade Suite,101,AVAILABLE,8500
+room-girgaon-sunset-mansion-102,prop-girgaon-sunset-mansion,Sunset Promenade Suite,102,AVAILABLE,8500
+room-girgaon-sunset-mansion-201,prop-girgaon-sunset-mansion,Coastal Studio,201,AVAILABLE,13500
+room-girgaon-sunset-mansion-202,prop-girgaon-sunset-mansion,Coastal Studio,202,AVAILABLE,13500
+room-girgaon-sunset-mansion-301,prop-girgaon-sunset-mansion,Exec Ste,301,AVAILABLE,18500
+room-girgaon-sunset-mansion-302,prop-girgaon-sunset-mansion,Exec Suite,302,AVAILABLE,18500

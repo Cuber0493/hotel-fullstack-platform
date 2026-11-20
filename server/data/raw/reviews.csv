@@ -1,0 +1,951 @@
+id,bookingId,propertyId,guestName,rating,comment,createdAt
+rev-raw-1,bk-raw-4,prop-bandra-bohemian-villa,Vikram Mehta,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-2,bk-raw-7,prop-versova-coastal-sanctuary,Sneha Singhania,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-3,bk-raw-10,prop-bkc-executive-boutique,Arjun Kapoor,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-4,bk-raw-13,prop-girgaon-sunset-mansion,Kavita Deshmukh,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-5,bk-raw-16,prop-kala-ghoda-art-house,Alexander Poonawalla,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-6,bk-raw-19,prop-bandstand-ocean-mist,Emma Godrej,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-7,bk-raw-22,prop-worli-seaface-glasshouse,Zara Merchant,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-8,bk-raw-25,prop-fort-heritage-chambers,Ananya Wadia,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-9,bk-raw-28,prop-colaba-colonial,Vikram Tata,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-10,bk-raw-31,prop-malabar-verandah,Sneha Ambani,4,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-11,bk-raw-34,prop-juhu-palms-retreat,Arjun Bhatia,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-12,bk-raw-37,prop-powai-lake-pavilions,Kavita Chopra,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-13,bk-raw-40,prop-dadar-parsi-haven,Alexander Nair,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-14,bk-raw-43,prop-marine-drive-bayview,Emma D'Souza,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-15,bk-raw-46,prop-bandra-bohemian-villa,Zara Smith,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-16,bk-raw-49,prop-versova-coastal-sanctuary,Ananya Johnson,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-17,bk-raw-52,prop-bkc-executive-boutique,Vikram Müller,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-18,bk-raw-55,prop-girgaon-sunset-mansion,Sneha Dubois,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-19,bk-raw-58,prop-kala-ghoda-art-house,Arjun Tanaka,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-20,bk-raw-61,prop-bandstand-ocean-mist,Kavita Patel,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-21,bk-raw-64,prop-worli-seaface-glasshouse,Alexander Fernandes,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-22,bk-raw-67,prop-fort-heritage-chambers,Emma Sharma,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-23,bk-raw-70,prop-colaba-colonial,Zara Mehta,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-24,bk-raw-73,prop-malabar-verandah,Ananya Singhania,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-25,bk-raw-76,prop-juhu-palms-retreat,Vikram Kapoor,4,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-26,bk-raw-79,prop-powai-lake-pavilions,Sneha Deshmukh,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-27,bk-raw-82,prop-dadar-parsi-haven,Arjun Poonawalla,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-28,bk-raw-85,prop-marine-drive-bayview,Kavita Godrej,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-29,bk-raw-88,prop-bandra-bohemian-villa,Alexander Merchant,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-30,bk-raw-91,prop-versova-coastal-sanctuary,Emma Wadia,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-31,bk-raw-94,prop-bkc-executive-boutique,Zara Tata,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-32,bk-raw-97,prop-girgaon-sunset-mansion,Ananya Ambani,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-33,bk-raw-100,prop-kala-ghoda-art-house,Vikram Bhatia,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-34,bk-raw-103,prop-bandstand-ocean-mist,Sneha Chopra,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-35,bk-raw-106,prop-worli-seaface-glasshouse,Arjun Nair,0,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-36,bk-raw-109,prop-fort-heritage-chambers,Kavita D'Souza,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-37,bk-raw-112,prop-colaba-colonial,Alexander Smith,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-38,bk-raw-115,prop-malabar-verandah,Emma Johnson,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-39,bk-raw-118,prop-juhu-palms-retreat,Zara Müller,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-40,bk-raw-121,prop-powai-lake-pavilions,Ananya Dubois,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-41,bk-raw-124,prop-dadar-parsi-haven,Vikram Tanaka,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-42,bk-raw-127,prop-marine-drive-bayview,Sneha Patel,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-43,bk-raw-130,prop-bandra-bohemian-villa,Arjun Fernandes,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-44,bk-raw-133,prop-versova-coastal-sanctuary,Kavita Sharma,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-45,bk-raw-136,prop-bkc-executive-boutique,Alexander Mehta,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-46,bk-raw-139,prop-girgaon-sunset-mansion,Emma Singhania,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-47,bk-raw-142,prop-kala-ghoda-art-house,Zara Kapoor,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-48,bk-raw-145,prop-bandstand-ocean-mist,Ananya Deshmukh,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-49,bk-raw-148,prop-worli-seaface-glasshouse,Vikram Poonawalla,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-50,bk-raw-151,prop-fort-heritage-chambers,Sneha Godrej,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-51,bk-raw-154,prop-colaba-colonial,Arjun Merchant,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-52,bk-raw-157,prop-malabar-verandah,Kavita Wadia,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-53,bk-raw-160,prop-juhu-palms-retreat,Alexander Tata,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-54,bk-raw-163,prop-powai-lake-pavilions,Emma Ambani,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-55,bk-raw-166,prop-dadar-parsi-haven,Zara Bhatia,4,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-56,bk-raw-169,prop-marine-drive-bayview,Ananya Chopra,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-57,bk-raw-172,prop-bandra-bohemian-villa,Vikram Nair,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-58,bk-raw-175,prop-versova-coastal-sanctuary,Sneha D'Souza,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-59,bk-raw-178,prop-bkc-executive-boutique,Arjun Smith,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-60,bk-raw-181,prop-girgaon-sunset-mansion,Kavita Johnson,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-61,bk-raw-184,prop-kala-ghoda-art-house,Alexander Müller,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-62,bk-raw-187,prop-bandstand-ocean-mist,Emma Dubois,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-63,bk-raw-190,prop-worli-seaface-glasshouse,Zara Tanaka,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-64,bk-raw-193,prop-fort-heritage-chambers,Ananya Patel,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-65,bk-raw-196,prop-colaba-colonial,Vikram Fernandes,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-66,bk-raw-199,prop-malabar-verandah,Sneha Sharma,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-67,bk-raw-202,prop-juhu-palms-retreat,Arjun Mehta,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-68,bk-raw-205,prop-powai-lake-pavilions,Kavita Singhania,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-69,bk-raw-208,prop-dadar-parsi-haven,Alexander Kapoor,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-70,bk-raw-211,prop-marine-drive-bayview,Emma Deshmukh,0,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-71,bk-raw-214,prop-bandra-bohemian-villa,Zara Poonawalla,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-72,bk-raw-217,prop-versova-coastal-sanctuary,Ananya Godrej,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-73,bk-raw-220,prop-bkc-executive-boutique,Vikram Merchant,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-74,bk-raw-223,prop-girgaon-sunset-mansion,Sneha Wadia,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-75,bk-raw-226,prop-kala-ghoda-art-house,Arjun Tata,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-76,bk-raw-229,prop-bandstand-ocean-mist,Kavita Ambani,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-77,bk-raw-232,prop-worli-seaface-glasshouse,Alexander Bhatia,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-78,bk-raw-235,prop-fort-heritage-chambers,Emma Chopra,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-79,bk-raw-238,prop-colaba-colonial,Zara Nair,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-80,bk-raw-241,prop-malabar-verandah,Ananya D'Souza,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-81,bk-raw-244,prop-juhu-palms-retreat,Vikram Smith,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-82,bk-raw-247,prop-powai-lake-pavilions,Sneha Johnson,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-83,bk-raw-250,prop-dadar-parsi-haven,Arjun Müller,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-84,bk-raw-253,prop-marine-drive-bayview,Kavita Dubois,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-85,bk-raw-256,prop-bandra-bohemian-villa,Alexander Tanaka,4,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-86,bk-raw-259,prop-versova-coastal-sanctuary,Emma Patel,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-87,bk-raw-262,prop-bkc-executive-boutique,Zara Fernandes,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-88,bk-raw-265,prop-girgaon-sunset-mansion,Ananya Sharma,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-89,bk-raw-268,prop-kala-ghoda-art-house,Vikram Mehta,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-90,bk-raw-271,prop-bandstand-ocean-mist,Sneha Singhania,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-91,bk-raw-274,prop-worli-seaface-glasshouse,Arjun Kapoor,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-92,bk-raw-277,prop-fort-heritage-chambers,Kavita Deshmukh,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-93,bk-raw-280,prop-colaba-colonial,Alexander Poonawalla,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-94,bk-raw-283,prop-malabar-verandah,Emma Godrej,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-95,bk-raw-286,prop-juhu-palms-retreat,Zara Merchant,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-96,bk-raw-289,prop-powai-lake-pavilions,Ananya Wadia,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-97,bk-raw-292,prop-dadar-parsi-haven,Vikram Tata,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-98,bk-raw-295,prop-marine-drive-bayview,Sneha Ambani,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-99,bk-raw-298,prop-bandra-bohemian-villa,Arjun Bhatia,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-100,bk-raw-301,prop-versova-coastal-sanctuary,Kavita Chopra,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-101,bk-raw-304,prop-bkc-executive-boutique,Alexander Nair,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-102,bk-raw-307,prop-girgaon-sunset-mansion,Emma D'Souza,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-103,bk-raw-310,prop-kala-ghoda-art-house,Zara Smith,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-104,bk-raw-313,prop-bandstand-ocean-mist,Ananya Johnson,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-105,bk-raw-316,prop-worli-seaface-glasshouse,Vikram Müller,0,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-106,bk-raw-319,prop-fort-heritage-chambers,Sneha Dubois,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-107,bk-raw-322,prop-colaba-colonial,Arjun Tanaka,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-108,bk-raw-325,prop-malabar-verandah,Kavita Patel,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-109,bk-raw-328,prop-juhu-palms-retreat,Alexander Fernandes,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-110,bk-raw-331,prop-powai-lake-pavilions,Emma Sharma,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-111,bk-raw-334,prop-dadar-parsi-haven,Zara Mehta,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-112,bk-raw-337,prop-marine-drive-bayview,Ananya Singhania,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-113,bk-raw-340,prop-bandra-bohemian-villa,Vikram Kapoor,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-114,bk-raw-343,prop-versova-coastal-sanctuary,Sneha Deshmukh,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-115,bk-raw-346,prop-bkc-executive-boutique,Arjun Poonawalla,4,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-116,bk-raw-349,prop-girgaon-sunset-mansion,Kavita Godrej,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-117,bk-raw-352,prop-kala-ghoda-art-house,Alexander Merchant,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-118,bk-raw-355,prop-bandstand-ocean-mist,Emma Wadia,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-119,bk-raw-358,prop-worli-seaface-glasshouse,Zara Tata,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-120,bk-raw-361,prop-fort-heritage-chambers,Ananya Ambani,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-121,bk-raw-364,prop-colaba-colonial,Vikram Bhatia,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-122,bk-raw-367,prop-malabar-verandah,Sneha Chopra,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-123,bk-raw-370,prop-juhu-palms-retreat,Arjun Nair,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-124,bk-raw-373,prop-powai-lake-pavilions,Kavita D'Souza,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-125,bk-raw-376,prop-dadar-parsi-haven,Alexander Smith,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-126,bk-raw-379,prop-marine-drive-bayview,Emma Johnson,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-127,bk-raw-382,prop-bandra-bohemian-villa,Zara Müller,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-128,bk-raw-385,prop-versova-coastal-sanctuary,Ananya Dubois,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-129,bk-raw-388,prop-bkc-executive-boutique,Vikram Tanaka,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-130,bk-raw-391,prop-girgaon-sunset-mansion,Sneha Patel,4,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-131,bk-raw-394,prop-kala-ghoda-art-house,Arjun Fernandes,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-132,bk-raw-397,prop-bandstand-ocean-mist,Kavita Sharma,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-133,bk-raw-400,prop-worli-seaface-glasshouse,Alexander Mehta,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-134,bk-raw-403,prop-fort-heritage-chambers,Emma Singhania,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-135,bk-raw-406,prop-colaba-colonial,Zara Kapoor,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-136,bk-raw-409,prop-malabar-verandah,Ananya Deshmukh,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-137,bk-raw-412,prop-juhu-palms-retreat,Vikram Poonawalla,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-138,bk-raw-415,prop-powai-lake-pavilions,Sneha Godrej,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-139,bk-raw-418,prop-dadar-parsi-haven,Arjun Merchant,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-140,bk-raw-421,prop-marine-drive-bayview,Kavita Wadia,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-141,bk-raw-424,prop-bandra-bohemian-villa,Alexander Tata,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-142,bk-raw-427,prop-versova-coastal-sanctuary,Emma Ambani,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-143,bk-raw-430,prop-bkc-executive-boutique,Zara Bhatia,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-144,bk-raw-433,prop-girgaon-sunset-mansion,Ananya Chopra,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-145,bk-raw-436,prop-kala-ghoda-art-house,Vikram Nair,4,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-146,bk-raw-439,prop-bandstand-ocean-mist,Sneha D'Souza,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-147,bk-raw-442,prop-worli-seaface-glasshouse,Arjun Smith,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-148,bk-raw-445,prop-fort-heritage-chambers,Kavita Johnson,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-149,bk-raw-448,prop-colaba-colonial,Alexander Müller,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-150,bk-raw-451,prop-malabar-verandah,Emma Dubois,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-151,bk-raw-454,prop-juhu-palms-retreat,Zara Tanaka,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-152,bk-raw-457,prop-powai-lake-pavilions,Ananya Patel,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-153,bk-raw-460,prop-dadar-parsi-haven,Vikram Fernandes,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-154,bk-raw-463,prop-marine-drive-bayview,Sneha Sharma,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-155,bk-raw-466,prop-bandra-bohemian-villa,Arjun Mehta,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-156,bk-raw-469,prop-versova-coastal-sanctuary,Kavita Singhania,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-157,bk-raw-472,prop-bkc-executive-boutique,Alexander Kapoor,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-158,bk-raw-475,prop-girgaon-sunset-mansion,Emma Deshmukh,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-159,bk-raw-478,prop-kala-ghoda-art-house,Zara Poonawalla,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-160,bk-raw-481,prop-bandstand-ocean-mist,Ananya Godrej,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-161,bk-raw-484,prop-worli-seaface-glasshouse,Vikram Merchant,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-162,bk-raw-487,prop-fort-heritage-chambers,Sneha Wadia,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-163,bk-raw-490,prop-colaba-colonial,Arjun Tata,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-164,bk-raw-493,prop-malabar-verandah,Kavita Ambani,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-165,bk-raw-496,prop-juhu-palms-retreat,Alexander Bhatia,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-166,bk-raw-499,prop-powai-lake-pavilions,Emma Chopra,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-167,bk-raw-502,prop-dadar-parsi-haven,Zara Nair,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-168,bk-raw-505,prop-marine-drive-bayview,Ananya D'Souza,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-169,bk-raw-508,prop-bandra-bohemian-villa,Vikram Smith,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-170,bk-raw-511,prop-versova-coastal-sanctuary,Sneha Johnson,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-171,bk-raw-514,prop-bkc-executive-boutique,Arjun Müller,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-172,bk-raw-517,prop-girgaon-sunset-mansion,Kavita Dubois,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-173,bk-raw-520,prop-kala-ghoda-art-house,Alexander Tanaka,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-174,bk-raw-523,prop-bandstand-ocean-mist,Emma Patel,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-175,bk-raw-526,prop-worli-seaface-glasshouse,Zara Fernandes,0,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-176,bk-raw-529,prop-fort-heritage-chambers,Ananya Sharma,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-177,bk-raw-532,prop-colaba-colonial,Vikram Mehta,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-178,bk-raw-535,prop-malabar-verandah,Sneha Singhania,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-179,bk-raw-538,prop-juhu-palms-retreat,Arjun Kapoor,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-180,bk-raw-541,prop-powai-lake-pavilions,Kavita Deshmukh,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-181,bk-raw-544,prop-dadar-parsi-haven,Alexander Poonawalla,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-182,bk-raw-547,prop-marine-drive-bayview,Emma Godrej,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-183,bk-raw-550,prop-bandra-bohemian-villa,Zara Merchant,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-184,bk-raw-553,prop-versova-coastal-sanctuary,Ananya Wadia,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-185,bk-raw-556,prop-bkc-executive-boutique,Vikram Tata,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-186,bk-raw-559,prop-girgaon-sunset-mansion,Sneha Ambani,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-187,bk-raw-562,prop-kala-ghoda-art-house,Arjun Bhatia,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-188,bk-raw-565,prop-bandstand-ocean-mist,Kavita Chopra,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-189,bk-raw-568,prop-worli-seaface-glasshouse,Alexander Nair,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-190,bk-raw-571,prop-fort-heritage-chambers,Emma D'Souza,4,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-191,bk-raw-574,prop-colaba-colonial,Zara Smith,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-192,bk-raw-577,prop-malabar-verandah,Ananya Johnson,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-193,bk-raw-580,prop-juhu-palms-retreat,Vikram Müller,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-194,bk-raw-583,prop-powai-lake-pavilions,Sneha Dubois,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-195,bk-raw-586,prop-dadar-parsi-haven,Arjun Tanaka,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-196,bk-raw-589,prop-marine-drive-bayview,Kavita Patel,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-197,bk-raw-592,prop-bandra-bohemian-villa,Alexander Fernandes,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-198,bk-raw-595,prop-versova-coastal-sanctuary,Emma Sharma,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-199,bk-raw-598,prop-bkc-executive-boutique,Zara Mehta,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-200,bk-raw-601,prop-girgaon-sunset-mansion,Ananya Singhania,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-201,bk-raw-604,prop-kala-ghoda-art-house,Vikram Kapoor,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-202,bk-raw-607,prop-bandstand-ocean-mist,Sneha Deshmukh,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-203,bk-raw-610,prop-worli-seaface-glasshouse,Arjun Poonawalla,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-204,bk-raw-613,prop-fort-heritage-chambers,Kavita Godrej,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-205,bk-raw-616,prop-colaba-colonial,Alexander Merchant,4,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-206,bk-raw-619,prop-malabar-verandah,Emma Wadia,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-207,bk-raw-622,prop-juhu-palms-retreat,Zara Tata,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-208,bk-raw-625,prop-powai-lake-pavilions,Ananya Ambani,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-209,bk-raw-628,prop-dadar-parsi-haven,Vikram Bhatia,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-210,bk-raw-631,prop-marine-drive-bayview,Sneha Chopra,0,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-211,bk-raw-634,prop-bandra-bohemian-villa,Arjun Nair,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-212,bk-raw-637,prop-versova-coastal-sanctuary,Kavita D'Souza,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-213,bk-raw-640,prop-bkc-executive-boutique,Alexander Smith,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-214,bk-raw-643,prop-girgaon-sunset-mansion,Emma Johnson,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-215,bk-raw-646,prop-kala-ghoda-art-house,Zara Müller,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-216,bk-raw-649,prop-bandstand-ocean-mist,Ananya Dubois,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-217,bk-raw-652,prop-worli-seaface-glasshouse,Vikram Tanaka,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-218,bk-raw-655,prop-fort-heritage-chambers,Sneha Patel,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-219,bk-raw-658,prop-colaba-colonial,Arjun Fernandes,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-220,bk-raw-661,prop-malabar-verandah,Kavita Sharma,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-221,bk-raw-664,prop-juhu-palms-retreat,Alexander Mehta,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-222,bk-raw-667,prop-powai-lake-pavilions,Emma Singhania,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-223,bk-raw-670,prop-dadar-parsi-haven,Zara Kapoor,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-224,bk-raw-673,prop-marine-drive-bayview,Ananya Deshmukh,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-225,bk-raw-676,prop-bandra-bohemian-villa,Vikram Poonawalla,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-226,bk-raw-679,prop-versova-coastal-sanctuary,Sneha Godrej,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-227,bk-raw-682,prop-bkc-executive-boutique,Arjun Merchant,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-228,bk-raw-685,prop-girgaon-sunset-mansion,Kavita Wadia,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-229,bk-raw-688,prop-kala-ghoda-art-house,Alexander Tata,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-230,bk-raw-691,prop-bandstand-ocean-mist,Emma Ambani,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-231,bk-raw-694,prop-worli-seaface-glasshouse,Zara Bhatia,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-232,bk-raw-697,prop-fort-heritage-chambers,Ananya Chopra,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-233,bk-raw-700,prop-colaba-colonial,Vikram Nair,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-234,bk-raw-703,prop-malabar-verandah,Sneha D'Souza,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-235,bk-raw-706,prop-juhu-palms-retreat,Arjun Smith,4,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-236,bk-raw-709,prop-powai-lake-pavilions,Kavita Johnson,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-237,bk-raw-712,prop-dadar-parsi-haven,Alexander Müller,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-238,bk-raw-715,prop-marine-drive-bayview,Emma Dubois,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-239,bk-raw-718,prop-bandra-bohemian-villa,Zara Tanaka,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-240,bk-raw-721,prop-versova-coastal-sanctuary,Ananya Patel,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-241,bk-raw-724,prop-bkc-executive-boutique,Vikram Fernandes,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-242,bk-raw-727,prop-girgaon-sunset-mansion,Sneha Sharma,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-243,bk-raw-730,prop-kala-ghoda-art-house,Arjun Mehta,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-244,bk-raw-733,prop-bandstand-ocean-mist,Kavita Singhania,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-245,bk-raw-736,prop-worli-seaface-glasshouse,Alexander Kapoor,0,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-246,bk-raw-739,prop-fort-heritage-chambers,Emma Deshmukh,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-247,bk-raw-742,prop-colaba-colonial,Zara Poonawalla,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-248,bk-raw-745,prop-malabar-verandah,Ananya Godrej,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-249,bk-raw-748,prop-juhu-palms-retreat,Vikram Merchant,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-250,bk-raw-751,prop-powai-lake-pavilions,Sneha Wadia,4,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-251,bk-raw-754,prop-dadar-parsi-haven,Arjun Tata,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-252,bk-raw-757,prop-marine-drive-bayview,Kavita Ambani,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-253,bk-raw-760,prop-bandra-bohemian-villa,Alexander Bhatia,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-254,bk-raw-763,prop-versova-coastal-sanctuary,Emma Chopra,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-255,bk-raw-766,prop-bkc-executive-boutique,Zara Nair,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-256,bk-raw-769,prop-girgaon-sunset-mansion,Ananya D'Souza,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-257,bk-raw-772,prop-kala-ghoda-art-house,Vikram Smith,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-258,bk-raw-775,prop-bandstand-ocean-mist,Sneha Johnson,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-259,bk-raw-778,prop-worli-seaface-glasshouse,Arjun Müller,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-260,bk-raw-781,prop-fort-heritage-chambers,Kavita Dubois,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-261,bk-raw-784,prop-colaba-colonial,Alexander Tanaka,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-262,bk-raw-787,prop-malabar-verandah,Emma Patel,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-263,bk-raw-790,prop-juhu-palms-retreat,Zara Fernandes,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-264,bk-raw-793,prop-powai-lake-pavilions,Ananya Sharma,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-265,bk-raw-796,prop-dadar-parsi-haven,Vikram Mehta,4,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-266,bk-raw-799,prop-marine-drive-bayview,Sneha Singhania,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-267,bk-raw-802,prop-bandra-bohemian-villa,Arjun Kapoor,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-268,bk-raw-805,prop-versova-coastal-sanctuary,Kavita Deshmukh,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-269,bk-raw-808,prop-bkc-executive-boutique,Alexander Poonawalla,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-270,bk-raw-811,prop-girgaon-sunset-mansion,Emma Godrej,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-271,bk-raw-814,prop-kala-ghoda-art-house,Zara Merchant,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-272,bk-raw-817,prop-bandstand-ocean-mist,Ananya Wadia,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-273,bk-raw-820,prop-worli-seaface-glasshouse,Vikram Tata,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-274,bk-raw-823,prop-fort-heritage-chambers,Sneha Ambani,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-275,bk-raw-826,prop-colaba-colonial,Arjun Bhatia,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-276,bk-raw-829,prop-malabar-verandah,Kavita Chopra,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-277,bk-raw-832,prop-juhu-palms-retreat,Alexander Nair,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-278,bk-raw-835,prop-powai-lake-pavilions,Emma D'Souza,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-279,bk-raw-838,prop-dadar-parsi-haven,Zara Smith,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-280,bk-raw-841,prop-marine-drive-bayview,Ananya Johnson,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-281,bk-raw-844,prop-bandra-bohemian-villa,Vikram Müller,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-282,bk-raw-847,prop-versova-coastal-sanctuary,Sneha Dubois,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-283,bk-raw-850,prop-bkc-executive-boutique,Arjun Tanaka,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-284,bk-raw-853,prop-girgaon-sunset-mansion,Kavita Patel,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-285,bk-raw-856,prop-kala-ghoda-art-house,Alexander Fernandes,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-286,bk-raw-859,prop-bandstand-ocean-mist,Emma Sharma,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-287,bk-raw-862,prop-worli-seaface-glasshouse,Zara Mehta,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-288,bk-raw-865,prop-fort-heritage-chambers,Ananya Singhania,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-289,bk-raw-868,prop-colaba-colonial,Vikram Kapoor,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-290,bk-raw-871,prop-malabar-verandah,Sneha Deshmukh,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-291,bk-raw-874,prop-juhu-palms-retreat,Arjun Poonawalla,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-292,bk-raw-877,prop-powai-lake-pavilions,Kavita Godrej,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-293,bk-raw-880,prop-dadar-parsi-haven,Alexander Merchant,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-294,bk-raw-883,prop-marine-drive-bayview,Emma Wadia,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-295,bk-raw-886,prop-bandra-bohemian-villa,Zara Tata,4,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-296,bk-raw-889,prop-versova-coastal-sanctuary,Ananya Ambani,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-297,bk-raw-892,prop-bkc-executive-boutique,Vikram Bhatia,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-298,bk-raw-895,prop-girgaon-sunset-mansion,Sneha Chopra,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-299,bk-raw-898,prop-kala-ghoda-art-house,Arjun Nair,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-300,bk-raw-901,prop-bandstand-ocean-mist,Kavita D'Souza,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-301,bk-raw-904,prop-worli-seaface-glasshouse,Alexander Smith,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-302,bk-raw-907,prop-fort-heritage-chambers,Emma Johnson,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-303,bk-raw-910,prop-colaba-colonial,Zara Müller,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-304,bk-raw-913,prop-malabar-verandah,Ananya Dubois,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-305,bk-raw-916,prop-juhu-palms-retreat,Vikram Tanaka,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-306,bk-raw-919,prop-powai-lake-pavilions,Sneha Patel,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-307,bk-raw-922,prop-dadar-parsi-haven,Arjun Fernandes,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-308,bk-raw-925,prop-marine-drive-bayview,Kavita Sharma,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-309,bk-raw-928,prop-bandra-bohemian-villa,Alexander Mehta,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-310,bk-raw-931,prop-versova-coastal-sanctuary,Emma Singhania,4,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-311,bk-raw-934,prop-bkc-executive-boutique,Zara Kapoor,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-312,bk-raw-937,prop-girgaon-sunset-mansion,Ananya Deshmukh,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-313,bk-raw-940,prop-kala-ghoda-art-house,Vikram Poonawalla,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-314,bk-raw-943,prop-bandstand-ocean-mist,Sneha Godrej,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-315,bk-raw-946,prop-worli-seaface-glasshouse,Arjun Merchant,0,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-316,bk-raw-949,prop-fort-heritage-chambers,Kavita Wadia,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-317,bk-raw-952,prop-colaba-colonial,Alexander Tata,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-318,bk-raw-955,prop-malabar-verandah,Emma Ambani,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-319,bk-raw-958,prop-juhu-palms-retreat,Zara Bhatia,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-320,bk-raw-961,prop-powai-lake-pavilions,Ananya Chopra,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-321,bk-raw-964,prop-dadar-parsi-haven,Vikram Nair,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-322,bk-raw-967,prop-marine-drive-bayview,Sneha D'Souza,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-323,bk-raw-970,prop-bandra-bohemian-villa,Arjun Smith,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-324,bk-raw-973,prop-versova-coastal-sanctuary,Kavita Johnson,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-325,bk-raw-976,prop-bkc-executive-boutique,Alexander Müller,4,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-326,bk-raw-979,prop-girgaon-sunset-mansion,Emma Dubois,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-327,bk-raw-982,prop-kala-ghoda-art-house,Zara Tanaka,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-328,bk-raw-985,prop-bandstand-ocean-mist,Ananya Patel,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-329,bk-raw-988,prop-worli-seaface-glasshouse,Vikram Fernandes,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-330,bk-raw-991,prop-fort-heritage-chambers,Sneha Sharma,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-331,bk-raw-994,prop-colaba-colonial,Arjun Mehta,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-332,bk-raw-997,prop-malabar-verandah,Kavita Singhania,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-333,bk-raw-1000,prop-juhu-palms-retreat,Alexander Kapoor,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-334,bk-raw-1003,prop-powai-lake-pavilions,Emma Deshmukh,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-335,bk-raw-1006,prop-dadar-parsi-haven,Zara Poonawalla,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-336,bk-raw-1009,prop-marine-drive-bayview,Ananya Godrej,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-337,bk-raw-1012,prop-bandra-bohemian-villa,Vikram Merchant,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-338,bk-raw-1015,prop-versova-coastal-sanctuary,Sneha Wadia,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-339,bk-raw-1018,prop-bkc-executive-boutique,Arjun Tata,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-340,bk-raw-1021,prop-girgaon-sunset-mansion,Kavita Ambani,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-341,bk-raw-1024,prop-kala-ghoda-art-house,Alexander Bhatia,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-342,bk-raw-1027,prop-bandstand-ocean-mist,Emma Chopra,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-343,bk-raw-1030,prop-worli-seaface-glasshouse,Zara Nair,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-344,bk-raw-1033,prop-fort-heritage-chambers,Ananya D'Souza,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-345,bk-raw-1036,prop-colaba-colonial,Vikram Smith,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-346,bk-raw-1039,prop-malabar-verandah,Sneha Johnson,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-347,bk-raw-1042,prop-juhu-palms-retreat,Arjun Müller,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-348,bk-raw-1045,prop-powai-lake-pavilions,Kavita Dubois,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-349,bk-raw-1048,prop-dadar-parsi-haven,Alexander Tanaka,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-350,bk-raw-1051,prop-marine-drive-bayview,Emma Patel,0,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-351,bk-raw-1054,prop-bandra-bohemian-villa,Zara Fernandes,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-352,bk-raw-1057,prop-versova-coastal-sanctuary,Ananya Sharma,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-353,bk-raw-1060,prop-bkc-executive-boutique,Vikram Mehta,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-354,bk-raw-1063,prop-girgaon-sunset-mansion,Sneha Singhania,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-355,bk-raw-1066,prop-kala-ghoda-art-house,Arjun Kapoor,4,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-356,bk-raw-1069,prop-bandstand-ocean-mist,Kavita Deshmukh,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-357,bk-raw-1072,prop-worli-seaface-glasshouse,Alexander Poonawalla,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-358,bk-raw-1075,prop-fort-heritage-chambers,Emma Godrej,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-359,bk-raw-1078,prop-colaba-colonial,Zara Merchant,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-360,bk-raw-1081,prop-malabar-verandah,Ananya Wadia,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-361,bk-raw-1084,prop-juhu-palms-retreat,Vikram Tata,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-362,bk-raw-1087,prop-powai-lake-pavilions,Sneha Ambani,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-363,bk-raw-1090,prop-dadar-parsi-haven,Arjun Bhatia,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-364,bk-raw-1093,prop-marine-drive-bayview,Kavita Chopra,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-365,bk-raw-1096,prop-bandra-bohemian-villa,Alexander Nair,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-366,bk-raw-1099,prop-versova-coastal-sanctuary,Emma D'Souza,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-367,bk-raw-1102,prop-bkc-executive-boutique,Zara Smith,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-368,bk-raw-1105,prop-girgaon-sunset-mansion,Ananya Johnson,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-369,bk-raw-1108,prop-kala-ghoda-art-house,Vikram Müller,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-370,bk-raw-1111,prop-bandstand-ocean-mist,Sneha Dubois,4,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-371,bk-raw-1114,prop-worli-seaface-glasshouse,Arjun Tanaka,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-372,bk-raw-1117,prop-fort-heritage-chambers,Kavita Patel,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-373,bk-raw-1120,prop-colaba-colonial,Alexander Fernandes,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-374,bk-raw-1123,prop-malabar-verandah,Emma Sharma,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-375,bk-raw-1126,prop-juhu-palms-retreat,Zara Mehta,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-376,bk-raw-1129,prop-powai-lake-pavilions,Ananya Singhania,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-377,bk-raw-1132,prop-dadar-parsi-haven,Vikram Kapoor,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-378,bk-raw-1135,prop-marine-drive-bayview,Sneha Deshmukh,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-379,bk-raw-1138,prop-bandra-bohemian-villa,Arjun Poonawalla,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-380,bk-raw-1141,prop-versova-coastal-sanctuary,Kavita Godrej,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-381,bk-raw-1144,prop-bkc-executive-boutique,Alexander Merchant,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-382,bk-raw-1147,prop-girgaon-sunset-mansion,Emma Wadia,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-383,bk-raw-1150,prop-kala-ghoda-art-house,Zara Tata,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-384,bk-raw-1153,prop-bandstand-ocean-mist,Ananya Ambani,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-385,bk-raw-1156,prop-worli-seaface-glasshouse,Vikram Bhatia,0,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-386,bk-raw-1159,prop-fort-heritage-chambers,Sneha Chopra,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-387,bk-raw-1162,prop-colaba-colonial,Arjun Nair,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-388,bk-raw-1165,prop-malabar-verandah,Kavita D'Souza,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-389,bk-raw-1168,prop-juhu-palms-retreat,Alexander Smith,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-390,bk-raw-1171,prop-powai-lake-pavilions,Emma Johnson,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-391,bk-raw-1174,prop-dadar-parsi-haven,Zara Müller,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-392,bk-raw-1177,prop-marine-drive-bayview,Ananya Dubois,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-393,bk-raw-1180,prop-bandra-bohemian-villa,Vikram Tanaka,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-394,bk-raw-1183,prop-versova-coastal-sanctuary,Sneha Patel,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-395,bk-raw-1186,prop-bkc-executive-boutique,Arjun Fernandes,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-396,bk-raw-1189,prop-girgaon-sunset-mansion,Kavita Sharma,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-397,bk-raw-1192,prop-kala-ghoda-art-house,Alexander Mehta,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-398,bk-raw-1195,prop-bandstand-ocean-mist,Emma Singhania,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-399,bk-raw-1198,prop-worli-seaface-glasshouse,Zara Kapoor,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-400,bk-raw-1201,prop-fort-heritage-chambers,Ananya Deshmukh,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-401,bk-raw-1204,prop-colaba-colonial,Vikram Poonawalla,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-402,bk-raw-1207,prop-malabar-verandah,Sneha Godrej,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-403,bk-raw-1210,prop-juhu-palms-retreat,Arjun Merchant,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-404,bk-raw-1213,prop-powai-lake-pavilions,Kavita Wadia,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-405,bk-raw-1216,prop-dadar-parsi-haven,Alexander Tata,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-406,bk-raw-1219,prop-marine-drive-bayview,Emma Ambani,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-407,bk-raw-1222,prop-bandra-bohemian-villa,Zara Bhatia,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-408,bk-raw-1225,prop-versova-coastal-sanctuary,Ananya Chopra,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-409,bk-raw-1228,prop-bkc-executive-boutique,Vikram Nair,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-410,bk-raw-1231,prop-girgaon-sunset-mansion,Sneha D'Souza,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-411,bk-raw-1234,prop-kala-ghoda-art-house,Arjun Smith,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-412,bk-raw-1237,prop-bandstand-ocean-mist,Kavita Johnson,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-413,bk-raw-1240,prop-worli-seaface-glasshouse,Alexander Müller,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-414,bk-raw-1243,prop-fort-heritage-chambers,Emma Dubois,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-415,bk-raw-1246,prop-colaba-colonial,Zara Tanaka,4,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-416,bk-raw-1249,prop-malabar-verandah,Ananya Patel,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-417,bk-raw-1252,prop-juhu-palms-retreat,Vikram Fernandes,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-418,bk-raw-1255,prop-powai-lake-pavilions,Sneha Sharma,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-419,bk-raw-1258,prop-dadar-parsi-haven,Arjun Mehta,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-420,bk-raw-1261,prop-marine-drive-bayview,Kavita Singhania,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-421,bk-raw-1264,prop-bandra-bohemian-villa,Alexander Kapoor,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-422,bk-raw-1267,prop-versova-coastal-sanctuary,Emma Deshmukh,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-423,bk-raw-1270,prop-bkc-executive-boutique,Zara Poonawalla,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-424,bk-raw-1273,prop-girgaon-sunset-mansion,Ananya Godrej,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-425,bk-raw-1276,prop-kala-ghoda-art-house,Vikram Merchant,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-426,bk-raw-1279,prop-bandstand-ocean-mist,Sneha Wadia,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-427,bk-raw-1282,prop-worli-seaface-glasshouse,Arjun Tata,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-428,bk-raw-1285,prop-fort-heritage-chambers,Kavita Ambani,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-429,bk-raw-1288,prop-colaba-colonial,Alexander Bhatia,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-430,bk-raw-1291,prop-malabar-verandah,Emma Chopra,4,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-431,bk-raw-1294,prop-juhu-palms-retreat,Zara Nair,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-432,bk-raw-1297,prop-powai-lake-pavilions,Ananya D'Souza,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-433,bk-raw-1300,prop-dadar-parsi-haven,Vikram Smith,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-434,bk-raw-1303,prop-marine-drive-bayview,Sneha Johnson,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-435,bk-raw-1306,prop-bandra-bohemian-villa,Arjun Müller,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-436,bk-raw-1309,prop-versova-coastal-sanctuary,Kavita Dubois,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-437,bk-raw-1312,prop-bkc-executive-boutique,Alexander Tanaka,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-438,bk-raw-1315,prop-girgaon-sunset-mansion,Emma Patel,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-439,bk-raw-1318,prop-kala-ghoda-art-house,Zara Fernandes,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-440,bk-raw-1321,prop-bandstand-ocean-mist,Ananya Sharma,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-441,bk-raw-1324,prop-worli-seaface-glasshouse,Vikram Mehta,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-442,bk-raw-1327,prop-fort-heritage-chambers,Sneha Singhania,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-443,bk-raw-1330,prop-colaba-colonial,Arjun Kapoor,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-444,bk-raw-1333,prop-malabar-verandah,Kavita Deshmukh,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-445,bk-raw-1336,prop-juhu-palms-retreat,Alexander Poonawalla,4,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-446,bk-raw-1339,prop-powai-lake-pavilions,Emma Godrej,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-447,bk-raw-1342,prop-dadar-parsi-haven,Zara Merchant,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-448,bk-raw-1345,prop-marine-drive-bayview,Ananya Wadia,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-449,bk-raw-1348,prop-bandra-bohemian-villa,Vikram Tata,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-450,bk-raw-1351,prop-versova-coastal-sanctuary,Sneha Ambani,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-451,bk-raw-1354,prop-bkc-executive-boutique,Arjun Bhatia,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-452,bk-raw-1357,prop-girgaon-sunset-mansion,Kavita Chopra,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-453,bk-raw-1360,prop-kala-ghoda-art-house,Alexander Nair,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-454,bk-raw-1363,prop-bandstand-ocean-mist,Emma D'Souza,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-455,bk-raw-1366,prop-worli-seaface-glasshouse,Zara Smith,0,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-456,bk-raw-1369,prop-fort-heritage-chambers,Ananya Johnson,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-457,bk-raw-1372,prop-colaba-colonial,Vikram Müller,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-458,bk-raw-1375,prop-malabar-verandah,Sneha Dubois,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-459,bk-raw-1378,prop-juhu-palms-retreat,Arjun Tanaka,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-460,bk-raw-1381,prop-powai-lake-pavilions,Kavita Patel,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-461,bk-raw-1384,prop-dadar-parsi-haven,Alexander Fernandes,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-462,bk-raw-1387,prop-marine-drive-bayview,Emma Sharma,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-463,bk-raw-1390,prop-bandra-bohemian-villa,Zara Mehta,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-464,bk-raw-1393,prop-versova-coastal-sanctuary,Ananya Singhania,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-465,bk-raw-1396,prop-bkc-executive-boutique,Vikram Kapoor,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-466,bk-raw-1399,prop-girgaon-sunset-mansion,Sneha Deshmukh,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-467,bk-raw-1402,prop-kala-ghoda-art-house,Arjun Poonawalla,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-468,bk-raw-1405,prop-bandstand-ocean-mist,Kavita Godrej,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-469,bk-raw-1408,prop-worli-seaface-glasshouse,Alexander Merchant,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-470,bk-raw-1411,prop-fort-heritage-chambers,Emma Wadia,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-471,bk-raw-1414,prop-colaba-colonial,Zara Tata,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-472,bk-raw-1417,prop-malabar-verandah,Ananya Ambani,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-473,bk-raw-1420,prop-juhu-palms-retreat,Vikram Bhatia,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-474,bk-raw-1423,prop-powai-lake-pavilions,Sneha Chopra,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-475,bk-raw-1426,prop-dadar-parsi-haven,Arjun Nair,4,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-476,bk-raw-1429,prop-marine-drive-bayview,Kavita D'Souza,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-477,bk-raw-1432,prop-bandra-bohemian-villa,Alexander Smith,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-478,bk-raw-1435,prop-versova-coastal-sanctuary,Emma Johnson,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-479,bk-raw-1438,prop-bkc-executive-boutique,Zara Müller,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-480,bk-raw-1441,prop-girgaon-sunset-mansion,Ananya Dubois,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-481,bk-raw-1444,prop-kala-ghoda-art-house,Vikram Tanaka,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-482,bk-raw-1447,prop-bandstand-ocean-mist,Sneha Patel,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-483,bk-raw-1450,prop-worli-seaface-glasshouse,Arjun Fernandes,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-484,bk-raw-1453,prop-fort-heritage-chambers,Kavita Sharma,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-485,bk-raw-1456,prop-colaba-colonial,Alexander Mehta,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-486,bk-raw-1459,prop-malabar-verandah,Emma Singhania,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-487,bk-raw-1462,prop-juhu-palms-retreat,Zara Kapoor,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-488,bk-raw-1465,prop-powai-lake-pavilions,Ananya Deshmukh,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-489,bk-raw-1468,prop-dadar-parsi-haven,Vikram Poonawalla,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-490,bk-raw-1471,prop-marine-drive-bayview,Sneha Godrej,0,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-491,bk-raw-1474,prop-bandra-bohemian-villa,Arjun Merchant,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-492,bk-raw-1477,prop-versova-coastal-sanctuary,Kavita Wadia,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-493,bk-raw-1480,prop-bkc-executive-boutique,Alexander Tata,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-494,bk-raw-1483,prop-girgaon-sunset-mansion,Emma Ambani,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-495,bk-raw-1486,prop-kala-ghoda-art-house,Zara Bhatia,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-496,bk-raw-1489,prop-bandstand-ocean-mist,Ananya Chopra,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-497,bk-raw-1492,prop-worli-seaface-glasshouse,Vikram Nair,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-498,bk-raw-1495,prop-fort-heritage-chambers,Sneha D'Souza,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-499,bk-raw-1498,prop-colaba-colonial,Arjun Smith,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-500,bk-raw-1501,prop-malabar-verandah,Kavita Johnson,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-501,bk-raw-1504,prop-juhu-palms-retreat,Alexander Müller,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-502,bk-raw-1507,prop-powai-lake-pavilions,Emma Dubois,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-503,bk-raw-1510,prop-dadar-parsi-haven,Zara Tanaka,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-504,bk-raw-1513,prop-marine-drive-bayview,Ananya Patel,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-505,bk-raw-1516,prop-bandra-bohemian-villa,Vikram Fernandes,4,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-506,bk-raw-1519,prop-versova-coastal-sanctuary,Sneha Sharma,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-507,bk-raw-1522,prop-bkc-executive-boutique,Arjun Mehta,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-508,bk-raw-1525,prop-girgaon-sunset-mansion,Kavita Singhania,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-509,bk-raw-1528,prop-kala-ghoda-art-house,Alexander Kapoor,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-510,bk-raw-1531,prop-bandstand-ocean-mist,Emma Deshmukh,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-511,bk-raw-1534,prop-worli-seaface-glasshouse,Zara Poonawalla,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-512,bk-raw-1537,prop-fort-heritage-chambers,Ananya Godrej,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-513,bk-raw-1540,prop-colaba-colonial,Vikram Merchant,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-514,bk-raw-1543,prop-malabar-verandah,Sneha Wadia,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-515,bk-raw-1546,prop-juhu-palms-retreat,Arjun Tata,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-516,bk-raw-1549,prop-powai-lake-pavilions,Kavita Ambani,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-517,bk-raw-1552,prop-dadar-parsi-haven,Alexander Bhatia,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-518,bk-raw-1555,prop-marine-drive-bayview,Emma Chopra,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-519,bk-raw-1558,prop-bandra-bohemian-villa,Zara Nair,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-520,bk-raw-1561,prop-versova-coastal-sanctuary,Ananya D'Souza,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-521,bk-raw-1564,prop-bkc-executive-boutique,Vikram Smith,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-522,bk-raw-1567,prop-girgaon-sunset-mansion,Sneha Johnson,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-523,bk-raw-1570,prop-kala-ghoda-art-house,Arjun Müller,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-524,bk-raw-1573,prop-bandstand-ocean-mist,Kavita Dubois,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-525,bk-raw-1576,prop-worli-seaface-glasshouse,Alexander Tanaka,0,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-526,bk-raw-1579,prop-fort-heritage-chambers,Emma Patel,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-527,bk-raw-1582,prop-colaba-colonial,Zara Fernandes,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-528,bk-raw-1585,prop-malabar-verandah,Ananya Sharma,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-529,bk-raw-1588,prop-juhu-palms-retreat,Vikram Mehta,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-530,bk-raw-1591,prop-powai-lake-pavilions,Sneha Singhania,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-531,bk-raw-1594,prop-dadar-parsi-haven,Arjun Kapoor,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-532,bk-raw-1597,prop-marine-drive-bayview,Kavita Deshmukh,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-533,bk-raw-1600,prop-bandra-bohemian-villa,Alexander Poonawalla,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-534,bk-raw-1603,prop-versova-coastal-sanctuary,Emma Godrej,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-535,bk-raw-1606,prop-bkc-executive-boutique,Zara Merchant,4,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-536,bk-raw-1609,prop-girgaon-sunset-mansion,Ananya Wadia,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-537,bk-raw-1612,prop-kala-ghoda-art-house,Vikram Tata,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-538,bk-raw-1615,prop-bandstand-ocean-mist,Sneha Ambani,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-539,bk-raw-1618,prop-worli-seaface-glasshouse,Arjun Bhatia,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-540,bk-raw-1621,prop-fort-heritage-chambers,Kavita Chopra,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-541,bk-raw-1624,prop-colaba-colonial,Alexander Nair,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-542,bk-raw-1627,prop-malabar-verandah,Emma D'Souza,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-543,bk-raw-1630,prop-juhu-palms-retreat,Zara Smith,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-544,bk-raw-1633,prop-powai-lake-pavilions,Ananya Johnson,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-545,bk-raw-1636,prop-dadar-parsi-haven,Vikram Müller,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-546,bk-raw-1639,prop-marine-drive-bayview,Sneha Dubois,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-547,bk-raw-1642,prop-bandra-bohemian-villa,Arjun Tanaka,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-548,bk-raw-1645,prop-versova-coastal-sanctuary,Kavita Patel,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-549,bk-raw-1648,prop-bkc-executive-boutique,Alexander Fernandes,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-550,bk-raw-1651,prop-girgaon-sunset-mansion,Emma Sharma,4,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-551,bk-raw-1654,prop-kala-ghoda-art-house,Zara Mehta,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-552,bk-raw-1657,prop-bandstand-ocean-mist,Ananya Singhania,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-553,bk-raw-1660,prop-worli-seaface-glasshouse,Vikram Kapoor,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-554,bk-raw-1663,prop-fort-heritage-chambers,Sneha Deshmukh,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-555,bk-raw-1666,prop-colaba-colonial,Arjun Poonawalla,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-556,bk-raw-1669,prop-malabar-verandah,Kavita Godrej,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-557,bk-raw-1672,prop-juhu-palms-retreat,Alexander Merchant,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-558,bk-raw-1675,prop-powai-lake-pavilions,Emma Wadia,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-559,bk-raw-1678,prop-dadar-parsi-haven,Zara Tata,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-560,bk-raw-1681,prop-marine-drive-bayview,Ananya Ambani,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-561,bk-raw-1684,prop-bandra-bohemian-villa,Vikram Bhatia,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-562,bk-raw-1687,prop-versova-coastal-sanctuary,Sneha Chopra,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-563,bk-raw-1690,prop-bkc-executive-boutique,Arjun Nair,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-564,bk-raw-1693,prop-girgaon-sunset-mansion,Kavita D'Souza,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-565,bk-raw-1696,prop-kala-ghoda-art-house,Alexander Smith,4,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-566,bk-raw-1699,prop-bandstand-ocean-mist,Emma Johnson,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-567,bk-raw-1702,prop-worli-seaface-glasshouse,Zara Müller,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-568,bk-raw-1705,prop-fort-heritage-chambers,Ananya Dubois,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-569,bk-raw-1708,prop-colaba-colonial,Vikram Tanaka,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-570,bk-raw-1711,prop-malabar-verandah,Sneha Patel,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-571,bk-raw-1714,prop-juhu-palms-retreat,Arjun Fernandes,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-572,bk-raw-1717,prop-powai-lake-pavilions,Kavita Sharma,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-573,bk-raw-1720,prop-dadar-parsi-haven,Alexander Mehta,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-574,bk-raw-1723,prop-marine-drive-bayview,Emma Singhania,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-575,bk-raw-1726,prop-bandra-bohemian-villa,Zara Kapoor,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-576,bk-raw-1729,prop-versova-coastal-sanctuary,Ananya Deshmukh,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-577,bk-raw-1732,prop-bkc-executive-boutique,Vikram Poonawalla,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-578,bk-raw-1735,prop-girgaon-sunset-mansion,Sneha Godrej,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-579,bk-raw-1738,prop-kala-ghoda-art-house,Arjun Merchant,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-580,bk-raw-1741,prop-bandstand-ocean-mist,Kavita Wadia,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-581,bk-raw-1744,prop-worli-seaface-glasshouse,Alexander Tata,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-582,bk-raw-1747,prop-fort-heritage-chambers,Emma Ambani,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-583,bk-raw-1750,prop-colaba-colonial,Zara Bhatia,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-584,bk-raw-1753,prop-malabar-verandah,Ananya Chopra,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-585,bk-raw-1756,prop-juhu-palms-retreat,Vikram Nair,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-586,bk-raw-1759,prop-powai-lake-pavilions,Sneha D'Souza,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-587,bk-raw-1762,prop-dadar-parsi-haven,Arjun Smith,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-588,bk-raw-1765,prop-marine-drive-bayview,Kavita Johnson,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-589,bk-raw-1768,prop-bandra-bohemian-villa,Alexander Müller,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-590,bk-raw-1771,prop-versova-coastal-sanctuary,Emma Dubois,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-591,bk-raw-1774,prop-bkc-executive-boutique,Zara Tanaka,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-592,bk-raw-1777,prop-girgaon-sunset-mansion,Ananya Patel,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-593,bk-raw-1780,prop-kala-ghoda-art-house,Vikram Fernandes,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-594,bk-raw-1783,prop-bandstand-ocean-mist,Sneha Sharma,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-595,bk-raw-1786,prop-worli-seaface-glasshouse,Arjun Mehta,0,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-596,bk-raw-1789,prop-fort-heritage-chambers,Kavita Singhania,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-597,bk-raw-1792,prop-colaba-colonial,Alexander Kapoor,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-598,bk-raw-1795,prop-malabar-verandah,Emma Deshmukh,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-599,bk-raw-1798,prop-juhu-palms-retreat,Zara Poonawalla,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-600,bk-raw-1801,prop-powai-lake-pavilions,Ananya Godrej,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-601,bk-raw-1804,prop-dadar-parsi-haven,Vikram Merchant,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-602,bk-raw-1807,prop-marine-drive-bayview,Sneha Wadia,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-603,bk-raw-1810,prop-bandra-bohemian-villa,Arjun Tata,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-604,bk-raw-1813,prop-versova-coastal-sanctuary,Kavita Ambani,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-605,bk-raw-1816,prop-bkc-executive-boutique,Alexander Bhatia,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-606,bk-raw-1819,prop-girgaon-sunset-mansion,Emma Chopra,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-607,bk-raw-1822,prop-kala-ghoda-art-house,Zara Nair,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-608,bk-raw-1825,prop-bandstand-ocean-mist,Ananya D'Souza,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-609,bk-raw-1828,prop-worli-seaface-glasshouse,Vikram Smith,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-610,bk-raw-1831,prop-fort-heritage-chambers,Sneha Johnson,4,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-611,bk-raw-1834,prop-colaba-colonial,Arjun Müller,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-612,bk-raw-1837,prop-malabar-verandah,Kavita Dubois,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-613,bk-raw-1840,prop-juhu-palms-retreat,Alexander Tanaka,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-614,bk-raw-1843,prop-powai-lake-pavilions,Emma Patel,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-615,bk-raw-1846,prop-dadar-parsi-haven,Zara Fernandes,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-616,bk-raw-1849,prop-marine-drive-bayview,Ananya Sharma,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-617,bk-raw-1852,prop-bandra-bohemian-villa,Vikram Mehta,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-618,bk-raw-1855,prop-versova-coastal-sanctuary,Sneha Singhania,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-619,bk-raw-1858,prop-bkc-executive-boutique,Arjun Kapoor,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-620,bk-raw-1861,prop-girgaon-sunset-mansion,Kavita Deshmukh,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-621,bk-raw-1864,prop-kala-ghoda-art-house,Alexander Poonawalla,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-622,bk-raw-1867,prop-bandstand-ocean-mist,Emma Godrej,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-623,bk-raw-1870,prop-worli-seaface-glasshouse,Zara Merchant,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-624,bk-raw-1873,prop-fort-heritage-chambers,Ananya Wadia,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-625,bk-raw-1876,prop-colaba-colonial,Vikram Tata,4,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-626,bk-raw-1879,prop-malabar-verandah,Sneha Ambani,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-627,bk-raw-1882,prop-juhu-palms-retreat,Arjun Bhatia,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-628,bk-raw-1885,prop-powai-lake-pavilions,Kavita Chopra,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-629,bk-raw-1888,prop-dadar-parsi-haven,Alexander Nair,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-630,bk-raw-1891,prop-marine-drive-bayview,Emma D'Souza,0,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-631,bk-raw-1894,prop-bandra-bohemian-villa,Zara Smith,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-632,bk-raw-1897,prop-versova-coastal-sanctuary,Ananya Johnson,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-633,bk-raw-1900,prop-bkc-executive-boutique,Vikram Müller,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-634,bk-raw-1903,prop-girgaon-sunset-mansion,Sneha Dubois,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-635,bk-raw-1906,prop-kala-ghoda-art-house,Arjun Tanaka,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-636,bk-raw-1909,prop-bandstand-ocean-mist,Kavita Patel,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-637,bk-raw-1912,prop-worli-seaface-glasshouse,Alexander Fernandes,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-638,bk-raw-1915,prop-fort-heritage-chambers,Emma Sharma,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-639,bk-raw-1918,prop-colaba-colonial,Zara Mehta,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-640,bk-raw-1921,prop-malabar-verandah,Ananya Singhania,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-641,bk-raw-1924,prop-juhu-palms-retreat,Vikram Kapoor,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-642,bk-raw-1927,prop-powai-lake-pavilions,Sneha Deshmukh,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-643,bk-raw-1930,prop-dadar-parsi-haven,Arjun Poonawalla,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-644,bk-raw-1933,prop-marine-drive-bayview,Kavita Godrej,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-645,bk-raw-1936,prop-bandra-bohemian-villa,Alexander Merchant,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-646,bk-raw-1939,prop-versova-coastal-sanctuary,Emma Wadia,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-647,bk-raw-1942,prop-bkc-executive-boutique,Zara Tata,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-648,bk-raw-1945,prop-girgaon-sunset-mansion,Ananya Ambani,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-649,bk-raw-1948,prop-kala-ghoda-art-house,Vikram Bhatia,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-650,bk-raw-1951,prop-bandstand-ocean-mist,Sneha Chopra,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-651,bk-raw-1954,prop-worli-seaface-glasshouse,Arjun Nair,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-652,bk-raw-1957,prop-fort-heritage-chambers,Kavita D'Souza,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-653,bk-raw-1960,prop-colaba-colonial,Alexander Smith,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-654,bk-raw-1963,prop-malabar-verandah,Emma Johnson,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-655,bk-raw-1966,prop-juhu-palms-retreat,Zara Müller,4,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-656,bk-raw-1969,prop-powai-lake-pavilions,Ananya Dubois,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-657,bk-raw-1972,prop-dadar-parsi-haven,Vikram Tanaka,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-658,bk-raw-1975,prop-marine-drive-bayview,Sneha Patel,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-659,bk-raw-1978,prop-bandra-bohemian-villa,Arjun Fernandes,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-660,bk-raw-1981,prop-versova-coastal-sanctuary,Kavita Sharma,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-661,bk-raw-1984,prop-bkc-executive-boutique,Alexander Mehta,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-662,bk-raw-1987,prop-girgaon-sunset-mansion,Emma Singhania,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-663,bk-raw-1990,prop-kala-ghoda-art-house,Zara Kapoor,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-664,bk-raw-1993,prop-bandstand-ocean-mist,Ananya Deshmukh,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-665,bk-raw-1996,prop-worli-seaface-glasshouse,Vikram Poonawalla,0,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-666,bk-raw-1999,prop-fort-heritage-chambers,Sneha Godrej,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-667,bk-raw-2002,prop-colaba-colonial,Arjun Merchant,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-668,bk-raw-2005,prop-malabar-verandah,Kavita Wadia,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-669,bk-raw-2008,prop-juhu-palms-retreat,Alexander Tata,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-670,bk-raw-2011,prop-powai-lake-pavilions,Emma Ambani,4,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-671,bk-raw-2014,prop-dadar-parsi-haven,Zara Bhatia,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-672,bk-raw-2017,prop-marine-drive-bayview,Ananya Chopra,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-673,bk-raw-2020,prop-bandra-bohemian-villa,Vikram Nair,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-674,bk-raw-2023,prop-versova-coastal-sanctuary,Sneha D'Souza,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-675,bk-raw-2026,prop-bkc-executive-boutique,Arjun Smith,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-676,bk-raw-2029,prop-girgaon-sunset-mansion,Kavita Johnson,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-677,bk-raw-2032,prop-kala-ghoda-art-house,Alexander Müller,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-678,bk-raw-2035,prop-bandstand-ocean-mist,Emma Dubois,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-679,bk-raw-2038,prop-worli-seaface-glasshouse,Zara Tanaka,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-680,bk-raw-2041,prop-fort-heritage-chambers,Ananya Patel,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-681,bk-raw-2044,prop-colaba-colonial,Vikram Fernandes,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-682,bk-raw-2047,prop-malabar-verandah,Sneha Sharma,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-683,bk-raw-2050,prop-juhu-palms-retreat,Arjun Mehta,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-684,bk-raw-2053,prop-powai-lake-pavilions,Kavita Singhania,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-685,bk-raw-2056,prop-dadar-parsi-haven,Alexander Kapoor,4,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-686,bk-raw-2059,prop-marine-drive-bayview,Emma Deshmukh,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-687,bk-raw-2062,prop-bandra-bohemian-villa,Zara Poonawalla,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-688,bk-raw-2065,prop-versova-coastal-sanctuary,Ananya Godrej,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-689,bk-raw-2068,prop-bkc-executive-boutique,Vikram Merchant,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-690,bk-raw-2071,prop-girgaon-sunset-mansion,Sneha Wadia,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-691,bk-raw-2074,prop-kala-ghoda-art-house,Arjun Tata,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-692,bk-raw-2077,prop-bandstand-ocean-mist,Kavita Ambani,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-693,bk-raw-2080,prop-worli-seaface-glasshouse,Alexander Bhatia,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-694,bk-raw-2083,prop-fort-heritage-chambers,Emma Chopra,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-695,bk-raw-2086,prop-colaba-colonial,Zara Nair,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-696,bk-raw-2089,prop-malabar-verandah,Ananya D'Souza,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-697,bk-raw-2092,prop-juhu-palms-retreat,Vikram Smith,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-698,bk-raw-2095,prop-powai-lake-pavilions,Sneha Johnson,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-699,bk-raw-2098,prop-dadar-parsi-haven,Arjun Müller,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-700,bk-raw-2101,prop-marine-drive-bayview,Kavita Dubois,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-701,bk-raw-2104,prop-bandra-bohemian-villa,Alexander Tanaka,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-702,bk-raw-2107,prop-versova-coastal-sanctuary,Emma Patel,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-703,bk-raw-2110,prop-bkc-executive-boutique,Zara Fernandes,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-704,bk-raw-2113,prop-girgaon-sunset-mansion,Ananya Sharma,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-705,bk-raw-2116,prop-kala-ghoda-art-house,Vikram Mehta,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-706,bk-raw-2119,prop-bandstand-ocean-mist,Sneha Singhania,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-707,bk-raw-2122,prop-worli-seaface-glasshouse,Arjun Kapoor,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-708,bk-raw-2125,prop-fort-heritage-chambers,Kavita Deshmukh,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-709,bk-raw-2128,prop-colaba-colonial,Alexander Poonawalla,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-710,bk-raw-2131,prop-malabar-verandah,Emma Godrej,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-711,bk-raw-2134,prop-juhu-palms-retreat,Zara Merchant,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-712,bk-raw-2137,prop-powai-lake-pavilions,Ananya Wadia,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-713,bk-raw-2140,prop-dadar-parsi-haven,Vikram Tata,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-714,bk-raw-2143,prop-marine-drive-bayview,Sneha Ambani,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-715,bk-raw-2146,prop-bandra-bohemian-villa,Arjun Bhatia,4,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-716,bk-raw-2149,prop-versova-coastal-sanctuary,Kavita Chopra,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-717,bk-raw-2152,prop-bkc-executive-boutique,Alexander Nair,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-718,bk-raw-2155,prop-girgaon-sunset-mansion,Emma D'Souza,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-719,bk-raw-2158,prop-kala-ghoda-art-house,Zara Smith,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-720,bk-raw-2161,prop-bandstand-ocean-mist,Ananya Johnson,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-721,bk-raw-2164,prop-worli-seaface-glasshouse,Vikram Müller,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-722,bk-raw-2167,prop-fort-heritage-chambers,Sneha Dubois,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-723,bk-raw-2170,prop-colaba-colonial,Arjun Tanaka,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-724,bk-raw-2173,prop-malabar-verandah,Kavita Patel,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-725,bk-raw-2176,prop-juhu-palms-retreat,Alexander Fernandes,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-726,bk-raw-2179,prop-powai-lake-pavilions,Emma Sharma,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-727,bk-raw-2182,prop-dadar-parsi-haven,Zara Mehta,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-728,bk-raw-2185,prop-marine-drive-bayview,Ananya Singhania,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-729,bk-raw-2188,prop-bandra-bohemian-villa,Vikram Kapoor,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-730,bk-raw-2191,prop-versova-coastal-sanctuary,Sneha Deshmukh,4,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-731,bk-raw-2194,prop-bkc-executive-boutique,Arjun Poonawalla,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-732,bk-raw-2197,prop-girgaon-sunset-mansion,Kavita Godrej,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-733,bk-raw-2200,prop-kala-ghoda-art-house,Alexander Merchant,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-734,bk-raw-2203,prop-bandstand-ocean-mist,Emma Wadia,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-735,bk-raw-2206,prop-worli-seaface-glasshouse,Zara Tata,0,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-736,bk-raw-2209,prop-fort-heritage-chambers,Ananya Ambani,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-737,bk-raw-2212,prop-colaba-colonial,Vikram Bhatia,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-738,bk-raw-2215,prop-malabar-verandah,Sneha Chopra,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-739,bk-raw-2218,prop-juhu-palms-retreat,Arjun Nair,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-740,bk-raw-2221,prop-powai-lake-pavilions,Kavita D'Souza,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-741,bk-raw-2224,prop-dadar-parsi-haven,Alexander Smith,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-742,bk-raw-2227,prop-marine-drive-bayview,Emma Johnson,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-743,bk-raw-2230,prop-bandra-bohemian-villa,Zara Müller,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-744,bk-raw-2233,prop-versova-coastal-sanctuary,Ananya Dubois,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-745,bk-raw-2236,prop-bkc-executive-boutique,Vikram Tanaka,4,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-746,bk-raw-2239,prop-girgaon-sunset-mansion,Sneha Patel,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-747,bk-raw-2242,prop-kala-ghoda-art-house,Arjun Fernandes,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-748,bk-raw-2245,prop-bandstand-ocean-mist,Kavita Sharma,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-749,bk-raw-2248,prop-worli-seaface-glasshouse,Alexander Mehta,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-750,bk-raw-2251,prop-fort-heritage-chambers,Emma Singhania,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-751,bk-raw-2254,prop-colaba-colonial,Zara Kapoor,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-752,bk-raw-2257,prop-malabar-verandah,Ananya Deshmukh,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-753,bk-raw-2260,prop-juhu-palms-retreat,Vikram Poonawalla,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-754,bk-raw-2263,prop-powai-lake-pavilions,Sneha Godrej,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-755,bk-raw-2266,prop-dadar-parsi-haven,Arjun Merchant,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-756,bk-raw-2269,prop-marine-drive-bayview,Kavita Wadia,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-757,bk-raw-2272,prop-bandra-bohemian-villa,Alexander Tata,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-758,bk-raw-2275,prop-versova-coastal-sanctuary,Emma Ambani,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-759,bk-raw-2278,prop-bkc-executive-boutique,Zara Bhatia,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-760,bk-raw-2281,prop-girgaon-sunset-mansion,Ananya Chopra,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-761,bk-raw-2284,prop-kala-ghoda-art-house,Vikram Nair,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-762,bk-raw-2287,prop-bandstand-ocean-mist,Sneha D'Souza,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-763,bk-raw-2290,prop-worli-seaface-glasshouse,Arjun Smith,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-764,bk-raw-2293,prop-fort-heritage-chambers,Kavita Johnson,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-765,bk-raw-2296,prop-colaba-colonial,Alexander Müller,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-766,bk-raw-2299,prop-malabar-verandah,Emma Dubois,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-767,bk-raw-2302,prop-juhu-palms-retreat,Zara Tanaka,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-768,bk-raw-2305,prop-powai-lake-pavilions,Ananya Patel,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-769,bk-raw-2308,prop-dadar-parsi-haven,Vikram Fernandes,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-770,bk-raw-2311,prop-marine-drive-bayview,Sneha Sharma,0,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-771,bk-raw-2314,prop-bandra-bohemian-villa,Arjun Mehta,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-772,bk-raw-2317,prop-versova-coastal-sanctuary,Kavita Singhania,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-773,bk-raw-2320,prop-bkc-executive-boutique,Alexander Kapoor,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-774,bk-raw-2323,prop-girgaon-sunset-mansion,Emma Deshmukh,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-775,bk-raw-2326,prop-kala-ghoda-art-house,Zara Poonawalla,4,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-776,bk-raw-2329,prop-bandstand-ocean-mist,Ananya Godrej,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-777,bk-raw-2332,prop-worli-seaface-glasshouse,Vikram Merchant,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-778,bk-raw-2335,prop-fort-heritage-chambers,Sneha Wadia,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-779,bk-raw-2338,prop-colaba-colonial,Arjun Tata,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-780,bk-raw-2341,prop-malabar-verandah,Kavita Ambani,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-781,bk-raw-2344,prop-juhu-palms-retreat,Alexander Bhatia,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-782,bk-raw-2347,prop-powai-lake-pavilions,Emma Chopra,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-783,bk-raw-2350,prop-dadar-parsi-haven,Zara Nair,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-784,bk-raw-2353,prop-marine-drive-bayview,Ananya D'Souza,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-785,bk-raw-2356,prop-bandra-bohemian-villa,Vikram Smith,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-786,bk-raw-2359,prop-versova-coastal-sanctuary,Sneha Johnson,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-787,bk-raw-2362,prop-bkc-executive-boutique,Arjun Müller,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-788,bk-raw-2365,prop-girgaon-sunset-mansion,Kavita Dubois,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-789,bk-raw-2368,prop-kala-ghoda-art-house,Alexander Tanaka,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-790,bk-raw-2371,prop-bandstand-ocean-mist,Emma Patel,4,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-791,bk-raw-2374,prop-worli-seaface-glasshouse,Zara Fernandes,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-792,bk-raw-2377,prop-fort-heritage-chambers,Ananya Sharma,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-793,bk-raw-2380,prop-colaba-colonial,Vikram Mehta,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-794,bk-raw-2383,prop-malabar-verandah,Sneha Singhania,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-795,bk-raw-2386,prop-juhu-palms-retreat,Arjun Kapoor,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-796,bk-raw-2389,prop-powai-lake-pavilions,Kavita Deshmukh,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-797,bk-raw-2392,prop-dadar-parsi-haven,Alexander Poonawalla,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-798,bk-raw-2395,prop-marine-drive-bayview,Emma Godrej,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-799,bk-raw-2398,prop-bandra-bohemian-villa,Zara Merchant,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-800,bk-raw-2401,prop-versova-coastal-sanctuary,Ananya Wadia,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-801,bk-raw-2404,prop-bkc-executive-boutique,Vikram Tata,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-802,bk-raw-2407,prop-girgaon-sunset-mansion,Sneha Ambani,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-803,bk-raw-2410,prop-kala-ghoda-art-house,Arjun Bhatia,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-804,bk-raw-2413,prop-bandstand-ocean-mist,Kavita Chopra,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-805,bk-raw-2416,prop-worli-seaface-glasshouse,Alexander Nair,0,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-806,bk-raw-2419,prop-fort-heritage-chambers,Emma D'Souza,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-807,bk-raw-2422,prop-colaba-colonial,Zara Smith,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-808,bk-raw-2425,prop-malabar-verandah,Ananya Johnson,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-809,bk-raw-2428,prop-juhu-palms-retreat,Vikram Müller,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-810,bk-raw-2431,prop-powai-lake-pavilions,Sneha Dubois,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-811,bk-raw-2434,prop-dadar-parsi-haven,Arjun Tanaka,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-812,bk-raw-2437,prop-marine-drive-bayview,Kavita Patel,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-813,bk-raw-2440,prop-bandra-bohemian-villa,Alexander Fernandes,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-814,bk-raw-2443,prop-versova-coastal-sanctuary,Emma Sharma,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-815,bk-raw-2446,prop-bkc-executive-boutique,Zara Mehta,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-816,bk-raw-2449,prop-girgaon-sunset-mansion,Ananya Singhania,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-817,bk-raw-2452,prop-kala-ghoda-art-house,Vikram Kapoor,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-818,bk-raw-2455,prop-bandstand-ocean-mist,Sneha Deshmukh,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-819,bk-raw-2458,prop-worli-seaface-glasshouse,Arjun Poonawalla,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-820,bk-raw-2461,prop-fort-heritage-chambers,Kavita Godrej,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-821,bk-raw-2464,prop-colaba-colonial,Alexander Merchant,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-822,bk-raw-2467,prop-malabar-verandah,Emma Wadia,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-823,bk-raw-2470,prop-juhu-palms-retreat,Zara Tata,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-824,bk-raw-2473,prop-powai-lake-pavilions,Ananya Ambani,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-825,bk-raw-2476,prop-dadar-parsi-haven,Vikram Bhatia,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-826,bk-raw-2479,prop-marine-drive-bayview,Sneha Chopra,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-827,bk-raw-2482,prop-bandra-bohemian-villa,Arjun Nair,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-828,bk-raw-2485,prop-versova-coastal-sanctuary,Kavita D'Souza,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-829,bk-raw-2488,prop-bkc-executive-boutique,Alexander Smith,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-830,bk-raw-2491,prop-girgaon-sunset-mansion,Emma Johnson,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-831,bk-raw-2494,prop-kala-ghoda-art-house,Zara Müller,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-832,bk-raw-2497,prop-bandstand-ocean-mist,Ananya Dubois,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-833,bk-raw-2500,prop-worli-seaface-glasshouse,Vikram Tanaka,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-834,bk-raw-2503,prop-fort-heritage-chambers,Sneha Patel,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-835,bk-raw-2506,prop-colaba-colonial,Arjun Fernandes,4,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-836,bk-raw-2509,prop-malabar-verandah,Kavita Sharma,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-837,bk-raw-2512,prop-juhu-palms-retreat,Alexander Mehta,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-838,bk-raw-2515,prop-powai-lake-pavilions,Emma Singhania,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-839,bk-raw-2518,prop-dadar-parsi-haven,Zara Kapoor,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-840,bk-raw-2521,prop-marine-drive-bayview,Ananya Deshmukh,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-841,bk-raw-2524,prop-bandra-bohemian-villa,Vikram Poonawalla,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-842,bk-raw-2527,prop-versova-coastal-sanctuary,Sneha Godrej,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-843,bk-raw-2530,prop-bkc-executive-boutique,Arjun Merchant,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-844,bk-raw-2533,prop-girgaon-sunset-mansion,Kavita Wadia,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-845,bk-raw-2536,prop-kala-ghoda-art-house,Alexander Tata,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-846,bk-raw-2539,prop-bandstand-ocean-mist,Emma Ambani,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-847,bk-raw-2542,prop-worli-seaface-glasshouse,Zara Bhatia,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-848,bk-raw-2545,prop-fort-heritage-chambers,Ananya Chopra,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-849,bk-raw-2548,prop-colaba-colonial,Vikram Nair,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-850,bk-raw-2551,prop-malabar-verandah,Sneha D'Souza,4,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-851,bk-raw-2554,prop-juhu-palms-retreat,Arjun Smith,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-852,bk-raw-2557,prop-powai-lake-pavilions,Kavita Johnson,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-853,bk-raw-2560,prop-dadar-parsi-haven,Alexander Müller,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-854,bk-raw-2563,prop-marine-drive-bayview,Emma Dubois,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-855,bk-raw-2566,prop-bandra-bohemian-villa,Zara Tanaka,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-856,bk-raw-2569,prop-versova-coastal-sanctuary,Ananya Patel,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-857,bk-raw-2572,prop-bkc-executive-boutique,Vikram Fernandes,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-858,bk-raw-2575,prop-girgaon-sunset-mansion,Sneha Sharma,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-859,bk-raw-2578,prop-kala-ghoda-art-house,Arjun Mehta,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-860,bk-raw-2581,prop-bandstand-ocean-mist,Kavita Singhania,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-861,bk-raw-2584,prop-worli-seaface-glasshouse,Alexander Kapoor,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-862,bk-raw-2587,prop-fort-heritage-chambers,Emma Deshmukh,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-863,bk-raw-2590,prop-colaba-colonial,Zara Poonawalla,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-864,bk-raw-2593,prop-malabar-verandah,Ananya Godrej,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-865,bk-raw-2596,prop-juhu-palms-retreat,Vikram Merchant,4,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-866,bk-raw-2599,prop-powai-lake-pavilions,Sneha Wadia,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-867,bk-raw-2602,prop-dadar-parsi-haven,Arjun Tata,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-868,bk-raw-2605,prop-marine-drive-bayview,Kavita Ambani,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-869,bk-raw-2608,prop-bandra-bohemian-villa,Alexander Bhatia,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-870,bk-raw-2611,prop-versova-coastal-sanctuary,Emma Chopra,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-871,bk-raw-2614,prop-bkc-executive-boutique,Zara Nair,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-872,bk-raw-2617,prop-girgaon-sunset-mansion,Ananya D'Souza,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-873,bk-raw-2620,prop-kala-ghoda-art-house,Vikram Smith,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-874,bk-raw-2623,prop-bandstand-ocean-mist,Sneha Johnson,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-875,bk-raw-2626,prop-worli-seaface-glasshouse,Arjun Müller,0,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-876,bk-raw-2629,prop-fort-heritage-chambers,Kavita Dubois,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-877,bk-raw-2632,prop-colaba-colonial,Alexander Tanaka,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-878,bk-raw-2635,prop-malabar-verandah,Emma Patel,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-879,bk-raw-2638,prop-juhu-palms-retreat,Zara Fernandes,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-880,bk-raw-2641,prop-powai-lake-pavilions,Ananya Sharma,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-881,bk-raw-2644,prop-dadar-parsi-haven,Vikram Mehta,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-882,bk-raw-2647,prop-marine-drive-bayview,Sneha Singhania,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-883,bk-raw-2650,prop-bandra-bohemian-villa,Arjun Kapoor,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-884,bk-raw-2653,prop-versova-coastal-sanctuary,Kavita Deshmukh,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-885,bk-raw-2656,prop-bkc-executive-boutique,Alexander Poonawalla,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-886,bk-raw-2659,prop-girgaon-sunset-mansion,Emma Godrej,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-887,bk-raw-2662,prop-kala-ghoda-art-house,Zara Merchant,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-888,bk-raw-2665,prop-bandstand-ocean-mist,Ananya Wadia,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-889,bk-raw-2668,prop-worli-seaface-glasshouse,Vikram Tata,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-890,bk-raw-2671,prop-fort-heritage-chambers,Sneha Ambani,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-891,bk-raw-2674,prop-colaba-colonial,Arjun Bhatia,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-892,bk-raw-2677,prop-malabar-verandah,Kavita Chopra,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-893,bk-raw-2680,prop-juhu-palms-retreat,Alexander Nair,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-894,bk-raw-2683,prop-powai-lake-pavilions,Emma D'Souza,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-895,bk-raw-2686,prop-dadar-parsi-haven,Zara Smith,4,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-896,bk-raw-2689,prop-marine-drive-bayview,Ananya Johnson,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-897,bk-raw-2692,prop-bandra-bohemian-villa,Vikram Müller,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-898,bk-raw-2695,prop-versova-coastal-sanctuary,Sneha Dubois,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-899,bk-raw-2698,prop-bkc-executive-boutique,Arjun Tanaka,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-900,bk-raw-2701,prop-girgaon-sunset-mansion,Kavita Patel,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-901,bk-raw-2704,prop-kala-ghoda-art-house,Alexander Fernandes,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-902,bk-raw-2707,prop-bandstand-ocean-mist,Emma Sharma,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-903,bk-raw-2710,prop-worli-seaface-glasshouse,Zara Mehta,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-904,bk-raw-2713,prop-fort-heritage-chambers,Ananya Singhania,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-905,bk-raw-2716,prop-colaba-colonial,Vikram Kapoor,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-906,bk-raw-2719,prop-malabar-verandah,Sneha Deshmukh,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-907,bk-raw-2722,prop-juhu-palms-retreat,Arjun Poonawalla,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-908,bk-raw-2725,prop-powai-lake-pavilions,Kavita Godrej,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-909,bk-raw-2728,prop-dadar-parsi-haven,Alexander Merchant,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-910,bk-raw-2731,prop-marine-drive-bayview,Emma Wadia,0,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-911,bk-raw-2734,prop-bandra-bohemian-villa,Zara Tata,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-912,bk-raw-2737,prop-versova-coastal-sanctuary,Ananya Ambani,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-913,bk-raw-2740,prop-bkc-executive-boutique,Vikram Bhatia,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-914,bk-raw-2743,prop-girgaon-sunset-mansion,Sneha Chopra,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-915,bk-raw-2746,prop-kala-ghoda-art-house,Arjun Nair,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-916,bk-raw-2749,prop-bandstand-ocean-mist,Kavita D'Souza,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-917,bk-raw-2752,prop-worli-seaface-glasshouse,Alexander Smith,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-918,bk-raw-2755,prop-fort-heritage-chambers,Emma Johnson,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-919,bk-raw-2758,prop-colaba-colonial,Zara Müller,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-920,bk-raw-2761,prop-malabar-verandah,Ananya Dubois,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-921,bk-raw-2764,prop-juhu-palms-retreat,Vikram Tanaka,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-922,bk-raw-2767,prop-powai-lake-pavilions,Sneha Patel,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-923,bk-raw-2770,prop-dadar-parsi-haven,Arjun Fernandes,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-924,bk-raw-2773,prop-marine-drive-bayview,Kavita Sharma,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-925,bk-raw-2776,prop-bandra-bohemian-villa,Alexander Mehta,4,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-926,bk-raw-2779,prop-versova-coastal-sanctuary,Emma Singhania,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-927,bk-raw-2782,prop-bkc-executive-boutique,Zara Kapoor,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-928,bk-raw-2785,prop-girgaon-sunset-mansion,Ananya Deshmukh,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-929,bk-raw-2788,prop-kala-ghoda-art-house,Vikram Poonawalla,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-930,bk-raw-2791,prop-bandstand-ocean-mist,Sneha Godrej,3,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-931,bk-raw-2794,prop-worli-seaface-glasshouse,Arjun Merchant,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-932,bk-raw-2797,prop-fort-heritage-chambers,Kavita Wadia,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-933,bk-raw-2800,prop-colaba-colonial,Alexander Tata,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-934,bk-raw-2803,prop-malabar-verandah,Emma Ambani,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-935,bk-raw-2806,prop-juhu-palms-retreat,Zara Bhatia,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-936,bk-raw-2809,prop-powai-lake-pavilions,Ananya Chopra,3,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-937,bk-raw-2812,prop-dadar-parsi-haven,Vikram Nair,4,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-938,bk-raw-2815,prop-marine-drive-bayview,Sneha D'Souza,5,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-939,bk-raw-2818,prop-bandra-bohemian-villa,Arjun Smith,3,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-940,bk-raw-2821,prop-versova-coastal-sanctuary,Kavita Johnson,6,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-941,bk-raw-2824,prop-bkc-executive-boutique,Alexander Müller,5,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-942,bk-raw-2827,prop-girgaon-sunset-mansion,Emma Dubois,3,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-943,bk-raw-2830,prop-kala-ghoda-art-house,Zara Tanaka,4,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-944,bk-raw-2833,prop-bandstand-ocean-mist,Ananya Patel,5,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-945,bk-raw-2836,prop-worli-seaface-glasshouse,Vikram Fernandes,0,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
+rev-raw-946,bk-raw-2839,prop-fort-heritage-chambers,Sneha Sharma,4,Breathtaking views of the Arabian Sea and impeccable butler hospitality.,2026-09-15
+rev-raw-947,bk-raw-2842,prop-colaba-colonial,Arjun Mehta,5,"Charming Art Deco details, peaceful colonial ambiance, and wonderful service.",2026-09-15
+rev-raw-948,bk-raw-2845,prop-malabar-verandah,Kavita Singhania,3,Spacious suite with high ceilings. The vintage library was a delight.,2026-09-15
+rev-raw-949,bk-raw-2848,prop-juhu-palms-retreat,Alexander Kapoor,4,Lovely property in the heart of Mumbai. Will certainly return on my next visit.,2026-09-15
+rev-raw-950,bk-raw-2851,prop-powai-lake-pavilions,Emma Deshmukh,5,An extraordinary heritage experience. The courtyard breakfast was divine.,2026-09-15
