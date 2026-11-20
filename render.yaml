@@ -36,3 +36,30 @@ services:
         sync: false
       - key: CLOUDINARY_API_SECRET
         sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: EMAIL_FROM
+        value: concierge@bombayreserve.com
+
+  - type: worker
+    name: the-bombay-reserve-worker
+    runtime: node
+    plan: free
+    region: oregon
+    buildCommand: npm ci && npm run prisma:generate --workspace=server && npm run build --workspace=server
+    startCommand: npm run start:worker --workspace=server
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: EMAIL_FROM
+        value: concierge@bombayreserve.com
+      - key: ADMIN_EMAIL
+        value: admin@bombayreserve.com

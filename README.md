@@ -131,7 +131,20 @@ npm run dev:client    # Terminal 2: Vite Client on http://localhost:5173
 | `CLOUDINARY_CLOUD_NAME` | Cloudinary cloud identifier for property image storage |
 | `CLOUDINARY_API_KEY` | Cloudinary API key |
 | `CLOUDINARY_API_SECRET` | Cloudinary API secret |
+| `REDIS_URL` | Redis / Upstash connection string (`rediss://...`) for BullMQ queue |
+| `RESEND_API_KEY` | Resend API key for guest booking confirmation and admin alert emails |
+| `EMAIL_FROM` | Verified sender address (e.g. `concierge@bombayreserve.com`) |
 | `LOG_LEVEL` | Pino logging threshold (`info`, `warn`, `error`, `debug`) |
+
+### Background Worker Process (Render)
+| Variable Name | Purpose |
+| :--- | :--- |
+| `NODE_ENV` | Environment identifier (set to `production`) |
+| `DATABASE_URL` | PostgreSQL connection string |
+| `REDIS_URL` | Redis / Upstash connection string for BullMQ worker |
+| `RESEND_API_KEY` | Resend API key for email dispatches |
+| `EMAIL_FROM` | Sender email address |
+| `ADMIN_EMAIL` | Administrator recipient email for enquiries and nightly metrics |
 
 ### Frontend Web Application (Vercel)
 | Variable Name | Purpose |

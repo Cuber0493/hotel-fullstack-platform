@@ -1,5 +1,6 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { enquiryService } from '../services/enquiryService.js';
+import { jobQueue } from '../jobs/queue.js';
 import { validateBody } from '../middleware/validate.js';
 import { authenticate, requireRole } from '../middleware/auth.js';
 import { createEnquirySchema, updateEnquiryStatusSchema } from '../schemas/hotelSchemas.js';
@@ -14,6 +15,16 @@ enquiryRouter.post(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const enquiry = await enquiryService.createEnquiry(req.body);
+
+      // Asynchronously dispatch admin alert notification via BullMQ queue
+      jobQueue.enqueueEnquiryNotification({
+        enquiryId: enquiry.id,
+        name: enquiry.name,
+        email: enquiry.email,
+        propertyName: (enquiry as any).propertyName || 'The Bombay Reserve',
+        message: enquiry.message,
+      }).catch(() => {});
+
       res.status(201).json({
         enquiry,
         message: 'Your enquiry has been received. Our concierge team will contact you within 24 hours.',

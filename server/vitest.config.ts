@@ -1,9 +1,14 @@
 import { defineConfig } from 'vitest/config';
 
+process.env.MSGPACKR_EXTRACT = 'false';
+
 export default defineConfig({
   test: {
     globals: true,
     environment: 'node',
+    env: {
+      MSGPACKR_EXTRACT: 'false',
+    },
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],

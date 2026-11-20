@@ -1,44 +1,170 @@
-/**
- * Background Job Queue Interface (Stretch: Redis / BullMQ)
- * Handles asynchronous operational tasks:
- * - Sending luxury guest booking confirmation emails
- * - 48h pre-arrival concierge preferences emails
- * - Event enquiry notification to Front-Desk staff
- */
+import { Queue, JobsOptions } from 'bullmq';
+import { Redis } from 'ioredis';
+import { env } from '../config/env.js';
+import { logger } from '../lib/logger.js';
+import {
+  BookingEmailPayload,
+  EnquiryEmailPayload,
+  MetricsDigestPayload,
+} from '../services/emailService.js';
 
-export interface BackgroundJob<T = Record<string, unknown>> {
+export const QUEUE_NAME = 'hotel-operational-queue';
+
+export const JOB_TYPES = {
+  BOOKING_CONFIRMATION: 'booking-confirmation',
+  ENQUIRY_NOTIFICATION: 'enquiry-notification',
+  NIGHTLY_METRICS_PRECOMPUTE: 'nightly-metrics-precompute',
+} as const;
+
+export const DEFAULT_JOB_OPTIONS: JobsOptions = {
+  attempts: 3,
+  backoff: {
+    type: 'exponential',
+    delay: 2000, // 2s -> 4s -> 8s
+  },
+  removeOnComplete: { count: 100 },
+  removeOnFail: { count: 500 },
+};
+
+export interface JobRecord<T = unknown> {
   id: string;
   name: string;
   data: T;
-  createdAt: Date;
-  status: 'PENDING' | 'COMPLETED' | 'FAILED';
+  timestamp: number;
+  attemptsMade: number;
+  status: 'enqueued' | 'active' | 'completed' | 'failed';
 }
 
-export class JobQueue {
-  private queue: BackgroundJob[] = [];
+export class OperationalJobQueue {
+  private queue: Queue | null = null;
+  private redisConnection: Redis | null = null;
+  private inMemoryQueue: JobRecord[] = [];
+  public isMockMode: boolean;
 
-  async addJob<T extends Record<string, unknown>>(name: string, data: T): Promise<BackgroundJob<T>> {
-    const job: BackgroundJob<T> = {
-      id: `job-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+  constructor() {
+    this.isMockMode = !env.REDIS_URL || env.NODE_ENV === 'test';
+    this.init();
+  }
+
+  private init() {
+    if (!this.isMockMode && env.REDIS_URL) {
+      try {
+        const isTls = env.REDIS_URL.startsWith('rediss://');
+        this.redisConnection = new Redis(env.REDIS_URL, {
+          maxRetriesPerRequest: null, // Mandatory for BullMQ
+          enableReadyCheck: false,
+          tls: isTls ? { rejectUnauthorized: false } : undefined,
+        });
+
+        this.queue = new Queue(QUEUE_NAME, {
+          connection: this.redisConnection as any,
+          defaultJobOptions: DEFAULT_JOB_OPTIONS,
+        });
+
+        logger.info({ event: 'queue.connected', queueName: QUEUE_NAME, provider: 'Upstash/Redis' });
+      } catch (err: any) {
+        logger.warn({
+          event: 'queue.redis_fallback',
+          message: 'Failed to connect to Redis. Operating in in-memory mode.',
+          error: err.message,
+        });
+        this.isMockMode = true;
+      }
+    } else {
+      logger.info({ event: 'queue.mock_mode', message: 'Operating in mock / test queue mode' });
+    }
+  }
+
+  /**
+   * Enqueues booking confirmation email job.
+   */
+  async enqueueBookingConfirmation(payload: BookingEmailPayload, customOptions?: JobsOptions) {
+    return this.addJob(JOB_TYPES.BOOKING_CONFIRMATION, payload, customOptions);
+  }
+
+  /**
+   * Enqueues admin notification for new bespoke event enquiry.
+   */
+  async enqueueEnquiryNotification(payload: EnquiryEmailPayload, customOptions?: JobsOptions) {
+    return this.addJob(JOB_TYPES.ENQUIRY_NOTIFICATION, payload, customOptions);
+  }
+
+  /**
+   * Enqueues nightly metrics precomputation job.
+   */
+  async enqueueNightlyMetricsPrecompute(
+    payload: { date?: string } = {},
+    customOptions?: JobsOptions
+  ) {
+    return this.addJob(JOB_TYPES.NIGHTLY_METRICS_PRECOMPUTE, payload, customOptions);
+  }
+
+  /**
+   * Generic job enqueuing supporting both BullMQ live Redis and mocked in-memory store.
+   */
+  public async addJob<T>(name: string, data: T, options?: JobsOptions) {
+    const jobOpts = { ...DEFAULT_JOB_OPTIONS, ...options };
+
+    if (this.queue && !this.isMockMode) {
+      const job = await this.queue.add(name, data, jobOpts);
+      logger.info({
+        event: 'job.enqueued',
+        jobId: job.id,
+        jobName: name,
+        attempts: jobOpts.attempts,
+      });
+      return { id: job.id!, name, data, isMock: false };
+    }
+
+    // Mock mode
+    const mockId = `job-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
+    const mockRecord: JobRecord<T> = {
+      id: mockId,
       name,
       data,
-      createdAt: new Date(),
-      status: 'PENDING',
+      timestamp: Date.now(),
+      attemptsMade: 0,
+      status: 'enqueued',
     };
+    this.inMemoryQueue.push(mockRecord as JobRecord);
 
-    this.queue.push(job as BackgroundJob);
+    logger.info({
+      event: 'job.enqueued_mock',
+      jobId: mockId,
+      jobName: name,
+      attempts: jobOpts.attempts,
+    });
 
-    // Simulate async stretch queue processing
-    setTimeout(() => {
-      job.status = 'COMPLETED';
-    }, 100);
-
-    return job;
+    return { id: mockId, name, data, isMock: true };
   }
 
-  getJobs(): BackgroundJob[] {
+  /**
+   * Retrieves enqueued jobs for inspection and test assertions.
+   */
+  getMockJobs(): JobRecord[] {
+    return [...this.inMemoryQueue];
+  }
+
+  clearMockJobs(): void {
+    this.inMemoryQueue = [];
+  }
+
+  getBullQueue(): Queue | null {
     return this.queue;
+  }
+
+  getRedisConnection(): Redis | null {
+    return this.redisConnection;
+  }
+
+  async close(): Promise<void> {
+    if (this.queue) {
+      await this.queue.close();
+    }
+    if (this.redisConnection) {
+      await this.redisConnection.quit().catch(() => {});
+    }
   }
 }
 
-export const jobQueue = new JobQueue();
+export const jobQueue = new OperationalJobQueue();
