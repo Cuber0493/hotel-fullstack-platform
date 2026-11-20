@@ -8,6 +8,7 @@ import { httpLogger } from './lib/logger.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { authRouter } from './routes/authRoutes.js';
 import { propertyRouter } from './routes/propertyRoutes.js';
+import { roomRouter } from './routes/roomRoutes.js';
 import { bookingRouter } from './routes/bookingRoutes.js';
 import { staffRouter } from './routes/staffRoutes.js';
 import { enquiryRouter } from './routes/enquiryRoutes.js';
@@ -64,6 +65,9 @@ app.use('/api/v1/auth', authRouter);
 // Domain Routes (Mounted under /api and /api/v1)
 app.use('/api/properties', propertyRouter);
 app.use('/api/v1/properties', propertyRouter);
+
+app.use('/api/rooms', roomRouter);
+app.use('/api/v1/rooms', roomRouter);
 
 app.use('/api/bookings', bookingRouter);
 app.use('/api/v1/bookings', bookingRouter);

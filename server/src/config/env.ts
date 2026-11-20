@@ -14,6 +14,9 @@ const envSchema = z.object({
   ADMIN_EMAIL: z.string().email().default('admin@bombayreserve.com'),
   ADMIN_PASSWORD: z.string().min(8).default('Password@123'),
   ADMIN_NAME: z.string().default('Anya Mehta'),
+  CLOUDINARY_CLOUD_NAME: z.string().optional(),
+  CLOUDINARY_API_KEY: z.string().optional(),
+  CLOUDINARY_API_SECRET: z.string().optional(),
   CORS_ORIGIN: z.string().default('http://localhost:5173'),
   LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace']).default('info'),
 });

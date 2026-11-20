@@ -2,10 +2,11 @@ import { randomUUID } from 'crypto';
 import {
   dataStore,
   BookingEntity,
+  RoomEntity,
+  RoomTypeEntity,
 } from '../repositories/dataStore.js';
 import {
   CreateBookingInput,
-  updateBookingStatusSchema,
 } from '../schemas/hotelSchemas.js';
 import {
   NotFoundError,
@@ -18,19 +19,28 @@ import { BookingStatus, Role, RoomStatus } from '@prisma/client';
 
 export class BookingService {
   async createBooking(input: CreateBookingInput, userId?: string | null): Promise<BookingEntity> {
-    const checkIn = new Date(input.checkInDate);
-    const checkOut = new Date(input.checkOutDate);
+    const checkInRaw = input.checkInDate || input.checkIn;
+    const checkOutRaw = input.checkOutDate || input.checkOut;
 
-    if (isNaN(checkIn.getTime()) || isNaN(checkOut.getTime())) {
-      throw new ValidationError('Invalid checkInDate or checkOutDate format');
+    if (!checkInRaw || !checkOutRaw) {
+      throw new ValidationError('Both checkIn and checkOut dates are required');
     }
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const checkInNormalized = new Date(checkIn.getFullYear(), checkIn.getMonth(), checkIn.getDate());
-    const checkOutNormalized = new Date(checkOut.getFullYear(), checkOut.getMonth(), checkOut.getDate());
+    const checkIn = new Date(checkInRaw);
+    const checkOut = new Date(checkOutRaw);
 
-    if (checkOutNormalized <= checkInNormalized) {
+    if (isNaN(checkIn.getTime()) || isNaN(checkOut.getTime())) {
+      throw new ValidationError('Invalid checkIn or checkOut date format (expected YYYY-MM-DD)');
+    }
+
+    const checkInNormalized = new Date(
+      Date.UTC(checkIn.getUTCFullYear(), checkIn.getUTCMonth(), checkIn.getUTCDate())
+    );
+    const checkOutNormalized = new Date(
+      Date.UTC(checkOut.getUTCFullYear(), checkOut.getUTCMonth(), checkOut.getUTCDate())
+    );
+
+    if (checkOutNormalized.getTime() <= checkInNormalized.getTime()) {
       throw new ValidationError('Check-out date must be at least one day after check-in date');
     }
 
@@ -38,45 +48,108 @@ export class BookingService {
       (checkOutNormalized.getTime() - checkInNormalized.getTime()) / (1000 * 60 * 60 * 24)
     );
 
-    // Find property & room type
-    const property = dataStore.properties.find((p) => p.slug === input.propertySlug);
+    if (nights < 1) {
+      throw new ValidationError('Booking must be for at least one night');
+    }
+
+    // 1. Resolve property
+    const propTarget = input.propertyId || input.propertySlug;
+    const property = dataStore.properties.find(
+      (p) => p.id === propTarget || p.slug === propTarget
+    );
     if (!property) {
-      throw new NotFoundError(`Property '${input.propertySlug}' not found`);
+      throw new NotFoundError(`Property '${propTarget}' not found`);
     }
 
-    const roomType = property.roomTypes.find((rt) => rt.slug === input.roomTypeSlug);
-    if (!roomType) {
-      throw new NotFoundError(`Room type '${input.roomTypeSlug}' not found in property '${input.propertySlug}'`);
+    // 2. Resolve room and/or room type
+    let targetRoom: RoomEntity | undefined;
+    let targetRoomType: RoomTypeEntity | undefined;
+
+    // Check if specific room requested
+    if (input.roomId || input.roomNumber) {
+      for (const rt of property.roomTypes) {
+        const found = rt.rooms.find(
+          (r) => r.id === input.roomId || r.roomNumber === input.roomNumber
+        );
+        if (found) {
+          targetRoom = found;
+          targetRoomType = rt;
+          break;
+        }
+      }
+      if (!targetRoom && input.roomId) {
+        throw new NotFoundError(`Room '${input.roomId}' not found in property '${property.name}'`);
+      }
     }
 
-    if (input.totalGuests > roomType.maxGuests) {
+    // If room type specified without specific room
+    if (!targetRoomType) {
+      const rtTarget = input.roomTypeId || input.roomTypeSlug;
+      if (rtTarget) {
+        targetRoomType = property.roomTypes.find(
+          (rt) => rt.id === rtTarget || rt.slug === rtTarget
+        );
+      } else if (property.roomTypes.length > 0) {
+        targetRoomType = property.roomTypes[0];
+      }
+      if (!targetRoomType) {
+        throw new NotFoundError(
+          `Room type '${rtTarget || 'default'}' not found in property '${property.name}'`
+        );
+      }
+    }
+
+    const requestedGuests = input.totalGuests || input.guests || 1;
+    if (requestedGuests > targetRoomType.maxGuests) {
       throw new ValidationError(
-        `Selected room capacity (${roomType.maxGuests} guests) exceeded by requested guests (${input.totalGuests})`
+        `Selected room capacity (${targetRoomType.maxGuests} guests) exceeded by requested guests (${requestedGuests})`
       );
     }
 
-    // Check availability
-    const overlappingBookings = dataStore.bookings.filter(
-      (b) =>
-        (b.status === BookingStatus.CONFIRMED || b.status === BookingStatus.CHECKED_IN) &&
-        b.checkInDate < checkOutNormalized &&
-        b.checkOutDate > checkInNormalized &&
-        b.items.some((it) => it.roomTypeId === roomType.id)
-    );
+    // 3. Double Booking Overlap Detection Inside Atomic Check
+    // Overlap condition: b.checkInDate < checkOutNormalized && b.checkOutDate > checkInNormalized
+    if (targetRoom) {
+      const isRoomBooked = dataStore.bookings.some((b) => {
+        if (b.status === BookingStatus.CANCELLED) return false;
+        const bIn = new Date(b.checkInDate).getTime();
+        const bOut = new Date(b.checkOutDate).getTime();
+        const overlaps = bIn < checkOutNormalized.getTime() && bOut > checkInNormalized.getTime();
+        if (!overlaps) return false;
 
-    if (overlappingBookings.length >= roomType.totalInventory) {
-      throw new ConflictError(
-        `No rooms available for ${roomType.name} between ${input.checkInDate} and ${input.checkOutDate}`
-      );
+        return b.items.some((it) => it.roomId === targetRoom!.id);
+      });
+
+      if (isRoomBooked) {
+        throw new ConflictError(
+          `Room '${targetRoom.roomNumber}' is already booked for the selected dates`
+        );
+      }
+    } else {
+      // Find candidate room that has no overlapping bookings
+      const candidateRooms = targetRoomType.rooms.filter((room) => {
+        const isRoomBooked = dataStore.bookings.some((b) => {
+          if (b.status === BookingStatus.CANCELLED) return false;
+          const bIn = new Date(b.checkInDate).getTime();
+          const bOut = new Date(b.checkOutDate).getTime();
+          const overlaps = bIn < checkOutNormalized.getTime() && bOut > checkInNormalized.getTime();
+          if (!overlaps) return false;
+
+          return b.items.some((it) => it.roomId === room.id);
+        });
+        return !isRoomBooked;
+      });
+
+      if (candidateRooms.length === 0) {
+        throw new ConflictError(
+          `No rooms available for ${targetRoomType.name} between ${checkInRaw} and ${checkOutRaw}`
+        );
+      }
+
+      targetRoom = candidateRooms[0];
     }
 
-    // Allocate an available room number if possible
-    const bookedRoomIds = new Set(
-      overlappingBookings.flatMap((b) => b.items.map((i) => i.roomId)).filter(Boolean)
-    );
-    const candidateRoom = roomType.rooms.find((r) => !bookedRoomIds.has(r.id));
-
-    const totalAmount = roomType.basePrice * nights;
+    // 4. Calculate total amount
+    const totalAmount = targetRoomType.basePrice * nights;
     const bookingCode = this.generateBookingCode();
     const bookingId = `bk-${randomUUID()}`;
 
@@ -89,7 +162,7 @@ export class BookingService {
       guestPhone: input.guestPhone,
       checkInDate: checkInNormalized,
       checkOutDate: checkOutNormalized,
-      totalGuests: input.totalGuests,
+      totalGuests: requestedGuests,
       totalAmount,
       status: BookingStatus.CONFIRMED,
       specialRequests: input.specialRequests || null,
@@ -98,10 +171,10 @@ export class BookingService {
         {
           id: `bki-${randomUUID()}`,
           bookingId,
-          roomTypeId: roomType.id,
-          roomId: candidateRoom ? candidateRoom.id : null,
-          nightPrice: roomType.basePrice,
-          roomType,
+          roomTypeId: targetRoomType.id,
+          roomId: targetRoom ? targetRoom.id : null,
+          nightPrice: targetRoomType.basePrice,
+          roomType: targetRoomType,
         },
       ],
       createdAt: new Date(),
@@ -119,6 +192,28 @@ export class BookingService {
     });
 
     return newBooking;
+  }
+
+  async getBookingById(
+    bookingIdOrCode: string,
+    user?: { userId: string; role: Role }
+  ): Promise<BookingEntity> {
+    const booking = dataStore.bookings.find(
+      (b) =>
+        b.id === bookingIdOrCode ||
+        b.bookingCode.toUpperCase() === bookingIdOrCode.trim().toUpperCase()
+    );
+
+    if (!booking) {
+      throw new NotFoundError(`Booking reference '${bookingIdOrCode}' was not found`);
+    }
+
+    // If requester is a GUEST, ensure they own the booking
+    if (user && user.role === Role.GUEST && booking.userId && booking.userId !== user.userId) {
+      throw new ForbiddenError('You do not have permission to access this booking');
+    }
+
+    return booking;
   }
 
   async getBookingByCode(bookingCode: string): Promise<BookingEntity> {
@@ -157,8 +252,8 @@ export class BookingService {
       throw new ConflictError('Cannot cancel a completed stay');
     }
 
-    // Role check if user id provided and not staff
-    if (requesterUserId && requesterRole === Role.GUEST && booking.userId && booking.userId !== requesterUserId) {
+    // Permission check: if requester is GUEST, they must own the booking
+    if (requesterRole === Role.GUEST && booking.userId && booking.userId !== requesterUserId) {
       throw new ForbiddenError('You can only cancel your own bookings');
     }
 
@@ -251,12 +346,10 @@ export class BookingService {
       throw new NotFoundError(`Booking '${bookingId}' not found`);
     }
 
-    const previousStatus = booking.status;
     booking.status = status;
     booking.updatedAt = new Date();
 
     if (status === BookingStatus.CHECKED_IN) {
-      // Mark room occupied
       if (roomId) {
         booking.items[0].roomId = roomId;
       }
@@ -350,7 +443,7 @@ export class BookingService {
   async getOccupancyGrid(propertySlug?: string, days = 14) {
     const properties = propertySlug
       ? dataStore.properties.filter((p) => p.slug === propertySlug)
-      : dataStore.properties.slice(0, 5); // Return first 5 or selected
+      : dataStore.properties.slice(0, 5);
 
     const now = new Date();
     const dates: string[] = [];

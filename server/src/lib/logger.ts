@@ -57,6 +57,28 @@ export const logEnquiryEvent = (
   logger.info({ event: `enquiry.${event}`, ...details }, `Enquiry Event: ${event.toUpperCase()}`);
 };
 
+export const logPropertyEvent = (
+  event: 'created' | 'updated' | 'deleted',
+  details: {
+    propertyId: string;
+    name?: string;
+    userId?: string;
+  }
+) => {
+  logger.info({ event: `property.${event}`, ...details }, `Property Event: ${event.toUpperCase()}`);
+};
+
+export const logImageEvent = (
+  event: 'uploaded' | 'deleted',
+  details: {
+    propertyId: string;
+    imageUrl?: string;
+    userId?: string;
+  }
+) => {
+  logger.info({ event: `image.${event}`, ...details }, `Image Event: ${event.toUpperCase()}`);
+};
+
 export const logErrorEvent = (err: Error, context?: Record<string, unknown>) => {
   logger.error({ err, ...context }, `System Error: ${err.message}`);
 };
