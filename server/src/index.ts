@@ -5,6 +5,10 @@ import { env } from './config/env.js';
 import { httpLogger } from './lib/logger.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { authRouter } from './routes/authRoutes.js';
+import { propertyRouter } from './routes/propertyRoutes.js';
+import { bookingRouter } from './routes/bookingRoutes.js';
+import { staffRouter } from './routes/staffRoutes.js';
+import { enquiryRouter } from './routes/enquiryRoutes.js';
 import { NotFoundError } from './errors/AppError.js';
 
 export const app = express();
@@ -19,7 +23,7 @@ app.use(
 );
 app.use(express.json());
 
-// Structured HTTP logging (skip during silent test runs if needed)
+// Structured HTTP logging
 if (process.env.NODE_ENV !== 'test') {
   app.use(httpLogger);
 }
@@ -36,6 +40,10 @@ app.get('/api/health', (_req, res) => {
 
 // API Routes
 app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/properties', propertyRouter);
+app.use('/api/v1/bookings', bookingRouter);
+app.use('/api/v1/staff', staffRouter);
+app.use('/api/v1/enquiries', enquiryRouter);
 
 // Catch-all 404 for undefined routes
 app.use((req, _res, next) => {

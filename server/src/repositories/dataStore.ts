@@ -1,4 +1,5 @@
 import { Role, BookingStatus, RoomStatus, EnquiryStatus, EventType } from '@prisma/client';
+export { Role, BookingStatus, RoomStatus, EnquiryStatus, EventType };
 import bcrypt from 'bcryptjs';
 import { MUMBAI_PROPERTIES } from '../data/seedData.js';
 
