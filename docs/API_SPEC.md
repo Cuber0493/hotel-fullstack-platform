@@ -26,8 +26,8 @@ All API endpoints are versioned under `/api/v1`.
     "role": "GUEST",
     "createdAt": "2026-11-20T12:00:00.000Z"
   },
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6..."
-}
+  "accessToken": "<ACCESS_TOKEN>"
+"token": "<TOKEN>"
 ```
 
 ### 2. Login User
@@ -48,7 +48,8 @@ All API endpoints are versioned under `/api/v1`.
     "fullName": "Rohan D'Souza",
     "role": "STAFF"
   },
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6..."
+  "accessToken": "<ACCESS_TOKEN>"
+"token": "<TOKEN>"
 }
 ```
 

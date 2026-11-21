@@ -33,7 +33,8 @@ Creates a new guest account.
       "email": "natasha@example.com",
       "role": "GUEST"
     },
-    "accessToken": "eyJhbGciOiJIUzI1NiIsIn..."
+    "accessToken": "<ACCESS_TOKEN>"
+"token": "<TOKEN>"
   }
   ```
   *Sets cookie `refreshToken=<token>; HttpOnly; Secure; SameSite=None; Path=/`*
@@ -57,7 +58,8 @@ Rotates the refresh token family and delivers a new access token.
 - **Response (200 OK)**:
   ```json
   {
-    "accessToken": "eyJhbGciOiJIUzI1NiIsIn..."
+    "accessToken": "<ACCESS_TOKEN>"
+"token": "<TOKEN>"
   }
   ```
 - **Security Guard**: Detects token reuse. Replaying an already rotated token immediately triggers revocation of the entire family and returns `401 Unauthorized`.
