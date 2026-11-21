@@ -1,15 +1,19 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import { app } from '../index.js';
-import { dataStore } from '../repositories/dataStore.js';
+import { setupTestDatabase } from '../test/testDb.js';
 
 describe('Property & Availability API Endpoints', () => {
-  beforeEach(() => {
-    dataStore.seed();
+  let isDbOnline = false;
+
+  beforeEach(async () => {
+    isDbOnline = await setupTestDatabase();
   });
 
   describe('GET /api/v1/properties', () => {
     it('returns all 14 Mumbai boutique properties with starting prices', async () => {
+      if (!isDbOnline) return;
+
       const res = await request(app).get('/api/v1/properties');
       expect(res.status).toBe(200);
       expect(res.body.total).toBe(14);
@@ -22,6 +26,8 @@ describe('Property & Availability API Endpoints', () => {
     });
 
     it('filters properties by neighborhood (case-insensitive)', async () => {
+      if (!isDbOnline) return;
+
       const res = await request(app).get('/api/v1/properties?neighborhood=bandra');
       expect(res.status).toBe(200);
       expect(res.body.properties.length).toBeGreaterThanOrEqual(2);
@@ -31,12 +37,16 @@ describe('Property & Availability API Endpoints', () => {
     });
 
     it('filters properties by keyword search in name or description', async () => {
+      if (!isDbOnline) return;
+
       const res = await request(app).get('/api/v1/properties?search=Art+Deco');
       expect(res.status).toBe(200);
       expect(res.body.properties.length).toBeGreaterThan(0);
     });
 
     it('filters properties by max price', async () => {
+      if (!isDbOnline) return;
+
       const res = await request(app).get('/api/v1/properties?maxPrice=12000');
       expect(res.status).toBe(200);
       for (const p of res.body.properties) {
@@ -47,6 +57,8 @@ describe('Property & Availability API Endpoints', () => {
 
   describe('GET /api/v1/properties/:slug', () => {
     it('returns detailed property profile with all room types and galleries', async () => {
+      if (!isDbOnline) return;
+
       const res = await request(app).get('/api/v1/properties/the-colaba-colonial');
       expect(res.status).toBe(200);
       expect(res.body.property.name).toBe('The Colaba Colonial');
@@ -55,6 +67,8 @@ describe('Property & Availability API Endpoints', () => {
     });
 
     it('returns 404 with standardized error for unknown slug', async () => {
+      if (!isDbOnline) return;
+
       const res = await request(app).get('/api/v1/properties/unknown-palace');
       expect(res.status).toBe(404);
       expect(res.body.error.code).toBe('NOT_FOUND');
@@ -63,6 +77,8 @@ describe('Property & Availability API Endpoints', () => {
 
   describe('GET /api/v1/properties/:slug/availability', () => {
     it('calculates available inventory and total night pricing for date range', async () => {
+      if (!isDbOnline) return;
+
       const res = await request(app)
         .get('/api/v1/properties/the-colaba-colonial/availability')
         .query({

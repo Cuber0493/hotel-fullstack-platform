@@ -38,7 +38,7 @@ export const logBookingEvent = (
     propertySlug?: string;
     guestEmail?: string;
     amount?: number;
-    reason?: string;
+    reason?: string | null;
   }
 ) => {
   logger.info({ event: `booking.${event}`, ...details }, `Booking Event: ${event.toUpperCase()}`);

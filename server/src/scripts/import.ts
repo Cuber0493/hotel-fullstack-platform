@@ -2,7 +2,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { readCsvFile, writeCsvFile } from '../utils/csvUtils.js';
 import { dataCleaningService } from '../services/dataCleaningService.js';
-import { dataStore, PropertyEntity, RoomEntity, RoomTypeEntity, BookingEntity } from '../repositories/dataStore.js';
+import { prisma, checkDatabaseConnection } from '../lib/prisma.js';
 import { BookingStatus, RoomStatus } from '@prisma/client';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -74,11 +74,10 @@ export async function runDataImportPipeline(): Promise<ImportReportMetrics> {
   metrics.bookings.read = rawBookings.length;
   metrics.reviews.read = rawReviews.length;
 
-  // Reset or initialize clean state in dataStore for idempotency
-  dataStore.seed();
-  const importedProperties: PropertyEntity[] = [];
+  const isPostgresConnected = await checkDatabaseConnection();
+  const importedProperties: any[] = [];
 
-  // 2. Process Properties
+  // 2. Process Properties (Upsert by slug)
   for (const rawProp of rawProperties) {
     if (!rawProp.name || !rawProp.id) {
       recordRejection('properties', rawProp.id || 'unknown', rawProp.name || '', 'MISSING_REQUIRED_FIELDS', rawProp);
@@ -86,10 +85,12 @@ export async function runDataImportPipeline(): Promise<ImportReportMetrics> {
       continue;
     }
 
-    const propEntity: PropertyEntity = {
+    const propSlug = rawProp.id.replace('prop-', '');
+    const propData = {
       id: rawProp.id,
-      slug: rawProp.id.replace('prop-', ''),
+      slug: propSlug,
       name: rawProp.name,
+      city: 'Mumbai',
       neighborhood: rawProp.address.split(',')[1]?.trim() || 'Mumbai Central',
       address: rawProp.address,
       description: rawProp.description,
@@ -99,19 +100,24 @@ export async function runDataImportPipeline(): Promise<ImportReportMetrics> {
       checkInTime: '14:00',
       checkOutTime: '11:00',
       contactPhone: '+91 22 6900 1100',
-      contactEmail: `concierge@${rawProp.id.replace('prop-', '')}.bombayreserve.com`,
-      roomTypes: [],
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      contactEmail: `concierge@${propSlug}.bombayreserve.com`,
     };
 
-    importedProperties.push(propEntity);
+    if (isPostgresConnected) {
+      await prisma.property.upsert({
+        where: { slug: propSlug },
+        update: propData,
+        create: propData,
+      });
+    }
+
+    importedProperties.push(propData);
     metrics.properties.imported++;
   }
 
   // 3. Process Rooms & Map Canonical Room Types
-  const propertyRoomTypesMap = new Map<string, Map<string, RoomTypeEntity>>();
-  const importedRoomsMap = new Map<string, RoomEntity>();
+  const propertyRoomTypesMap = new Map<string, Map<string, any>>();
+  const importedRoomsMap = new Map<string, any>();
 
   for (const rawRoom of rawRooms) {
     const canonicalRtName = dataCleaningService.mapRoomType(rawRoom.roomType);
@@ -147,41 +153,64 @@ export async function runDataImportPipeline(): Promise<ImportReportMetrics> {
         propertyId: property.id,
         slug: rtSlug,
         name: canonicalRtName,
+        canonicalName: canonicalRtName,
         description: `Exquisitely appointed ${canonicalRtName} featuring handcrafted Bombay artisan decor and bespoke linens.`,
         basePrice: baseRateParsed,
+        baseRateInr: baseRateParsed,
         maxGuests: canonicalRtName.toLowerCase().includes('suite') ? 4 : 2,
+        capacity: canonicalRtName.toLowerCase().includes('suite') ? 4 : 2,
         bedCount: canonicalRtName.toLowerCase().includes('suite') ? 2 : 1,
         bedType: canonicalRtName.toLowerCase().includes('queen') ? 'Queen Bed' : 'King Bed',
         roomSizeSqFt: canonicalRtName.toLowerCase().includes('suite') ? 650 : 380,
         amenities: ['Air Conditioning', 'High Speed Wi-Fi', 'Ensuite Rain Shower', 'Espresso Machine'],
         images: property.galleryImages,
         totalInventory: 2,
-        rooms: [],
-        createdAt: new Date(),
-        updatedAt: new Date(),
       };
+
+      if (isPostgresConnected) {
+        await prisma.roomType.upsert({
+          where: {
+            propertyId_canonicalName: {
+              propertyId: property.id,
+              canonicalName: canonicalRtName,
+            },
+          },
+          update: roomType,
+          create: roomType,
+        });
+      }
+
       propTypes.set(canonicalRtName, roomType);
-      property.roomTypes.push(roomType);
     }
 
-    const roomEntity: RoomEntity = {
+    const roomData = {
       id: rawRoom.id,
+      propertyId: property.id,
       roomTypeId: roomType.id,
       roomNumber: rawRoom.roomNumber,
       floor: `${rawRoom.roomNumber.charAt(0)}th Floor`,
       status: RoomStatus.AVAILABLE,
-      createdAt: new Date(),
-      updatedAt: new Date(),
     };
 
-    roomType.rooms.push(roomEntity);
-    importedRoomsMap.set(`${property.id}-${rawRoom.roomNumber}`, roomEntity);
+    if (isPostgresConnected) {
+      await prisma.room.upsert({
+        where: {
+          propertyId_roomNumber: {
+            propertyId: property.id,
+            roomNumber: rawRoom.roomNumber,
+          },
+        },
+        update: roomData,
+        create: roomData,
+      });
+    }
+
+    importedRoomsMap.set(`${property.id}-${rawRoom.roomNumber}`, roomData);
     metrics.rooms.imported++;
   }
 
-  // 4. Process Bookings (~3,000 rows with Currency, Date, and Deduplication handling)
+  // 4. Process Bookings (Deduplication, Currency, Date, and Postgres Upsert)
   const seenBookingCodes = new Set<string>();
-  const importedBookings: BookingEntity[] = [];
 
   for (const rawBooking of rawBookings) {
     // Check 1: Deduplication
@@ -228,36 +257,44 @@ export async function runDataImportPipeline(): Promise<ImportReportMetrics> {
     const targetRoom = importedRoomsMap.get(`${rawBooking.propertyId}-${rawBooking.roomNumber}`);
     const validGuests = dataCleaningService.validateGuestCount(rawBooking.guests);
 
-    const bookingEntity: BookingEntity = {
-      id: rawBooking.id,
-      bookingCode: rawBooking.bookingCode,
-      userId: null,
-      guestName: rawBooking.guestName,
-      guestEmail: rawBooking.guestEmail.toLowerCase().trim(),
-      guestPhone: rawBooking.guestPhone,
-      checkInDate: dateResult.checkIn,
-      checkOutDate: dateResult.checkOut,
-      totalGuests: validGuests,
-      totalAmount: currencyResult.totalInr,
-      status: (rawBooking.status as BookingStatus) || BookingStatus.CONFIRMED,
-      specialRequests: rawBooking.specialRequests || null,
-      cancellationReason: null,
-      items: targetRoom
-        ? [
-            {
-              id: `bki-${rawBooking.id}`,
-              bookingId: rawBooking.id,
-              roomTypeId: targetRoom.roomTypeId,
-              roomId: targetRoom.id,
-              nightPrice: currencyResult.totalInr,
-            },
-          ]
-        : [],
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
+    if (isPostgresConnected) {
+      await prisma.booking.upsert({
+        where: { bookingCode: rawBooking.bookingCode },
+        update: {
+          guestName: rawBooking.guestName,
+          guestEmail: rawBooking.guestEmail.toLowerCase().trim(),
+          guestPhone: rawBooking.guestPhone,
+          checkIn: dateResult.checkIn,
+          checkOut: dateResult.checkOut,
+          checkInDate: dateResult.checkIn,
+          checkOutDate: dateResult.checkOut,
+          totalGuests: validGuests,
+          totalAmount: currencyResult.totalInr,
+          totalInr: currencyResult.totalInr,
+          originalAmount: currencyResult.totalInr,
+          status: (rawBooking.status as BookingStatus) || BookingStatus.CONFIRMED,
+          roomId: targetRoom?.id || null,
+        },
+        create: {
+          id: rawBooking.id,
+          bookingCode: rawBooking.bookingCode,
+          guestName: rawBooking.guestName,
+          guestEmail: rawBooking.guestEmail.toLowerCase().trim(),
+          guestPhone: rawBooking.guestPhone,
+          checkIn: dateResult.checkIn,
+          checkOut: dateResult.checkOut,
+          checkInDate: dateResult.checkIn,
+          checkOutDate: dateResult.checkOut,
+          totalGuests: validGuests,
+          totalAmount: currencyResult.totalInr,
+          totalInr: currencyResult.totalInr,
+          originalAmount: currencyResult.totalInr,
+          status: (rawBooking.status as BookingStatus) || BookingStatus.CONFIRMED,
+          roomId: targetRoom?.id || null,
+        },
+      });
+    }
 
-    importedBookings.push(bookingEntity);
     metrics.bookings.imported++;
   }
 
@@ -293,14 +330,6 @@ export async function runDataImportPipeline(): Promise<ImportReportMetrics> {
     'rawPayload',
     'timestamp',
   ]);
-
-  // Sync to in-memory data store for live server endpoints
-  if (importedProperties.length > 0) {
-    dataStore.properties = importedProperties;
-  }
-  if (importedBookings.length > 0) {
-    dataStore.bookings = importedBookings;
-  }
 
   // Print Formatted Audit Report
   printImportReport(metrics, REJECTED_FILE);

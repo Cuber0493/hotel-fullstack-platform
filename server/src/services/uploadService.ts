@@ -3,7 +3,7 @@ import { v2 as cloudinary, UploadApiResponse } from 'cloudinary';
 import { randomUUID } from 'crypto';
 import { Request, Response, NextFunction } from 'express';
 import { env } from '../config/env.js';
-import { ValidationError } from '../errors/AppError.js';
+import { ValidationError, ServiceUnavailableError } from '../errors/AppError.js';
 import { logImageEvent } from '../lib/logger.js';
 
 // Configure Cloudinary if credentials are supplied
@@ -71,12 +71,34 @@ export class UploadService {
       throw new ValidationError('No image file provided in request (field: "image")');
     }
 
-    const hasCloudinary = Boolean(
-      env.CLOUDINARY_CLOUD_NAME && env.CLOUDINARY_API_KEY && env.CLOUDINARY_API_SECRET
-    );
+    const isProduction = process.env.NODE_ENV === 'production';
+    const cloudName = isProduction
+      ? process.env.CLOUDINARY_CLOUD_NAME
+      : process.env.CLOUDINARY_CLOUD_NAME || env.CLOUDINARY_CLOUD_NAME;
+    const apiKey = isProduction
+      ? process.env.CLOUDINARY_API_KEY
+      : process.env.CLOUDINARY_API_KEY || env.CLOUDINARY_API_KEY;
+    const apiSecret = isProduction
+      ? process.env.CLOUDINARY_API_SECRET
+      : process.env.CLOUDINARY_API_SECRET || env.CLOUDINARY_API_SECRET;
 
-    if (hasCloudinary && env.NODE_ENV !== 'test') {
+    const hasCloudinary = Boolean(cloudName && apiKey && apiSecret);
+
+    if (isProduction && !hasCloudinary) {
+      throw new ServiceUnavailableError(
+        'Cloudinary image storage service is not configured in production. Image uploads are unavailable.'
+      );
+    }
+
+    if (hasCloudinary && process.env.NODE_ENV !== 'test') {
       try {
+        cloudinary.config({
+          cloud_name: cloudName,
+          api_key: apiKey,
+          api_secret: apiSecret,
+          secure: true,
+        });
+
         const result = await new Promise<UploadApiResponse>((resolve, reject) => {
           const uploadStream = cloudinary.uploader.upload_stream(
             {
@@ -104,6 +126,12 @@ export class UploadService {
       } catch (err: any) {
         throw new ValidationError(`Cloudinary upload failed: ${err.message}`);
       }
+    }
+
+    if (isProduction) {
+      throw new ServiceUnavailableError(
+        'Cloudinary image storage service is not configured in production. Image uploads are unavailable.'
+      );
     }
 
     // Resilient test and offline environment fallback

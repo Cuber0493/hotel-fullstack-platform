@@ -1,13 +1,6 @@
 import { randomUUID } from 'crypto';
-import {
-  dataStore,
-  BookingEntity,
-  RoomEntity,
-  RoomTypeEntity,
-} from '../repositories/dataStore.js';
-import {
-  CreateBookingInput,
-} from '../schemas/hotelSchemas.js';
+import { prisma } from '../lib/prisma.js';
+import { CreateBookingInput } from '../schemas/hotelSchemas.js';
 import {
   NotFoundError,
   ValidationError,
@@ -15,10 +8,10 @@ import {
   ForbiddenError,
 } from '../errors/AppError.js';
 import { logBookingEvent } from '../lib/logger.js';
-import { BookingStatus, Role, RoomStatus } from '@prisma/client';
+import { BookingStatus, Role, RoomStatus, Prisma } from '@prisma/client';
 
 export class BookingService {
-  async createBooking(input: CreateBookingInput, userId?: string | null): Promise<BookingEntity> {
+  async createBooking(input: CreateBookingInput, userId?: string | null) {
     const checkInRaw = input.checkInDate || input.checkIn;
     const checkOutRaw = input.checkOutDate || input.checkOut;
 
@@ -52,18 +45,26 @@ export class BookingService {
       throw new ValidationError('Booking must be for at least one night');
     }
 
-    // 1. Resolve property
     const propTarget = input.propertyId || input.propertySlug;
-    const property = dataStore.properties.find(
-      (p) => p.id === propTarget || p.slug === propTarget
-    );
+    const property = await prisma.property.findFirst({
+      where: {
+        OR: [{ id: propTarget }, { slug: propTarget }],
+      },
+      include: {
+        roomTypes: {
+          include: {
+            rooms: true,
+          },
+        },
+      },
+    });
+
     if (!property) {
       throw new NotFoundError(`Property '${propTarget}' not found`);
     }
 
-    // 2. Resolve room and/or room type
-    let targetRoom: RoomEntity | undefined;
-    let targetRoomType: RoomTypeEntity | undefined;
+    let targetRoom: any | undefined;
+    let targetRoomType: any | undefined;
 
     // Check if specific room requested
     if (input.roomId || input.roomNumber) {
@@ -100,134 +101,198 @@ export class BookingService {
     }
 
     const requestedGuests = input.totalGuests || input.guests || 1;
-    if (requestedGuests > targetRoomType.maxGuests) {
+    const maxCapacity = targetRoomType.maxGuests || targetRoomType.capacity;
+    if (requestedGuests > maxCapacity) {
       throw new ValidationError(
-        `Selected room capacity (${targetRoomType.maxGuests} guests) exceeded by requested guests (${requestedGuests})`
+        `Selected room capacity (${maxCapacity} guests) exceeded by requested guests (${requestedGuests})`
       );
     }
 
-    // 3. Double Booking Overlap Detection Inside Atomic Check
-    // Overlap condition: b.checkInDate < checkOutNormalized && b.checkOutDate > checkInNormalized
-    if (targetRoom) {
-      const isRoomBooked = dataStore.bookings.some((b) => {
-        if (b.status === BookingStatus.CANCELLED) return false;
-        const bIn = new Date(b.checkInDate).getTime();
-        const bOut = new Date(b.checkOutDate).getTime();
-        const overlaps = bIn < checkOutNormalized.getTime() && bOut > checkInNormalized.getTime();
-        if (!overlaps) return false;
-
-        return b.items.some((it) => it.roomId === targetRoom!.id);
-      });
-
-      if (isRoomBooked) {
-        throw new ConflictError(
-          `Room '${targetRoom.roomNumber}' is already booked for the selected dates`
-        );
-      }
-    } else {
-      // Find candidate room that has no overlapping bookings
-      const candidateRooms = targetRoomType.rooms.filter((room) => {
-        const isRoomBooked = dataStore.bookings.some((b) => {
-          if (b.status === BookingStatus.CANCELLED) return false;
-          const bIn = new Date(b.checkInDate).getTime();
-          const bOut = new Date(b.checkOutDate).getTime();
-          const overlaps = bIn < checkOutNormalized.getTime() && bOut > checkInNormalized.getTime();
-          if (!overlaps) return false;
-
-          return b.items.some((it) => it.roomId === room.id);
-        });
-        return !isRoomBooked;
-      });
-
-      if (candidateRooms.length === 0) {
-        throw new ConflictError(
-          `No rooms available for ${targetRoomType.name} between ${checkInRaw} and ${checkOutRaw}`
-        );
-      }
-
-      targetRoom = candidateRooms[0];
-    }
-
-    // 4. Calculate total amount
-    const totalAmount = targetRoomType.basePrice * nights;
+    const basePriceNum = Number(targetRoomType.basePrice || targetRoomType.baseRateInr);
+    const totalAmount = basePriceNum * nights;
     const bookingCode = this.generateBookingCode();
     const bookingId = `bk-${randomUUID()}`;
 
-    const newBooking: BookingEntity = {
-      id: bookingId,
-      bookingCode,
-      userId: userId || null,
-      guestName: input.guestName,
-      guestEmail: input.guestEmail,
-      guestPhone: input.guestPhone,
-      checkInDate: checkInNormalized,
-      checkOutDate: checkOutNormalized,
-      totalGuests: requestedGuests,
-      totalAmount,
-      status: BookingStatus.CONFIRMED,
-      specialRequests: input.specialRequests || null,
-      cancellationReason: null,
-      items: [
-        {
-          id: `bki-${randomUUID()}`,
-          bookingId,
-          roomTypeId: targetRoomType.id,
-          roomId: targetRoom ? targetRoom.id : null,
-          nightPrice: targetRoomType.basePrice,
-          roomType: targetRoomType,
+    try {
+      // Execute overlap validation and record creation in a single Serializable transaction
+      const newBooking = await prisma.$transaction(
+        async (tx) => {
+          let allocatedRoomId = targetRoom?.id;
+
+          if (targetRoom) {
+            const overlapping = await tx.booking.findFirst({
+              where: {
+                roomId: targetRoom.id,
+                status: { not: BookingStatus.CANCELLED },
+                checkInDate: { lt: checkOutNormalized },
+                checkOutDate: { gt: checkInNormalized },
+              },
+            });
+
+            if (overlapping) {
+              throw new ConflictError(
+                `Room '${targetRoom.roomNumber}' is already booked for the selected dates`
+              );
+            }
+          } else {
+            // Find rooms for this roomType that do not have overlapping bookings
+            const activeBookings = await tx.booking.findMany({
+              where: {
+                status: { not: BookingStatus.CANCELLED },
+                checkInDate: { lt: checkOutNormalized },
+                checkOutDate: { gt: checkInNormalized },
+                room: {
+                  roomTypeId: targetRoomType.id,
+                },
+              },
+              select: { roomId: true },
+            });
+
+            const bookedRoomIds = new Set(activeBookings.map((b) => b.roomId).filter(Boolean));
+            const availableRooms = targetRoomType.rooms.filter(
+              (r: any) => !bookedRoomIds.has(r.id)
+            );
+
+            if (availableRooms.length === 0) {
+              throw new ConflictError(
+                `No rooms available for ${targetRoomType.name} between ${checkInRaw} and ${checkOutRaw}`
+              );
+            }
+
+            allocatedRoomId = availableRooms[0].id;
+          }
+
+          const created = await tx.booking.create({
+            data: {
+              id: bookingId,
+              bookingCode,
+              userId: userId || null,
+              roomId: allocatedRoomId,
+              guestName: input.guestName,
+              guestEmail: input.guestEmail,
+              guestPhone: input.guestPhone,
+              checkIn: checkInNormalized,
+              checkOut: checkOutNormalized,
+              checkInDate: checkInNormalized,
+              checkOutDate: checkOutNormalized,
+              totalGuests: requestedGuests,
+              totalAmount,
+              totalInr: totalAmount,
+              originalAmount: totalAmount,
+              originalCurrency: 'INR',
+              status: BookingStatus.CONFIRMED,
+              specialRequests: input.specialRequests || null,
+              items: {
+                create: [
+                  {
+                    roomTypeId: targetRoomType.id,
+                    roomId: allocatedRoomId,
+                    nightPrice: basePriceNum,
+                  },
+                ],
+              },
+            },
+            include: {
+              items: {
+                include: {
+                  roomType: true,
+                },
+              },
+            },
+          });
+
+          return created;
         },
-      ],
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
+        {
+          isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
+        }
+      );
 
-    dataStore.bookings.unshift(newBooking);
+      logBookingEvent('created', {
+        bookingId: newBooking.id,
+        bookingCode: newBooking.bookingCode,
+        propertySlug: property.slug,
+        guestEmail: newBooking.guestEmail,
+        amount: Number(newBooking.totalAmount),
+      });
 
-    logBookingEvent('created', {
-      bookingId: newBooking.id,
-      bookingCode: newBooking.bookingCode,
-      propertySlug: property.slug,
-      guestEmail: newBooking.guestEmail,
-      amount: newBooking.totalAmount,
-    });
-
-    return newBooking;
+      return this.formatBooking(newBooking);
+    } catch (err: any) {
+      if (err?.code === 'P2034' || err?.message?.includes('could not serialize access')) {
+        throw new ConflictError(
+          'DOUBLE_BOOKING_CONFLICT: The selected room was booked concurrently by another guest'
+        );
+      }
+      throw err;
+    }
   }
 
   async getBookingById(
     bookingIdOrCode: string,
     user?: { userId: string; role: Role }
-  ): Promise<BookingEntity> {
-    const booking = dataStore.bookings.find(
-      (b) =>
-        b.id === bookingIdOrCode ||
-        b.bookingCode.toUpperCase() === bookingIdOrCode.trim().toUpperCase()
-    );
+  ) {
+    const booking = await prisma.booking.findFirst({
+      where: {
+        OR: [
+          { id: bookingIdOrCode },
+          { bookingCode: bookingIdOrCode.trim().toUpperCase() },
+        ],
+      },
+      include: {
+        items: {
+          include: {
+            roomType: true,
+          },
+        },
+      },
+    });
 
     if (!booking) {
       throw new NotFoundError(`Booking reference '${bookingIdOrCode}' was not found`);
     }
 
-    // If requester is a GUEST, ensure they own the booking
     if (user && user.role === Role.GUEST && booking.userId && booking.userId !== user.userId) {
       throw new ForbiddenError('You do not have permission to access this booking');
     }
 
-    return booking;
+    return this.formatBooking(booking);
   }
 
-  async getBookingByCode(bookingCode: string): Promise<BookingEntity> {
-    const booking = dataStore.bookings.find(
-      (b) => b.bookingCode.toUpperCase() === bookingCode.trim().toUpperCase()
-    );
+  async getBookingByCode(bookingCode: string) {
+    const booking = await prisma.booking.findFirst({
+      where: {
+        bookingCode: bookingCode.trim().toUpperCase(),
+      },
+      include: {
+        items: {
+          include: {
+            roomType: true,
+          },
+        },
+      },
+    });
+
     if (!booking) {
       throw new NotFoundError(`Booking reference '${bookingCode}' was not found`);
     }
-    return booking;
+
+    return this.formatBooking(booking);
   }
 
-  async getUserBookings(userId: string): Promise<BookingEntity[]> {
-    return dataStore.bookings.filter((b) => b.userId === userId);
+  async getUserBookings(userId: string) {
+    const bookings = await prisma.booking.findMany({
+      where: { userId },
+      include: {
+        items: {
+          include: {
+            roomType: true,
+          },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    return bookings.map((b) => this.formatBooking(b));
   }
 
   async cancelBooking(
@@ -235,10 +300,18 @@ export class BookingService {
     reason?: string,
     requesterUserId?: string,
     requesterRole?: Role
-  ): Promise<BookingEntity> {
-    const booking = dataStore.bookings.find(
-      (b) => b.id === bookingIdOrCode || b.bookingCode === bookingIdOrCode
-    );
+  ) {
+    const booking = await prisma.booking.findFirst({
+      where: {
+        OR: [
+          { id: bookingIdOrCode },
+          { bookingCode: bookingIdOrCode.trim().toUpperCase() },
+        ],
+      },
+      include: {
+        items: true,
+      },
+    });
 
     if (!booking) {
       throw new NotFoundError(`Booking '${bookingIdOrCode}' not found`);
@@ -252,37 +325,40 @@ export class BookingService {
       throw new ConflictError('Cannot cancel a completed stay');
     }
 
-    // Permission check: if requester is GUEST, they must own the booking
     if (requesterRole === Role.GUEST && booking.userId && booking.userId !== requesterUserId) {
       throw new ForbiddenError('You can only cancel your own bookings');
     }
 
-    booking.status = BookingStatus.CANCELLED;
-    booking.cancellationReason = reason || 'Cancelled by guest request';
-    booking.updatedAt = new Date();
+    const updated = await prisma.booking.update({
+      where: { id: booking.id },
+      data: {
+        status: BookingStatus.CANCELLED,
+        cancellationReason: reason || 'Cancelled by guest request',
+      },
+      include: {
+        items: {
+          include: {
+            roomType: true,
+          },
+        },
+      },
+    });
 
-    // Free up room if assigned
-    for (const item of booking.items) {
-      if (item.roomId) {
-        for (const p of dataStore.properties) {
-          for (const rt of p.roomTypes) {
-            const r = rt.rooms.find((room) => room.id === item.roomId);
-            if (r && r.status === RoomStatus.OCCUPIED) {
-              r.status = RoomStatus.AVAILABLE;
-            }
-          }
-        }
-      }
+    if (booking.roomId) {
+      await prisma.room.update({
+        where: { id: booking.roomId },
+        data: { status: RoomStatus.AVAILABLE },
+      }).catch(() => {});
     }
 
     logBookingEvent('cancelled', {
-      bookingId: booking.id,
-      bookingCode: booking.bookingCode,
-      guestEmail: booking.guestEmail,
-      reason: booking.cancellationReason,
+      bookingId: updated.id,
+      bookingCode: updated.bookingCode,
+      guestEmail: updated.guestEmail,
+      reason: updated.cancellationReason || undefined,
     });
 
-    return booking;
+    return this.formatBooking(updated);
   }
 
   async listStaffBookings(filters: {
@@ -290,49 +366,55 @@ export class BookingService {
     propertySlug?: string;
     search?: string;
     date?: string;
-  }): Promise<BookingEntity[]> {
-    let bookings = [...dataStore.bookings];
+  }) {
+    const where: Prisma.BookingWhereInput = {};
 
     if (filters.status) {
-      bookings = bookings.filter((b) => b.status === filters.status);
+      where.status = filters.status;
     }
 
     if (filters.propertySlug) {
-      const p = dataStore.properties.find((prop) => prop.slug === filters.propertySlug);
-      if (p) {
-        const rtIds = new Set(p.roomTypes.map((rt) => rt.id));
-        bookings = bookings.filter((b) => b.items.some((it) => rtIds.has(it.roomTypeId)));
-      }
+      where.room = {
+        property: {
+          slug: filters.propertySlug,
+        },
+      };
     }
 
     if (filters.search) {
-      const q = filters.search.toLowerCase().trim();
-      bookings = bookings.filter(
-        (b) =>
-          b.bookingCode.toLowerCase().includes(q) ||
-          b.guestName.toLowerCase().includes(q) ||
-          b.guestEmail.toLowerCase().includes(q) ||
-          b.guestPhone.toLowerCase().includes(q)
-      );
+      const q = filters.search.trim();
+      where.OR = [
+        { bookingCode: { contains: q, mode: 'insensitive' } },
+        { guestName: { contains: q, mode: 'insensitive' } },
+        { guestEmail: { contains: q, mode: 'insensitive' } },
+        { guestPhone: { contains: q, mode: 'insensitive' } },
+      ];
     }
 
     if (filters.date) {
       const targetDate = new Date(filters.date);
       if (!isNaN(targetDate.getTime())) {
-        const targetNormalized = new Date(
-          targetDate.getFullYear(),
-          targetDate.getMonth(),
-          targetDate.getDate()
-        );
-        bookings = bookings.filter(
-          (b) =>
-            b.checkInDate.getTime() === targetNormalized.getTime() ||
-            b.checkOutDate.getTime() === targetNormalized.getTime()
-        );
+        const start = new Date(Date.UTC(targetDate.getUTCFullYear(), targetDate.getUTCMonth(), targetDate.getUTCDate()));
+        where.OR = [
+          { checkInDate: start },
+          { checkOutDate: start },
+        ];
       }
     }
 
-    return bookings;
+    const bookings = await prisma.booking.findMany({
+      where,
+      include: {
+        items: {
+          include: {
+            roomType: true,
+          },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    return bookings.map((b) => this.formatBooking(b));
   }
 
   async updateBookingStatus(
@@ -340,89 +422,91 @@ export class BookingService {
     status: BookingStatus,
     roomId?: string,
     cancellationReason?: string
-  ): Promise<BookingEntity> {
-    const booking = dataStore.bookings.find((b) => b.id === bookingId);
+  ) {
+    const booking = await prisma.booking.findUnique({
+      where: { id: bookingId },
+      include: { items: true },
+    });
+
     if (!booking) {
       throw new NotFoundError(`Booking '${bookingId}' not found`);
     }
 
-    booking.status = status;
-    booking.updatedAt = new Date();
+    const assignedRoomId = roomId || booking.roomId || booking.items[0]?.roomId;
 
-    if (status === BookingStatus.CHECKED_IN) {
-      if (roomId) {
-        booking.items[0].roomId = roomId;
+    const updated = await prisma.booking.update({
+      where: { id: bookingId },
+      data: {
+        status,
+        roomId: assignedRoomId || undefined,
+        cancellationReason:
+          status === BookingStatus.CANCELLED
+            ? cancellationReason || 'Cancelled by staff'
+            : booking.cancellationReason,
+      },
+      include: {
+        items: {
+          include: {
+            roomType: true,
+          },
+        },
+      },
+    });
+
+    if (assignedRoomId) {
+      if (status === BookingStatus.CHECKED_IN) {
+        await prisma.room.update({
+          where: { id: assignedRoomId },
+          data: { status: RoomStatus.OCCUPIED },
+        }).catch(() => {});
+      } else if (status === BookingStatus.CHECKED_OUT || status === BookingStatus.CANCELLED) {
+        await prisma.room.update({
+          where: { id: assignedRoomId },
+          data: { status: RoomStatus.AVAILABLE },
+        }).catch(() => {});
       }
-      const assignedRoomId = booking.items[0]?.roomId;
-      if (assignedRoomId) {
-        this.setRoomStatus(assignedRoomId, RoomStatus.OCCUPIED);
-      }
-      logBookingEvent('checked_in', {
-        bookingId: booking.id,
-        bookingCode: booking.bookingCode,
-        guestEmail: booking.guestEmail,
-      });
-    } else if (status === BookingStatus.CHECKED_OUT) {
-      const assignedRoomId = booking.items[0]?.roomId;
-      if (assignedRoomId) {
-        this.setRoomStatus(assignedRoomId, RoomStatus.AVAILABLE);
-      }
-      logBookingEvent('checked_out', {
-        bookingId: booking.id,
-        bookingCode: booking.bookingCode,
-        guestEmail: booking.guestEmail,
-      });
-    } else if (status === BookingStatus.CANCELLED) {
-      booking.cancellationReason = cancellationReason || 'Cancelled by staff';
-      const assignedRoomId = booking.items[0]?.roomId;
-      if (assignedRoomId) {
-        this.setRoomStatus(assignedRoomId, RoomStatus.AVAILABLE);
-      }
-      logBookingEvent('cancelled', {
-        bookingId: booking.id,
-        bookingCode: booking.bookingCode,
-        guestEmail: booking.guestEmail,
-        reason: booking.cancellationReason,
-      });
     }
 
-    return booking;
+    return this.formatBooking(updated);
   }
 
   async getStaffDashboard() {
     const now = new Date();
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
 
-    const todayCheckIns = dataStore.bookings.filter(
-      (b) =>
-        b.checkInDate.getTime() === today.getTime() &&
-        (b.status === BookingStatus.CONFIRMED || b.status === BookingStatus.CHECKED_IN)
-    );
-
-    const todayCheckOuts = dataStore.bookings.filter(
-      (b) =>
-        b.checkOutDate.getTime() === today.getTime() &&
-        (b.status === BookingStatus.CHECKED_IN || b.status === BookingStatus.CHECKED_OUT)
-    );
-
-    const currentInHouse = dataStore.bookings.filter(
-      (b) => b.status === BookingStatus.CHECKED_IN
-    );
-
-    let totalRooms = 0;
-    let occupiedRooms = 0;
-    for (const p of dataStore.properties) {
-      for (const rt of p.roomTypes) {
-        totalRooms += rt.rooms.length;
-        occupiedRooms += rt.rooms.filter((r) => r.status === RoomStatus.OCCUPIED).length;
-      }
-    }
-
-    const pendingEnquiries = dataStore.enquiries.filter(
-      (e) => e.status === 'NEW'
-    ).length;
+    const [todayCheckIns, todayCheckOuts, currentInHouse, totalRooms, occupiedRooms, pendingEnquiries] =
+      await Promise.all([
+        prisma.booking.findMany({
+          where: {
+            checkInDate: today,
+            status: { in: [BookingStatus.CONFIRMED, BookingStatus.CHECKED_IN] },
+          },
+          include: { items: { include: { roomType: true } } },
+        }),
+        prisma.booking.findMany({
+          where: {
+            checkOutDate: today,
+            status: { in: [BookingStatus.CHECKED_IN, BookingStatus.CHECKED_OUT] },
+          },
+          include: { items: { include: { roomType: true } } },
+        }),
+        prisma.booking.findMany({
+          where: {
+            status: BookingStatus.CHECKED_IN,
+          },
+          include: { items: { include: { roomType: true } } },
+        }),
+        prisma.room.count(),
+        prisma.room.count({ where: { status: RoomStatus.OCCUPIED } }),
+        prisma.enquiry.count({ where: { status: 'NEW' } }),
+      ]);
 
     const occupancyRate = totalRooms > 0 ? Math.round((occupiedRooms / totalRooms) * 100) : 0;
+    const recent = await prisma.booking.findMany({
+      take: 10,
+      orderBy: { createdAt: 'desc' },
+      include: { items: { include: { roomType: true } } },
+    });
 
     return {
       metrics: {
@@ -434,16 +518,24 @@ export class BookingService {
         occupancyRate,
         pendingEnquiriesCount: pendingEnquiries,
       },
-      todayArrivals: todayCheckIns.slice(0, 8),
-      todayDepartures: todayCheckOuts.slice(0, 8),
-      recentBookings: dataStore.bookings.slice(0, 10),
+      todayArrivals: todayCheckIns.slice(0, 8).map((b) => this.formatBooking(b)),
+      todayDepartures: todayCheckOuts.slice(0, 8).map((b) => this.formatBooking(b)),
+      recentBookings: recent.map((b) => this.formatBooking(b)),
     };
   }
 
   async getOccupancyGrid(propertySlug?: string, days = 14) {
-    const properties = propertySlug
-      ? dataStore.properties.filter((p) => p.slug === propertySlug)
-      : dataStore.properties.slice(0, 5);
+    const properties = await prisma.property.findMany({
+      where: propertySlug ? { slug: propertySlug } : undefined,
+      take: 5,
+      include: {
+        roomTypes: {
+          include: {
+            rooms: true,
+          },
+        },
+      },
+    });
 
     const now = new Date();
     const dates: string[] = [];
@@ -452,56 +544,88 @@ export class BookingService {
       dates.push(d.toISOString().split('T')[0]);
     }
 
-    const grid = properties.map((property) => {
-      const roomTypesGrid = property.roomTypes.map((rt) => {
-        const inventoryByDate = dates.map((dateStr) => {
-          const dateObj = new Date(dateStr);
-          const occupied = dataStore.bookings.filter(
-            (b) =>
-              (b.status === BookingStatus.CONFIRMED || b.status === BookingStatus.CHECKED_IN) &&
-              b.checkInDate <= dateObj &&
-              b.checkOutDate > dateObj &&
-              b.items.some((it) => it.roomTypeId === rt.id)
-          ).length;
+    const grid = await Promise.all(
+      properties.map(async (property) => {
+        const roomTypesGrid = await Promise.all(
+          property.roomTypes.map(async (rt) => {
+            const inventoryByDate = await Promise.all(
+              dates.map(async (dateStr) => {
+                const dateObj = new Date(dateStr);
+                const occupied = await prisma.booking.count({
+                  where: {
+                    status: { in: [BookingStatus.CONFIRMED, BookingStatus.CHECKED_IN] },
+                    checkInDate: { lte: dateObj },
+                    checkOutDate: { gt: dateObj },
+                    items: {
+                      some: { roomTypeId: rt.id },
+                    },
+                  },
+                });
 
-          return {
-            date: dateStr,
-            total: rt.totalInventory,
-            booked: occupied,
-            available: Math.max(0, rt.totalInventory - occupied),
-          };
-        });
+                const totalInventory = rt.rooms.length || rt.totalInventory || 1;
+                return {
+                  date: dateStr,
+                  total: totalInventory,
+                  booked: occupied,
+                  available: Math.max(0, totalInventory - occupied),
+                };
+              })
+            );
+
+            return {
+              roomTypeId: rt.id,
+              roomTypeName: rt.name,
+              basePrice: Number(rt.basePrice),
+              totalInventory: rt.rooms.length || rt.totalInventory || 1,
+              dates: inventoryByDate,
+            };
+          })
+        );
 
         return {
-          roomTypeId: rt.id,
-          roomTypeName: rt.name,
-          basePrice: rt.basePrice,
-          totalInventory: rt.totalInventory,
-          dates: inventoryByDate,
+          propertyId: property.id,
+          propertyName: property.name,
+          propertySlug: property.slug,
+          roomTypes: roomTypesGrid,
         };
-      });
-
-      return {
-        propertyId: property.id,
-        propertyName: property.name,
-        propertySlug: property.slug,
-        roomTypes: roomTypesGrid,
-      };
-    });
+      })
+    );
 
     return { dates, grid };
   }
 
-  private setRoomStatus(roomId: string, status: RoomStatus) {
-    for (const p of dataStore.properties) {
-      for (const rt of p.roomTypes) {
-        const room = rt.rooms.find((r) => r.id === roomId);
-        if (room) {
-          room.status = status;
-          return;
-        }
-      }
-    }
+  private formatBooking(b: any) {
+    return {
+      id: b.id,
+      bookingCode: b.bookingCode,
+      userId: b.userId || null,
+      guestName: b.guestName,
+      guestEmail: b.guestEmail,
+      guestPhone: b.guestPhone,
+      checkInDate: b.checkInDate instanceof Date ? b.checkInDate.toISOString().split('T')[0] : b.checkInDate,
+      checkOutDate: b.checkOutDate instanceof Date ? b.checkOutDate.toISOString().split('T')[0] : b.checkOutDate,
+      totalGuests: b.totalGuests,
+      totalAmount: Number(b.totalAmount || b.totalInr || 0),
+      status: b.status,
+      specialRequests: b.specialRequests || null,
+      cancellationReason: b.cancellationReason || null,
+      items: (b.items || []).map((it: any) => ({
+        id: it.id,
+        bookingId: it.bookingId,
+        roomTypeId: it.roomTypeId,
+        roomId: it.roomId || null,
+        nightPrice: Number(it.nightPrice || 0),
+        roomType: it.roomType
+          ? {
+              ...it.roomType,
+              basePrice: Number(it.roomType.basePrice || 0),
+              baseRateInr: Number(it.roomType.baseRateInr || 0),
+            }
+          : undefined,
+      })),
+      createdAt: b.createdAt instanceof Date ? b.createdAt.toISOString() : b.createdAt,
+      updatedAt: b.updatedAt instanceof Date ? b.updatedAt.toISOString() : b.updatedAt,
+    };
   }
 
   private generateBookingCode(): string {

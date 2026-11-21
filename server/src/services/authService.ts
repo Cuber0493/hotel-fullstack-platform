@@ -1,12 +1,12 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import crypto, { randomUUID, randomBytes } from 'crypto';
-import { dataStore, UserEntity, RefreshTokenEntity } from '../repositories/dataStore.js';
+import crypto, { randomBytes } from 'crypto';
+import { prisma } from '../lib/prisma.js';
 import { RegisterInput, LoginInput } from '../schemas/authSchemas.js';
 import { ConflictError, UnauthorizedError, NotFoundError } from '../errors/AppError.js';
 import { logAuthEvent } from '../lib/logger.js';
 import { env } from '../config/env.js';
-import { Role } from '@prisma/client';
+import { Role, User } from '@prisma/client';
 
 export class AuthService {
   /**
@@ -19,9 +19,9 @@ export class AuthService {
   /**
    * Generates a short-lived JWT access token for authenticated API requests.
    */
-  public generateAccessToken(user: UserEntity): string {
+  public generateAccessToken(user: User): string {
     const secret: jwt.Secret = env.JWT_SECRET;
-    const displayName = user.name || user.fullName || '';
+    const displayName = user.fullName || user.name || '';
     return jwt.sign(
       {
         userId: user.id,
@@ -38,31 +38,29 @@ export class AuthService {
   }
 
   /**
-   * Generates a cryptographically strong refresh token and stores its SHA-256 hash.
+   * Generates a cryptographically strong refresh token and persists its SHA-256 hash in Postgres.
    */
-  public generateRefreshToken(userId: string): { rawToken: string; expiresAt: Date } {
+  public async generateRefreshToken(userId: string): Promise<{ rawToken: string; expiresAt: Date }> {
     const rawToken = randomBytes(40).toString('hex');
     const tokenHash = this.hashToken(rawToken);
     const expiresAt = new Date(Date.now() + env.JWT_REFRESH_EXPIRES_DAYS * 24 * 60 * 60 * 1000);
 
-    const refreshTokenEntity: RefreshTokenEntity = {
-      id: `rt-${randomUUID()}`,
-      userId,
-      tokenHash,
-      expiresAt,
-      revokedAt: null,
-      createdAt: new Date(),
-    };
-
-    dataStore.refreshTokens.push(refreshTokenEntity);
+    await prisma.refreshToken.create({
+      data: {
+        userId,
+        tokenHash,
+        expiresAt,
+      },
+    });
 
     return { rawToken, expiresAt };
   }
 
   async register(input: RegisterInput, ip?: string) {
-    const existing = dataStore.users.find(
-      (u) => u.email.toLowerCase() === input.email.toLowerCase()
-    );
+    const email = input.email.toLowerCase();
+    const existing = await prisma.user.findUnique({
+      where: { email },
+    });
 
     if (existing) {
       logAuthEvent('failed', {
@@ -75,19 +73,16 @@ export class AuthService {
 
     const passwordHash = await bcrypt.hash(input.password, 10);
     const displayName = input.name || input.fullName || '';
-    const newUser: UserEntity = {
-      id: `usr-${randomUUID()}`,
-      email: input.email.toLowerCase(),
-      passwordHash,
-      name: displayName,
-      fullName: displayName,
-      phone: input.phone || null,
-      role: Role.GUEST, // Public registration strictly creates GUEST users only
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-
-    dataStore.users.push(newUser);
+    const newUser = await prisma.user.create({
+      data: {
+        email,
+        passwordHash,
+        name: displayName,
+        fullName: displayName,
+        phone: input.phone || null,
+        role: Role.GUEST,
+      },
+    });
 
     logAuthEvent('register', {
       userId: newUser.id,
@@ -97,7 +92,7 @@ export class AuthService {
     });
 
     const accessToken = this.generateAccessToken(newUser);
-    const refreshToken = this.generateRefreshToken(newUser.id);
+    const refreshToken = await this.generateRefreshToken(newUser.id);
 
     return {
       user: this.sanitizeUser(newUser),
@@ -108,9 +103,10 @@ export class AuthService {
   }
 
   async login(input: LoginInput, ip?: string) {
-    const user = dataStore.users.find(
-      (u) => u.email.toLowerCase() === input.email.toLowerCase()
-    );
+    const email = input.email.toLowerCase();
+    const user = await prisma.user.findUnique({
+      where: { email },
+    });
 
     if (!user) {
       logAuthEvent('failed', {
@@ -140,7 +136,7 @@ export class AuthService {
     });
 
     const accessToken = this.generateAccessToken(user);
-    const refreshToken = this.generateRefreshToken(user.id);
+    const refreshToken = await this.generateRefreshToken(user.id);
 
     return {
       user: this.sanitizeUser(user),
@@ -157,7 +153,9 @@ export class AuthService {
    */
   async refresh(rawRefreshToken: string, ip?: string) {
     const tokenHash = this.hashToken(rawRefreshToken);
-    const storedToken = dataStore.refreshTokens.find((t) => t.tokenHash === tokenHash);
+    const storedToken = await prisma.refreshToken.findUnique({
+      where: { tokenHash },
+    });
 
     if (!storedToken) {
       logAuthEvent('failed', {
@@ -169,11 +167,10 @@ export class AuthService {
 
     // Reuse detection: If token was already revoked, revoke all tokens for this user
     if (storedToken.revokedAt) {
-      dataStore.refreshTokens
-        .filter((t) => t.userId === storedToken.userId)
-        .forEach((t) => {
-          if (!t.revokedAt) t.revokedAt = new Date();
-        });
+      await prisma.refreshToken.updateMany({
+        where: { userId: storedToken.userId, revokedAt: null },
+        data: { revokedAt: new Date() },
+      });
 
       logAuthEvent('failed', {
         userId: storedToken.userId,
@@ -186,7 +183,10 @@ export class AuthService {
 
     // Check expiration
     if (storedToken.expiresAt.getTime() < Date.now()) {
-      storedToken.revokedAt = new Date();
+      await prisma.refreshToken.update({
+        where: { id: storedToken.id },
+        data: { revokedAt: new Date() },
+      });
       logAuthEvent('failed', {
         userId: storedToken.userId,
         reason: 'Refresh token expired',
@@ -196,15 +196,20 @@ export class AuthService {
     }
 
     // Revoke the consumed token (token rotation)
-    storedToken.revokedAt = new Date();
+    await prisma.refreshToken.update({
+      where: { id: storedToken.id },
+      data: { revokedAt: new Date() },
+    });
 
-    const user = dataStore.users.find((u) => u.id === storedToken.userId);
+    const user = await prisma.user.findUnique({
+      where: { id: storedToken.userId },
+    });
     if (!user) {
       throw new UnauthorizedError('User account not found');
     }
 
     const accessToken = this.generateAccessToken(user);
-    const newRefreshToken = this.generateRefreshToken(user.id);
+    const newRefreshToken = await this.generateRefreshToken(user.id);
 
     logAuthEvent('refresh', {
       userId: user.id,
@@ -224,20 +229,24 @@ export class AuthService {
   async logout(rawRefreshToken?: string, userId?: string, ip?: string) {
     if (rawRefreshToken) {
       const tokenHash = this.hashToken(rawRefreshToken);
-      const storedToken = dataStore.refreshTokens.find((t) => t.tokenHash === tokenHash);
+      const storedToken = await prisma.refreshToken.findUnique({
+        where: { tokenHash },
+      });
       if (storedToken) {
-        storedToken.revokedAt = new Date();
+        await prisma.refreshToken.update({
+          where: { id: storedToken.id },
+          data: { revokedAt: new Date() },
+        });
       }
       logAuthEvent('logout', {
         userId: storedToken?.userId || userId,
         ip,
       });
     } else if (userId) {
-      dataStore.refreshTokens
-        .filter((t) => t.userId === userId)
-        .forEach((t) => {
-          if (!t.revokedAt) t.revokedAt = new Date();
-        });
+      await prisma.refreshToken.updateMany({
+        where: { userId, revokedAt: null },
+        data: { revokedAt: new Date() },
+      });
       logAuthEvent('logout', { userId, ip });
     }
 
@@ -245,17 +254,22 @@ export class AuthService {
   }
 
   async getCurrentUser(userId: string) {
-    const user = dataStore.users.find((u) => u.id === userId);
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+    });
     if (!user) {
       throw new NotFoundError('User profile not found');
     }
     return this.sanitizeUser(user);
   }
 
-  private sanitizeUser(user: UserEntity) {
+  private sanitizeUser(user: User) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { passwordHash, ...rest } = user;
-    return rest;
+    return {
+      ...rest,
+      fullName: user.fullName || user.name,
+    };
   }
 }
 

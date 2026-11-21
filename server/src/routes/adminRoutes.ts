@@ -16,7 +16,7 @@ adminRouter.get(
   validateQuery(adminMetricsQuerySchema),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const metrics = metricsService.getMetrics(req.query as any);
+      const metrics = await metricsService.getMetrics(req.query as any);
       res.status(200).json(metrics);
     } catch (err) {
       next(err);

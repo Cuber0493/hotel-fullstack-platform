@@ -1,12 +1,5 @@
 import { randomUUID } from 'crypto';
-import {
-  dataStore,
-  PropertyEntity,
-  RoomTypeEntity,
-  RoomEntity,
-  RoomStatus,
-  BookingStatus,
-} from '../repositories/dataStore.js';
+import { prisma } from '../lib/prisma.js';
 import {
   PropertyQuery,
   CreatePropertyInput,
@@ -15,9 +8,10 @@ import {
 } from '../schemas/hotelSchemas.js';
 import { NotFoundError, ConflictError } from '../errors/AppError.js';
 import { logPropertyEvent } from '../lib/logger.js';
+import { BookingStatus, RoomStatus } from '@prisma/client';
 
 export interface RoomAvailabilityResult {
-  roomType: RoomTypeEntity;
+  roomType: any;
   totalInventory: number;
   availableInventory: number;
   isAvailable: boolean;
@@ -27,16 +21,26 @@ export interface RoomAvailabilityResult {
 
 export class PropertyService {
   async listProperties(query: PropertyQuery) {
-    let properties = [...dataStore.properties];
+    const properties = await prisma.property.findMany({
+      include: {
+        roomTypes: {
+          include: {
+            rooms: true,
+          },
+        },
+      },
+    });
+
+    let filtered = properties;
 
     if (query.neighborhood) {
       const q = query.neighborhood.toLowerCase();
-      properties = properties.filter((p) => p.neighborhood.toLowerCase().includes(q));
+      filtered = filtered.filter((p) => p.neighborhood.toLowerCase().includes(q));
     }
 
     if (query.city) {
       const q = query.city.toLowerCase();
-      properties = properties.filter(
+      filtered = filtered.filter(
         (p) =>
           p.neighborhood.toLowerCase().includes(q) ||
           p.address.toLowerCase().includes(q) ||
@@ -47,7 +51,7 @@ export class PropertyService {
 
     if (query.search) {
       const q = query.search.toLowerCase();
-      properties = properties.filter(
+      filtered = filtered.filter(
         (p) =>
           p.name.toLowerCase().includes(q) ||
           p.neighborhood.toLowerCase().includes(q) ||
@@ -57,25 +61,25 @@ export class PropertyService {
 
     if (query.amenity) {
       const a = query.amenity.toLowerCase();
-      properties = properties.filter((p) =>
+      filtered = filtered.filter((p) =>
         p.amenities.some((item) => item.toLowerCase().includes(a))
       );
     }
 
     if (query.minPrice !== undefined) {
-      properties = properties.filter((p) =>
-        p.roomTypes.some((rt) => rt.basePrice >= (query.minPrice || 0))
+      filtered = filtered.filter((p) =>
+        p.roomTypes.some((rt) => Number(rt.basePrice) >= (query.minPrice || 0))
       );
     }
 
     if (query.maxPrice !== undefined) {
-      properties = properties.filter((p) =>
-        p.roomTypes.some((rt) => rt.basePrice <= (query.maxPrice || Infinity))
+      filtered = filtered.filter((p) =>
+        p.roomTypes.some((rt) => Number(rt.basePrice) <= (query.maxPrice || Infinity))
       );
     }
 
-    return properties.map((p) => {
-      const prices = p.roomTypes.map((rt) => rt.basePrice);
+    return filtered.map((p) => {
+      const prices = p.roomTypes.map((rt) => Number(rt.basePrice));
       const startingPrice = prices.length ? Math.min(...prices) : 0;
       return {
         id: p.id,
@@ -95,52 +99,76 @@ export class PropertyService {
     });
   }
 
-  async getPropertyBySlug(slug: string): Promise<PropertyEntity> {
+  async getPropertyBySlug(slug: string) {
     return this.getPropertyByIdOrSlug(slug);
   }
 
-  async getPropertyByIdOrSlug(idOrSlug: string): Promise<PropertyEntity> {
-    const property = dataStore.properties.find(
-      (p) => p.id === idOrSlug || p.slug === idOrSlug
-    );
+  async getPropertyByIdOrSlug(idOrSlug: string) {
+    const property = await prisma.property.findFirst({
+      where: {
+        OR: [{ id: idOrSlug }, { slug: idOrSlug }],
+      },
+      include: {
+        roomTypes: {
+          include: {
+            rooms: true,
+          },
+        },
+      },
+    });
+
     if (!property) {
       throw new NotFoundError(`Property with identifier '${idOrSlug}' not found`);
     }
-    return property;
+
+    return {
+      ...property,
+      roomTypes: property.roomTypes.map((rt) => ({
+        ...rt,
+        basePrice: Number(rt.basePrice),
+        baseRateInr: Number(rt.baseRateInr),
+      })),
+    };
   }
 
-  async createProperty(input: CreatePropertyInput, userId?: string): Promise<PropertyEntity> {
+  async createProperty(input: CreatePropertyInput, userId?: string) {
     const slug = input.name
       .toLowerCase()
       .trim()
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/(^-|-$)/g, '');
 
-    const existing = dataStore.properties.find((p) => p.slug === slug);
+    const existing = await prisma.property.findUnique({
+      where: { slug },
+    });
     if (existing) {
       throw new ConflictError(`A property with the slug '${slug}' already exists`);
     }
 
-    const newProperty: PropertyEntity = {
-      id: `prop-${randomUUID()}`,
-      slug,
-      name: input.name,
-      neighborhood: input.neighborhood,
-      address: input.address,
-      description: input.description,
-      heroImage: input.heroImage || 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb',
-      galleryImages: input.galleryImages || [],
-      amenities: input.amenities || [],
-      checkInTime: '14:00',
-      checkOutTime: '11:00',
-      contactPhone: input.contactPhone || '+91 22 6900 1100',
-      contactEmail: input.contactEmail || 'concierge@bombayreserve.com',
-      roomTypes: [],
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-
-    dataStore.properties.push(newProperty);
+    const newProperty = await prisma.property.create({
+      data: {
+        id: `prop-${randomUUID()}`,
+        slug,
+        name: input.name,
+        neighborhood: input.neighborhood,
+        address: input.address,
+        description: input.description,
+        heroImage: input.heroImage || 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb',
+        galleryImages: input.galleryImages || [],
+        amenities: input.amenities || [],
+        checkInTime: '14:00',
+        checkOutTime: '11:00',
+        contactPhone: input.contactPhone || '+91 22 6900 1100',
+        contactEmail: input.contactEmail || 'concierge@bombayreserve.com',
+      },
+      include: {
+        roomTypes: {
+          include: {
+            rooms: true,
+          },
+        },
+      },
+    });
 
     logPropertyEvent('created', {
       propertyId: newProperty.id,
@@ -148,64 +176,86 @@ export class PropertyService {
       userId,
     });
 
-    return newProperty;
+    return {
+      ...newProperty,
+      roomTypes: newProperty.roomTypes.map((rt) => ({
+        ...rt,
+        basePrice: Number(rt.basePrice),
+        baseRateInr: Number(rt.baseRateInr),
+      })),
+    };
   }
 
   async updateProperty(
     idOrSlug: string,
     input: UpdatePropertyInput,
     userId?: string
-  ): Promise<PropertyEntity> {
+  ) {
     const property = await this.getPropertyByIdOrSlug(idOrSlug);
 
-    if (input.name !== undefined) property.name = input.name;
-    if (input.neighborhood !== undefined) property.neighborhood = input.neighborhood;
-    if (input.address !== undefined) property.address = input.address;
-    if (input.description !== undefined) property.description = input.description;
-    if (input.amenities !== undefined) property.amenities = input.amenities;
-    if (input.heroImage !== undefined) property.heroImage = input.heroImage;
-    if (input.galleryImages !== undefined) property.galleryImages = input.galleryImages;
-    if (input.contactPhone !== undefined) property.contactPhone = input.contactPhone;
-    if (input.contactEmail !== undefined) property.contactEmail = input.contactEmail;
-    property.updatedAt = new Date();
+    const updated = await prisma.property.update({
+      where: { id: property.id },
+      data: {
+        name: input.name !== undefined ? input.name : undefined,
+        neighborhood: input.neighborhood !== undefined ? input.neighborhood : undefined,
+        address: input.address !== undefined ? input.address : undefined,
+        description: input.description !== undefined ? input.description : undefined,
+        amenities: input.amenities !== undefined ? input.amenities : undefined,
+        heroImage: input.heroImage !== undefined ? input.heroImage : undefined,
+        galleryImages: input.galleryImages !== undefined ? input.galleryImages : undefined,
+        contactPhone: input.contactPhone !== undefined ? input.contactPhone : undefined,
+        contactEmail: input.contactEmail !== undefined ? input.contactEmail : undefined,
+      },
+      include: {
+        roomTypes: {
+          include: {
+            rooms: true,
+          },
+        },
+      },
+    });
 
     logPropertyEvent('updated', {
+      propertyId: updated.id,
+      name: updated.name,
+      userId,
+    });
+
+    return {
+      ...updated,
+      roomTypes: updated.roomTypes.map((rt) => ({
+        ...rt,
+        basePrice: Number(rt.basePrice),
+        baseRateInr: Number(rt.baseRateInr),
+      })),
+    };
+  }
+
+  async deleteProperty(idOrSlug: string, userId?: string): Promise<{ success: boolean; id: string }> {
+    const property = await this.getPropertyByIdOrSlug(idOrSlug);
+
+    await prisma.property.delete({
+      where: { id: property.id },
+    });
+
+    logPropertyEvent('deleted', {
       propertyId: property.id,
       name: property.name,
       userId,
     });
 
-    return property;
+    return { success: true, id: property.id };
   }
 
-  async deleteProperty(idOrSlug: string, userId?: string): Promise<{ success: boolean; id: string }> {
-    const index = dataStore.properties.findIndex(
-      (p) => p.id === idOrSlug || p.slug === idOrSlug
-    );
-    if (index === -1) {
-      throw new NotFoundError(`Property '${idOrSlug}' not found`);
-    }
-
-    const removed = dataStore.properties.splice(index, 1)[0];
-
-    logPropertyEvent('deleted', {
-      propertyId: removed.id,
-      name: removed.name,
-      userId,
-    });
-
-    return { success: true, id: removed.id };
-  }
-
-  async getPropertyRooms(propertyIdOrSlug: string): Promise<RoomTypeEntity[]> {
+  async getPropertyRooms(propertyIdOrSlug: string) {
     const property = await this.getPropertyByIdOrSlug(propertyIdOrSlug);
     return property.roomTypes;
   }
 
-  async addRoom(propertyIdOrSlug: string, input: CreateRoomInput): Promise<RoomEntity> {
+  async addRoom(propertyIdOrSlug: string, input: CreateRoomInput) {
     const property = await this.getPropertyByIdOrSlug(propertyIdOrSlug);
     const roomType = property.roomTypes.find(
-      (rt) => rt.id === input.roomTypeId || rt.slug === input.roomTypeId
+      (rt: any) => rt.id === input.roomTypeId || rt.slug === input.roomTypeId
     );
     if (!roomType) {
       throw new NotFoundError(
@@ -213,35 +263,52 @@ export class PropertyService {
       );
     }
 
-    const exists = roomType.rooms.some((r) => r.roomNumber === input.roomNumber);
+    const exists = await prisma.room.findFirst({
+      where: {
+        propertyId: property.id,
+        roomNumber: input.roomNumber,
+      },
+    });
     if (exists) {
       throw new ConflictError(
         `Room number '${input.roomNumber}' already exists in room type '${roomType.name}'`
       );
     }
 
-    const newRoom: RoomEntity = {
-      id: `room-${property.slug}-${input.roomNumber}`,
-      roomTypeId: roomType.id,
-      roomNumber: input.roomNumber,
-      floor: input.floor || '1st Floor',
-      status: RoomStatus.AVAILABLE,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
+    const newRoom = await prisma.room.create({
+      data: {
+        id: `room-${property.slug}-${input.roomNumber}`,
+        propertyId: property.id,
+        roomTypeId: roomType.id,
+        roomNumber: input.roomNumber,
+        floor: input.floor || '1st Floor',
+        status: RoomStatus.AVAILABLE,
+      },
+    });
 
-    roomType.rooms.push(newRoom);
-    roomType.totalInventory = roomType.rooms.length;
+    await prisma.roomType.update({
+      where: { id: roomType.id },
+      data: {
+        totalInventory: {
+          increment: 1,
+        },
+      },
+    });
 
     return newRoom;
   }
 
-  async addImage(propertyIdOrSlug: string, imageUrl: string): Promise<PropertyEntity> {
+  async addImage(propertyIdOrSlug: string, imageUrl: string) {
     const property = await this.getPropertyByIdOrSlug(propertyIdOrSlug);
-    if (!property.galleryImages.includes(imageUrl)) {
-      property.galleryImages.push(imageUrl);
+    const gallery = property.galleryImages || [];
+    if (!gallery.includes(imageUrl)) {
+      gallery.push(imageUrl);
+      await prisma.property.update({
+        where: { id: property.id },
+        data: { galleryImages: gallery },
+      });
+      property.galleryImages = gallery;
     }
-    property.updatedAt = new Date();
     return property;
   }
 
@@ -253,16 +320,20 @@ export class PropertyService {
   ): Promise<RoomAvailabilityResult[]> {
     const property = await this.getPropertyByIdOrSlug(slugOrId);
 
-    const checkIn = new Date(checkInDate.getFullYear(), checkInDate.getMonth(), checkInDate.getDate());
-    const checkOut = new Date(checkOutDate.getFullYear(), checkOutDate.getMonth(), checkOutDate.getDate());
+    const checkIn = new Date(Date.UTC(checkInDate.getUTCFullYear(), checkInDate.getUTCMonth(), checkInDate.getUTCDate()));
+    const checkOut = new Date(Date.UTC(checkOutDate.getUTCFullYear(), checkOutDate.getUTCMonth(), checkOutDate.getUTCDate()));
     const nights = Math.max(1, Math.round((checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60 * 24)));
 
-    const activeBookings = dataStore.bookings.filter(
-      (b) =>
-        (b.status === BookingStatus.CONFIRMED || b.status === BookingStatus.CHECKED_IN) &&
-        b.checkInDate < checkOut &&
-        b.checkOutDate > checkIn
-    );
+    const activeBookings = await prisma.booking.findMany({
+      where: {
+        status: { not: BookingStatus.CANCELLED },
+        checkInDate: { lt: checkOut },
+        checkOutDate: { gt: checkIn },
+      },
+      include: {
+        items: true,
+      },
+    });
 
     const results: RoomAvailabilityResult[] = [];
 
@@ -280,13 +351,14 @@ export class PropertyService {
         }
       }
 
-      const availableInventory = Math.max(0, rt.totalInventory - bookedCount);
+      const totalInventory = rt.rooms?.length || rt.totalInventory || 1;
+      const availableInventory = Math.max(0, totalInventory - bookedCount);
       const isAvailable = availableInventory > 0;
-      const totalPrice = rt.basePrice * nights;
+      const totalPrice = Number(rt.basePrice) * nights;
 
       results.push({
         roomType: rt,
-        totalInventory: rt.totalInventory,
+        totalInventory,
         availableInventory,
         isAvailable,
         totalPrice,

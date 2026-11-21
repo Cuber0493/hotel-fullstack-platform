@@ -11,7 +11,8 @@ const { DatabaseSync } = require('node:sqlite') as {
     close(): void;
   };
 };
-import { dataStore } from '../repositories/dataStore.js';
+
+import { prisma } from '../lib/prisma.js';
 import { AdminMetricsQuery } from '../schemas/hotelSchemas.js';
 import { ValidationError } from '../errors/AppError.js';
 import { BookingStatus, RoomStatus } from '@prisma/client';
@@ -70,87 +71,42 @@ export interface DashboardMetricsResponse {
 }
 
 export class MetricsService {
-  private db: InstanceType<typeof DatabaseSync>;
+  private customDb: InstanceType<typeof DatabaseSync> | null = null;
+  private isCustomMode = false;
 
-  constructor() {
-    this.db = new DatabaseSync(':memory:');
-    this.initSchema();
-  }
+  private getOrInitCustomDb() {
+    if (!this.customDb) {
+      this.customDb = new DatabaseSync(':memory:');
+      this.customDb.exec(`
+        CREATE TABLE IF NOT EXISTS properties (
+          id TEXT PRIMARY KEY,
+          name TEXT NOT NULL,
+          slug TEXT NOT NULL
+        );
 
-  private initSchema() {
-    this.db.exec(`
-      CREATE TABLE IF NOT EXISTS properties (
-        id TEXT PRIMARY KEY,
-        name TEXT NOT NULL,
-        slug TEXT NOT NULL
-      );
+        CREATE TABLE IF NOT EXISTS rooms (
+          id TEXT PRIMARY KEY,
+          property_id TEXT NOT NULL,
+          room_number TEXT NOT NULL,
+          status TEXT NOT NULL,
+          FOREIGN KEY(property_id) REFERENCES properties(id)
+        );
 
-      CREATE TABLE IF NOT EXISTS rooms (
-        id TEXT PRIMARY KEY,
-        property_id TEXT NOT NULL,
-        room_number TEXT NOT NULL,
-        status TEXT NOT NULL,
-        FOREIGN KEY(property_id) REFERENCES properties(id)
-      );
+        CREATE TABLE IF NOT EXISTS bookings (
+          id TEXT PRIMARY KEY,
+          room_id TEXT NOT NULL,
+          check_in TEXT NOT NULL,
+          check_out TEXT NOT NULL,
+          status TEXT NOT NULL,
+          total_inr REAL NOT NULL,
+          FOREIGN KEY(room_id) REFERENCES rooms(id)
+        );
 
-      CREATE TABLE IF NOT EXISTS bookings (
-        id TEXT PRIMARY KEY,
-        room_id TEXT NOT NULL,
-        check_in TEXT NOT NULL,
-        check_out TEXT NOT NULL,
-        status TEXT NOT NULL,
-        total_inr REAL NOT NULL,
-        FOREIGN KEY(room_id) REFERENCES rooms(id)
-      );
-
-      CREATE INDEX IF NOT EXISTS idx_rooms_property ON rooms(property_id);
-      CREATE INDEX IF NOT EXISTS idx_bookings_status_dates ON bookings(status, check_in, check_out, room_id);
-    `);
-  }
-
-  /**
-   * Synchronizes SQLite in-memory tables from the active dataStore.
-   */
-  public syncFromDataStore() {
-    this.db.exec(`DELETE FROM bookings; DELETE FROM rooms; DELETE FROM properties;`);
-
-    const insertProp = this.db.prepare(
-      `INSERT INTO properties (id, name, slug) VALUES (?, ?, ?)`
-    );
-    const insertRoom = this.db.prepare(
-      `INSERT INTO rooms (id, property_id, room_number, status) VALUES (?, ?, ?, ?)`
-    );
-    const insertBooking = this.db.prepare(
-      `INSERT INTO bookings (id, room_id, check_in, check_out, status, total_inr) VALUES (?, ?, ?, ?, ?, ?)`
-    );
-
-    // 1. Properties & Rooms
-    for (const prop of dataStore.properties) {
-      insertProp.run(prop.id, prop.name, prop.slug);
-      for (const rt of prop.roomTypes) {
-        for (const r of rt.rooms) {
-          insertRoom.run(r.id, prop.id, r.roomNumber, r.status);
-        }
-      }
+        CREATE INDEX IF NOT EXISTS idx_rooms_property ON rooms(property_id);
+        CREATE INDEX IF NOT EXISTS idx_bookings_status_dates ON bookings(status, check_in, check_out, room_id);
+      `);
     }
-
-    // 2. Bookings
-    for (const b of dataStore.bookings) {
-      const roomId = b.items?.[0]?.roomId || (b as any).roomId;
-      if (!roomId) continue;
-
-      const checkInStr =
-        b.checkInDate instanceof Date
-          ? b.checkInDate.toISOString().split('T')[0]
-          : String(b.checkInDate).slice(0, 10);
-
-      const checkOutStr =
-        b.checkOutDate instanceof Date
-          ? b.checkOutDate.toISOString().split('T')[0]
-          : String(b.checkOutDate).slice(0, 10);
-
-      insertBooking.run(b.id, roomId, checkInStr, checkOutStr, b.status, b.totalAmount);
-    }
+    return this.customDb;
   }
 
   /**
@@ -168,15 +124,17 @@ export class MetricsService {
       totalInr: number;
     }[]
   ) {
-    this.db.exec(`DELETE FROM bookings; DELETE FROM rooms; DELETE FROM properties;`);
+    const db = this.getOrInitCustomDb();
+    this.isCustomMode = true;
+    db.exec(`DELETE FROM bookings; DELETE FROM rooms; DELETE FROM properties;`);
 
-    const insertProp = this.db.prepare(
+    const insertProp = db.prepare(
       `INSERT INTO properties (id, name, slug) VALUES (?, ?, ?)`
     );
-    const insertRoom = this.db.prepare(
+    const insertRoom = db.prepare(
       `INSERT INTO rooms (id, property_id, room_number, status) VALUES (?, ?, ?, ?)`
     );
-    const insertBooking = this.db.prepare(
+    const insertBooking = db.prepare(
       `INSERT INTO bookings (id, room_id, check_in, check_out, status, total_inr) VALUES (?, ?, ?, ?, ?, ?)`
     );
 
@@ -194,14 +152,10 @@ export class MetricsService {
   /**
    * Executes SQL aggregations to calculate Occupancy, ADR, RevPAR, and trend series.
    */
-  public getMetrics(
+  public async getMetrics(
     query: AdminMetricsQuery,
     skipAutoSync = false
-  ): DashboardMetricsResponse {
-    if (!skipAutoSync) {
-      this.syncFromDataStore();
-    }
-
+  ): Promise<DashboardMetricsResponse> {
     // Default dates: past 30 days to today if omitted
     let fromDateStr = query.from;
     let toDateStr = query.to;
@@ -230,9 +184,215 @@ export class MetricsService {
 
     const propertyFilter = query.propertyId || null;
 
+    if (this.isCustomMode) {
+      return this.getCustomDbMetrics(fromDateStr, toDateStr, rangeDays, propertyFilter);
+    }
+
     // -------------------------------------------------------------------------
-    // 1. Property-level & Aggregate Metrics Query using Pure SQL Aggregation
+    // PostgreSQL Direct SQL Aggregation via Prisma ($queryRaw)
     // -------------------------------------------------------------------------
+    const propRows = await prisma.$queryRaw<any[]>`
+      WITH date_range AS (
+        SELECT
+          ${fromDateStr}::date AS range_from,
+          ${toDateStr}::date AS range_to,
+          ${rangeDays}::int AS range_days
+      ),
+      property_inventory AS (
+        SELECT
+          p.id AS property_id,
+          p.name AS property_name,
+          p.slug AS property_slug,
+          COUNT(r.id)::int AS total_rooms,
+          (COUNT(r.id) * dr.range_days)::int AS room_nights_available
+        FROM properties p
+        CROSS JOIN date_range dr
+        LEFT JOIN rooms r ON r."propertyId" = p.id
+        WHERE (${propertyFilter}::text IS NULL OR p.id = ${propertyFilter} OR p.slug = ${propertyFilter})
+        GROUP BY p.id, p.name, p.slug, dr.range_days
+      ),
+      booking_nights AS (
+        SELECT
+          r."propertyId" AS property_id,
+          b.id AS booking_id,
+          GREATEST(0, (LEAST(b."checkOutDate", dr.range_to) - GREATEST(b."checkInDate", dr.range_from)))::int AS overlap_nights,
+          (b."totalAmount" / NULLIF((b."checkOutDate" - b."checkInDate"), 0))::float AS rate_per_night
+        FROM bookings b
+        JOIN rooms r ON b."roomId" = r.id
+        CROSS JOIN date_range dr
+        WHERE b.status != 'CANCELLED'
+          AND b."checkInDate" < dr.range_to
+          AND b."checkOutDate" > dr.range_from
+          AND (${propertyFilter}::text IS NULL OR r."propertyId" = ${propertyFilter} OR r."propertyId" IN (SELECT id FROM properties WHERE slug = ${propertyFilter}))
+      )
+      SELECT
+        pi.property_id,
+        pi.property_name,
+        pi.property_slug,
+        pi.total_rooms,
+        pi.room_nights_available,
+        COALESCE(SUM(bn.overlap_nights), 0)::int AS room_nights_sold,
+        ROUND(COALESCE(SUM(bn.overlap_nights * bn.rate_per_night), 0)::numeric, 2)::float AS room_revenue_inr,
+        CASE
+          WHEN pi.room_nights_available > 0
+          THEN ROUND((COALESCE(SUM(bn.overlap_nights), 0)::numeric / pi.room_nights_available), 4)::float
+          ELSE 0
+        END AS occupancy_rate,
+        CASE
+          WHEN COALESCE(SUM(bn.overlap_nights), 0) > 0
+          THEN ROUND((COALESCE(SUM(bn.overlap_nights * bn.rate_per_night), 0)::numeric / SUM(bn.overlap_nights)), 2)::float
+          ELSE 0
+        END AS adr,
+        CASE
+          WHEN pi.room_nights_available > 0
+          THEN ROUND((COALESCE(SUM(bn.overlap_nights * bn.rate_per_night), 0)::numeric / pi.room_nights_available), 2)::float
+          ELSE 0
+        END AS revpar
+      FROM property_inventory pi
+      LEFT JOIN booking_nights bn ON bn.property_id = pi.property_id
+      GROUP BY pi.property_id, pi.property_name, pi.property_slug, pi.total_rooms, pi.room_nights_available
+      ORDER BY pi.property_name ASC;
+    `;
+
+    const properties: PropertyMetricItem[] = propRows.map((row) => ({
+      propertyId: row.property_id,
+      propertyName: row.property_name,
+      propertySlug: row.property_slug,
+      totalRooms: Number(row.total_rooms),
+      roomNightsAvailable: Number(row.room_nights_available),
+      roomNightsSold: Number(row.room_nights_sold),
+      roomRevenueInr: Number(row.room_revenue_inr),
+      occupancyRate: Number(row.occupancy_rate),
+      adr: Number(row.adr),
+      revpar: Number(row.revpar),
+    }));
+
+    // Overall summary aggregation
+    const overallTotalRooms = properties.reduce((acc, p) => acc + p.totalRooms, 0);
+    const overallRoomNightsAvailable = properties.reduce((acc, p) => acc + p.roomNightsAvailable, 0);
+    const overallRoomNightsSold = properties.reduce((acc, p) => acc + p.roomNightsSold, 0);
+    const overallRoomRevenueInr = Number(
+      properties.reduce((acc, p) => acc + p.roomRevenueInr, 0).toFixed(2)
+    );
+
+    const overallOccupancyRate =
+      overallRoomNightsAvailable > 0
+        ? Math.round((overallRoomNightsSold / overallRoomNightsAvailable) * 10000) / 10000
+        : 0;
+
+    const overallAdr =
+      overallRoomNightsSold > 0
+        ? Math.round((overallRoomRevenueInr / overallRoomNightsSold) * 100) / 100
+        : 0;
+
+    const overallRevpar =
+      overallRoomNightsAvailable > 0
+        ? Math.round((overallRoomRevenueInr / overallRoomNightsAvailable) * 100) / 100
+        : 0;
+
+    const overall: MetricSummary = {
+      totalRooms: overallTotalRooms,
+      roomNightsAvailable: overallRoomNightsAvailable,
+      roomNightsSold: overallRoomNightsSold,
+      roomRevenueInr: overallRoomRevenueInr,
+      occupancyRate: overallOccupancyRate,
+      adr: overallAdr,
+      revpar: overallRevpar,
+    };
+
+    // Daily trends query using PostgreSQL series generation
+    const dailyRows = await prisma.$queryRaw<any[]>`
+      WITH daily_series AS (
+        SELECT generate_series(${fromDateStr}::date, (${toDateStr}::date - interval '1 day'), interval '1 day')::date AS day_date
+      ),
+      total_avail AS (
+        SELECT COUNT(r.id)::int AS count_avail
+        FROM rooms r
+        JOIN properties p ON r."propertyId" = p.id
+        WHERE (${propertyFilter}::text IS NULL OR p.id = ${propertyFilter} OR p.slug = ${propertyFilter})
+      )
+      SELECT
+        ds.day_date::text AS date,
+        ta.count_avail AS room_nights_available,
+        COALESCE(COUNT(DISTINCT b.id), 0)::int AS room_nights_sold,
+        ROUND(COALESCE(SUM(b."totalAmount" / NULLIF((b."checkOutDate" - b."checkInDate"), 0)), 0)::numeric, 2)::float AS room_revenue_inr
+      FROM daily_series ds
+      CROSS JOIN total_avail ta
+      LEFT JOIN rooms r ON (${propertyFilter}::text IS NULL OR r."propertyId" = ${propertyFilter} OR r."propertyId" IN (SELECT id FROM properties WHERE slug = ${propertyFilter}))
+      LEFT JOIN bookings b ON b."roomId" = r.id
+        AND b.status != 'CANCELLED'
+        AND b."checkInDate" <= ds.day_date
+        AND b."checkOutDate" > ds.day_date
+      GROUP BY ds.day_date, ta.count_avail
+      ORDER BY ds.day_date ASC;
+    `;
+
+    const dailyTrends: DailyTrendItem[] = dailyRows.map((row) => {
+      const avail = Number(row.room_nights_available);
+      const sold = Number(row.room_nights_sold);
+      const rev = Number(row.room_revenue_inr);
+      const occ = avail > 0 ? Math.round((sold / avail) * 10000) / 10000 : 0;
+      const adr = sold > 0 ? Math.round((rev / sold) * 100) / 100 : 0;
+      const revpar = avail > 0 ? Math.round((rev / avail) * 100) / 100 : 0;
+
+      return {
+        date: row.date,
+        roomNightsAvailable: avail,
+        roomNightsSold: sold,
+        roomRevenueInr: rev,
+        occupancyRate: occ,
+        adr,
+        revpar,
+      };
+    });
+
+    // Roll up daily trends to monthly trends
+    const monthlyMap = new Map<string, { available: number; sold: number; revenue: number }>();
+    for (const day of dailyTrends) {
+      const month = day.date.slice(0, 7);
+      const cur = monthlyMap.get(month) || { available: 0, sold: 0, revenue: 0 };
+      cur.available += day.roomNightsAvailable;
+      cur.sold += day.roomNightsSold;
+      cur.revenue += day.roomRevenueInr;
+      monthlyMap.set(month, cur);
+    }
+
+    const monthlyTrends: MonthlyTrendItem[] = Array.from(monthlyMap.entries()).map(([month, data]) => {
+      const rev = Number(data.revenue.toFixed(2));
+      const occ = data.available > 0 ? Math.round((data.sold / data.available) * 10000) / 10000 : 0;
+      const adr = data.sold > 0 ? Math.round((rev / data.sold) * 100) / 100 : 0;
+      const revpar = data.available > 0 ? Math.round((rev / data.available) * 100) / 100 : 0;
+
+      return {
+        month,
+        roomNightsAvailable: data.available,
+        roomNightsSold: data.sold,
+        roomRevenueInr: rev,
+        occupancyRate: occ,
+        adr,
+        revpar,
+      };
+    });
+
+    return {
+      from: fromDateStr,
+      to: toDateStr,
+      days: rangeDays,
+      overall,
+      properties,
+      dailyTrends,
+      monthlyTrends,
+    };
+  }
+
+  private getCustomDbMetrics(
+    fromDateStr: string,
+    toDateStr: string,
+    rangeDays: number,
+    propertyFilter: string | null
+  ): DashboardMetricsResponse {
+    const db = this.getOrInitCustomDb();
+
     const propertyMetricsSql = `
       WITH date_range AS (
         SELECT
@@ -296,7 +456,7 @@ export class MetricsService {
       ORDER BY pi.property_name ASC;
     `;
 
-    const propRows = this.db
+    const propRows = db
       .prepare(propertyMetricsSql)
       .all(
         fromDateStr,
@@ -323,96 +483,67 @@ export class MetricsService {
       revpar: Number(row.revpar),
     }));
 
-    // Overall aggregate computation (rolled up from property rows or SQL)
     const overallTotalRooms = properties.reduce((acc, p) => acc + p.totalRooms, 0);
-    const overallAvailable = properties.reduce((acc, p) => acc + p.roomNightsAvailable, 0);
-    const overallSold = properties.reduce((acc, p) => acc + p.roomNightsSold, 0);
-    const overallRevenue = Math.round(
-      properties.reduce((acc, p) => acc + p.roomRevenueInr, 0) * 100
-    ) / 100;
-    const overallOccupancy =
-      overallAvailable > 0
-        ? Math.round((overallSold / overallAvailable) * 10000) / 10000
+    const overallRoomNightsAvailable = properties.reduce((acc, p) => acc + p.roomNightsAvailable, 0);
+    const overallRoomNightsSold = properties.reduce((acc, p) => acc + p.roomNightsSold, 0);
+    const overallRoomRevenueInr = Number(
+      properties.reduce((acc, p) => acc + p.roomRevenueInr, 0).toFixed(2)
+    );
+
+    const overallOccupancyRate =
+      overallRoomNightsAvailable > 0
+        ? Math.round((overallRoomNightsSold / overallRoomNightsAvailable) * 10000) / 10000
         : 0;
+
     const overallAdr =
-      overallSold > 0 ? Math.round((overallRevenue / overallSold) * 100) / 100 : 0;
+      overallRoomNightsSold > 0
+        ? Math.round((overallRoomRevenueInr / overallRoomNightsSold) * 100) / 100
+        : 0;
+
     const overallRevpar =
-      overallAvailable > 0
-        ? Math.round((overallRevenue / overallAvailable) * 100) / 100
+      overallRoomNightsAvailable > 0
+        ? Math.round((overallRoomRevenueInr / overallRoomNightsAvailable) * 100) / 100
         : 0;
 
     const overall: MetricSummary = {
       totalRooms: overallTotalRooms,
-      roomNightsAvailable: overallAvailable,
-      roomNightsSold: overallSold,
-      roomRevenueInr: overallRevenue,
-      occupancyRate: overallOccupancy,
+      roomNightsAvailable: overallRoomNightsAvailable,
+      roomNightsSold: overallRoomNightsSold,
+      roomRevenueInr: overallRoomRevenueInr,
+      occupancyRate: overallOccupancyRate,
       adr: overallAdr,
       revpar: overallRevpar,
     };
 
-    // -------------------------------------------------------------------------
-    // 2. Daily Trends Query using Recursive Date Series
-    // -------------------------------------------------------------------------
     const dailyTrendsSql = `
-      WITH RECURSIVE
-      date_range AS (
-        SELECT ? AS range_from, ? AS range_to
-      ),
-      series(d) AS (
-        SELECT range_from FROM date_range
+      WITH RECURSIVE days_series(d) AS (
+        SELECT ?
         UNION ALL
-        SELECT date(d, '+1 day') FROM series, date_range WHERE date(d, '+1 day') < date_range.range_to
+        SELECT date(d, '+1 day') FROM days_series WHERE d < date(?, '-1 day')
       ),
-      daily_inventory AS (
-        SELECT
-          s.d AS date_str,
-          COUNT(r.id) AS room_nights_available
-        FROM series s
-        CROSS JOIN properties p
-        LEFT JOIN rooms r ON r.property_id = p.id
+      total_avail AS (
+        SELECT COUNT(r.id) AS count_avail
+        FROM rooms r
+        JOIN properties p ON r.property_id = p.id
         WHERE (? IS NULL OR p.id = ? OR p.slug = ?)
-        GROUP BY s.d
-      ),
-      daily_bookings AS (
-        SELECT
-          s.d AS date_str,
-          COUNT(b.id) AS room_nights_sold,
-          COALESCE(SUM(CAST(b.total_inr AS REAL) / MAX(1, CAST(julianday(b.check_out) - julianday(b.check_in) AS INT))), 0) AS room_revenue_inr
-        FROM series s
-        LEFT JOIN bookings b ON b.status != 'CANCELLED'
-          AND b.check_in <= s.d
-          AND b.check_out > s.d
-        LEFT JOIN rooms r ON b.room_id = r.id
-        WHERE (? IS NULL OR r.property_id = ? OR r.property_id IN (SELECT id FROM properties WHERE slug = ?))
-        GROUP BY s.d
       )
       SELECT
-        di.date_str AS date,
-        di.room_nights_available,
-        COALESCE(db.room_nights_sold, 0) AS room_nights_sold,
-        ROUND(COALESCE(db.room_revenue_inr, 0), 2) AS room_revenue_inr,
-        CASE
-          WHEN di.room_nights_available > 0
-          THEN ROUND(CAST(COALESCE(db.room_nights_sold, 0) AS REAL) / di.room_nights_available, 4)
-          ELSE 0
-        END AS occupancy_rate,
-        CASE
-          WHEN COALESCE(db.room_nights_sold, 0) > 0
-          THEN ROUND(COALESCE(db.room_revenue_inr, 0) / db.room_nights_sold, 2)
-          ELSE 0
-        END AS adr,
-        CASE
-          WHEN di.room_nights_available > 0
-          THEN ROUND(COALESCE(db.room_revenue_inr, 0) / di.room_nights_available, 2)
-          ELSE 0
-        END AS revpar
-      FROM daily_inventory di
-      JOIN daily_bookings db ON db.date_str = di.date_str
-      ORDER BY di.date_str ASC;
+        ds.d AS date,
+        ta.count_avail AS room_nights_available,
+        COALESCE(COUNT(DISTINCT b.id), 0) AS room_nights_sold,
+        ROUND(COALESCE(SUM(b.total_inr / MAX(1, CAST(julianday(b.check_out) - julianday(b.check_in) AS INT))), 0), 2) AS room_revenue_inr
+      FROM days_series ds
+      CROSS JOIN total_avail ta
+      LEFT JOIN rooms r ON (? IS NULL OR r.property_id = ? OR r.property_id IN (SELECT id FROM properties WHERE slug = ?))
+      LEFT JOIN bookings b ON b.room_id = r.id
+        AND b.status != 'CANCELLED'
+        AND b.check_in <= ds.d
+        AND b.check_out > ds.d
+      GROUP BY ds.d, ta.count_avail
+      ORDER BY ds.d ASC;
     `;
 
-    const dailyRows = this.db
+    const dailyRows = db
       .prepare(dailyTrendsSql)
       .all(
         fromDateStr,
@@ -425,55 +556,51 @@ export class MetricsService {
         propertyFilter
       ) as any[];
 
-    const dailyTrends: DailyTrendItem[] = dailyRows.map((row) => ({
-      date: row.date,
-      roomNightsAvailable: Number(row.room_nights_available),
-      roomNightsSold: Number(row.room_nights_sold),
-      roomRevenueInr: Number(row.room_revenue_inr),
-      occupancyRate: Number(row.occupancy_rate),
-      adr: Number(row.adr),
-      revpar: Number(row.revpar),
-    }));
+    const dailyTrends: DailyTrendItem[] = dailyRows.map((row) => {
+      const avail = Number(row.room_nights_available);
+      const sold = Number(row.room_nights_sold);
+      const rev = Number(row.room_revenue_inr);
+      const occ = avail > 0 ? Math.round((sold / avail) * 10000) / 10000 : 0;
+      const adr = sold > 0 ? Math.round((rev / sold) * 100) / 100 : 0;
+      const revpar = avail > 0 ? Math.round((rev / avail) * 100) / 100 : 0;
 
-    // -------------------------------------------------------------------------
-    // 3. Monthly Trends (Aggregated by YYYY-MM)
-    // -------------------------------------------------------------------------
-    const monthlyMap = new Map<
-      string,
-      { available: number; sold: number; revenue: number }
-    >();
+      return {
+        date: row.date,
+        roomNightsAvailable: avail,
+        roomNightsSold: sold,
+        roomRevenueInr: rev,
+        occupancyRate: occ,
+        adr,
+        revpar,
+      };
+    });
 
-    for (const d of dailyTrends) {
-      const month = d.date.substring(0, 7);
-      const existing = monthlyMap.get(month) || { available: 0, sold: 0, revenue: 0 };
-      existing.available += d.roomNightsAvailable;
-      existing.sold += d.roomNightsSold;
-      existing.revenue += d.roomRevenueInr;
-      monthlyMap.set(month, existing);
+    const monthlyMap = new Map<string, { available: number; sold: number; revenue: number }>();
+    for (const day of dailyTrends) {
+      const month = day.date.slice(0, 7);
+      const cur = monthlyMap.get(month) || { available: 0, sold: 0, revenue: 0 };
+      cur.available += day.roomNightsAvailable;
+      cur.sold += day.roomNightsSold;
+      cur.revenue += day.roomRevenueInr;
+      monthlyMap.set(month, cur);
     }
 
-    const monthlyTrends: MonthlyTrendItem[] = Array.from(monthlyMap.entries()).map(
-      ([month, data]) => {
-        const revenue = Math.round(data.revenue * 100) / 100;
-        const occupancy =
-          data.available > 0
-            ? Math.round((data.sold / data.available) * 10000) / 10000
-            : 0;
-        const adr = data.sold > 0 ? Math.round((revenue / data.sold) * 100) / 100 : 0;
-        const revpar =
-          data.available > 0 ? Math.round((revenue / data.available) * 100) / 100 : 0;
+    const monthlyTrends: MonthlyTrendItem[] = Array.from(monthlyMap.entries()).map(([month, data]) => {
+      const rev = Number(data.revenue.toFixed(2));
+      const occ = data.available > 0 ? Math.round((data.sold / data.available) * 10000) / 10000 : 0;
+      const adr = data.sold > 0 ? Math.round((rev / data.sold) * 100) / 100 : 0;
+      const revpar = data.available > 0 ? Math.round((rev / data.available) * 100) / 100 : 0;
 
-        return {
-          month,
-          roomNightsAvailable: data.available,
-          roomNightsSold: data.sold,
-          roomRevenueInr: revenue,
-          occupancyRate: occupancy,
-          adr,
-          revpar,
-        };
-      }
-    );
+      return {
+        month,
+        roomNightsAvailable: data.available,
+        roomNightsSold: data.sold,
+        roomRevenueInr: rev,
+        occupancyRate: occ,
+        adr,
+        revpar,
+      };
+    });
 
     return {
       from: fromDateStr,

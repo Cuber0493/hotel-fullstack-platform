@@ -6,11 +6,20 @@ useDefault = true
 [allowlist]
 description = "Global allowlist for mock/test credentials and documentation placeholders"
 paths = [
-  '''(?i)test''',
-  '''(?i)spec''',
   '''package-lock\.json''',
   '''server/prisma/seed\.ts''',
-  '''server/src/scripts/generateRawData\.ts'''
+  '''server/src/lib/seedDatabase\.ts''',
+  '''server/src/scripts/generateRawData\.ts''',
+  '''server/src/test/testDb\.ts''',
+  '''server/src/database/postgres\.test\.ts''',
+  '''server/src/routes/authRoutes\.test\.ts''',
+  '''server/src/routes/authPhase4\.test\.ts''',
+  '''server/src/routes/staffRoutes\.test\.ts''',
+  '''server/src/routes/coreEntitiesPhase5\.test\.ts''',
+  '''server/src/routes/metricsPhase6\.test\.ts''',
+  '''server/src/routes/enquiryRoutes\.test\.ts''',
+  '''server/src/lib/productionSeed\.test\.ts''',
+  '''client/src/pages/LoginPage\.test\.tsx'''
 ]
 stopwords = [
   "Password@123",

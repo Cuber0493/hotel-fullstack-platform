@@ -1,41 +1,33 @@
 import bcrypt from 'bcryptjs';
-import { randomUUID } from 'crypto';
 import { env } from '../config/env.js';
-import { dataStore, UserEntity } from '../repositories/dataStore.js';
+import { prisma } from '../lib/prisma.js';
 import { Role } from '@prisma/client';
 
-export async function seedAdminUser(): Promise<UserEntity> {
+export async function seedAdminUser() {
   const adminEmail = env.ADMIN_EMAIL.toLowerCase();
-  const existingAdmin = dataStore.users.find((u) => u.email.toLowerCase() === adminEmail);
-
   const passwordHash = await bcrypt.hash(env.ADMIN_PASSWORD, 10);
-  const now = new Date();
+  const adminName = env.ADMIN_NAME;
 
-  if (existingAdmin) {
-    existingAdmin.passwordHash = passwordHash;
-    existingAdmin.role = Role.ADMIN;
-    existingAdmin.name = env.ADMIN_NAME;
-    existingAdmin.fullName = env.ADMIN_NAME;
-    existingAdmin.updatedAt = now;
-    console.log(`[Admin Seed] Updated existing admin user: ${adminEmail}`);
-    return existingAdmin;
-  }
+  const admin = await prisma.user.upsert({
+    where: { email: adminEmail },
+    update: {
+      passwordHash,
+      role: Role.ADMIN,
+      name: adminName,
+      fullName: adminName,
+    },
+    create: {
+      email: adminEmail,
+      passwordHash,
+      name: adminName,
+      fullName: adminName,
+      phone: '+91 98200 11001',
+      role: Role.ADMIN,
+    },
+  });
 
-  const newAdmin: UserEntity = {
-    id: `usr-admin-${randomUUID()}`,
-    email: adminEmail,
-    passwordHash,
-    name: env.ADMIN_NAME,
-    fullName: env.ADMIN_NAME,
-    phone: '+91 98200 11001',
-    role: Role.ADMIN,
-    createdAt: now,
-    updatedAt: now,
-  };
-
-  dataStore.users.unshift(newAdmin);
-  console.log(`[Admin Seed] Bootstrapped new admin user: ${adminEmail} (Role: ADMIN)`);
-  return newAdmin;
+  console.log(`[Admin Seed] Bootstrapped admin user: ${adminEmail} (Role: ADMIN)`);
+  return admin;
 }
 
 if (process.argv[1] && process.argv[1].endsWith('seedAdmin.ts')) {

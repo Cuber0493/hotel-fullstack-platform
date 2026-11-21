@@ -6,6 +6,7 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'node',
+    pool: 'forks',
     env: {
       MSGPACKR_EXTRACT: 'false',
     },

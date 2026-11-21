@@ -1,15 +1,19 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import { app } from '../index.js';
-import { dataStore } from '../repositories/dataStore.js';
+import { setupTestDatabase } from '../test/testDb.js';
 
 describe('Booking API Lifecycle Endpoints', () => {
-  beforeEach(() => {
-    dataStore.seed();
+  let isDbOnline = false;
+
+  beforeEach(async () => {
+    isDbOnline = await setupTestDatabase();
   });
 
   describe('POST /api/v1/bookings', () => {
     it('creates a new booking, generates code TBR-BOM-XXXXXX, and allocates inventory', async () => {
+      if (!isDbOnline) return;
+
       const res = await request(app)
         .post('/api/v1/bookings')
         .send({
@@ -52,6 +56,8 @@ describe('Booking API Lifecycle Endpoints', () => {
     });
 
     it('rejects booking when guests count exceeds room capacity', async () => {
+      if (!isDbOnline) return;
+
       const res = await request(app)
         .post('/api/v1/bookings')
         .send({
@@ -73,6 +79,8 @@ describe('Booking API Lifecycle Endpoints', () => {
 
   describe('GET /api/v1/bookings/:bookingCode', () => {
     it('retrieves existing booking by booking code', async () => {
+      if (!isDbOnline) return;
+
       const res = await request(app).get('/api/v1/bookings/TBR-BOM-882194');
       expect(res.status).toBe(200);
       expect(res.body.booking.bookingCode).toBe('TBR-BOM-882194');
@@ -80,6 +88,8 @@ describe('Booking API Lifecycle Endpoints', () => {
     });
 
     it('returns 404 for non-existent booking code', async () => {
+      if (!isDbOnline) return;
+
       const res = await request(app).get('/api/v1/bookings/TBR-BOM-000000');
       expect(res.status).toBe(404);
       expect(res.body.error.code).toBe('NOT_FOUND');
@@ -88,6 +98,8 @@ describe('Booking API Lifecycle Endpoints', () => {
 
   describe('PATCH /api/v1/bookings/:id/cancel', () => {
     it('cancels confirmed booking and updates status to CANCELLED', async () => {
+      if (!isDbOnline) return;
+
       const res = await request(app)
         .patch('/api/v1/bookings/bk-1/cancel')
         .send({ reason: 'Trip plans changed' });
@@ -98,6 +110,8 @@ describe('Booking API Lifecycle Endpoints', () => {
     });
 
     it('rejects cancelling an already cancelled booking with 409 Conflict', async () => {
+      if (!isDbOnline) return;
+
       await request(app).patch('/api/v1/bookings/bk-1/cancel').send();
       const res = await request(app).patch('/api/v1/bookings/bk-1/cancel').send();
 

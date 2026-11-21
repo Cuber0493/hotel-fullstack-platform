@@ -1,4 +1,4 @@
-import { dataStore } from '../repositories/dataStore.js';
+import { prisma } from '../lib/prisma.js';
 import { RoomSearchQuery } from '../schemas/hotelSchemas.js';
 import { BookingStatus } from '@prisma/client';
 
@@ -60,9 +60,44 @@ export class SearchService {
       ? amenities.split(',').map((a) => a.trim().toLowerCase()).filter(Boolean)
       : [];
 
+    const properties = await prisma.property.findMany({
+      include: {
+        roomTypes: {
+          include: {
+            rooms: true,
+          },
+        },
+      },
+    });
+
+    // If date range is specified, retrieve all active bookings in that range
+    let bookedRoomIds = new Set<string>();
+    if (inDate && outDate) {
+      const activeBookings = await prisma.booking.findMany({
+        where: {
+          status: { not: BookingStatus.CANCELLED },
+          checkInDate: { lt: outDate },
+          checkOutDate: { gt: inDate },
+        },
+        select: {
+          roomId: true,
+          items: {
+            select: { roomId: true },
+          },
+        },
+      });
+
+      for (const b of activeBookings) {
+        if (b.roomId) bookedRoomIds.add(b.roomId);
+        for (const item of b.items) {
+          if (item.roomId) bookedRoomIds.add(item.roomId);
+        }
+      }
+    }
+
     const results: RoomSearchResultItem[] = [];
 
-    for (const prop of dataStore.properties) {
+    for (const prop of properties) {
       // 1. Property / City Filter
       if (propertyId && prop.id !== propertyId) {
         continue;
@@ -81,14 +116,17 @@ export class SearchService {
       }
 
       for (const rt of prop.roomTypes) {
+        const baseRate = Number(rt.basePrice || rt.baseRateInr);
+        const capacity = rt.maxGuests || rt.capacity;
+
         // 2. Capacity & Price Filter
-        if (rt.maxGuests < guests) {
+        if (capacity < guests) {
           continue;
         }
-        if (minPrice !== undefined && rt.basePrice < minPrice) {
+        if (minPrice !== undefined && baseRate < minPrice) {
           continue;
         }
-        if (maxPrice !== undefined && rt.basePrice > maxPrice) {
+        if (maxPrice !== undefined && baseRate > maxPrice) {
           continue;
         }
 
@@ -114,29 +152,7 @@ export class SearchService {
         let availableRooms = rt.rooms;
 
         if (inDate && outDate) {
-          availableRooms = rt.rooms.filter((room) => {
-            // Check if room has overlapping booking
-            const isBooked = dataStore.bookings.some((b) => {
-              if (b.status === BookingStatus.CANCELLED) return false;
-
-              // Check if booking applies to this physical room
-              const matchesRoom =
-                b.items?.some((item) => item.roomId === room.id) ||
-                (b as any).roomId === room.id;
-
-              if (!matchesRoom) return false;
-
-              const bIn = new Date(b.checkInDate).getTime();
-              const bOut = new Date(b.checkOutDate).getTime();
-
-              // Overlap formula: inDate < bOut && outDate > bIn
-              return inDate!.getTime() < bOut && outDate!.getTime() > bIn;
-            });
-
-            return !isBooked;
-          });
-
-          // If no rooms in this category are available for the requested dates, exclude it
+          availableRooms = rt.rooms.filter((room) => !bookedRoomIds.has(room.id));
           if (availableRooms.length === 0) {
             continue;
           }
@@ -152,8 +168,8 @@ export class SearchService {
           roomTypeName: rt.name,
           roomTypeSlug: rt.slug,
           description: rt.description,
-          baseRateInr: rt.basePrice,
-          capacity: rt.maxGuests,
+          baseRateInr: baseRate,
+          capacity,
           amenities: rt.amenities,
           images: rt.images && rt.images.length > 0 ? rt.images : prop.galleryImages,
           availableRoomsCount: availableRooms.length,

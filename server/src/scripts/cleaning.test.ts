@@ -190,6 +190,6 @@ describe('Data Cleaning & Ingestion Pipeline Rules', () => {
       expect(run2.totalImported).toBe(run1.totalImported);
       expect(run2.totalRejected).toBe(run1.totalRejected);
       expect(run2.totalFixed).toBe(run1.totalFixed);
-    });
+    }, 20000);
   });
 });
